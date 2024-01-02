@@ -3,8 +3,9 @@ package io.github.greatericontop.customcraftingcreator;
 import io.github.greatericontop.customcraftingcreator.commands.AddRecipeCommand;
 import io.github.greatericontop.customcraftingcreator.commands.EditRecipeCommand;
 import io.github.greatericontop.customcraftingcreator.commands.ReloadRecipesCommand;
-import io.github.greatericontop.customcraftingcreator.gui.EditCraft;
+import io.github.greatericontop.customcraftingcreator.gui.CraftEditor;
 import io.github.greatericontop.customcraftingcreator.gui.GUIManager;
+import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,7 +18,7 @@ public class CustomCraftingCreator extends JavaPlugin {
 
     public RecipeManager recipeManager;
 
-    public EditCraft guiEditCraft;
+    public CraftEditor guiEditCraft;
 
     @Override
     public void onEnable() {
@@ -32,7 +33,7 @@ public class CustomCraftingCreator extends JavaPlugin {
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));
 
         GUIManager guiManager = new GUIManager(this);
-        guiEditCraft = new EditCraft(guiManager);
+        guiEditCraft = new CraftEditor(guiManager);
         this.getServer().getPluginManager().registerEvents(guiEditCraft, this);
         // TODO: InventoryCloseListener
 

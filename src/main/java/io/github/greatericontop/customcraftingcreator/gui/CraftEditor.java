@@ -1,24 +1,28 @@
 package io.github.greatericontop.customcraftingcreator.gui;
 
 import io.github.greatericontop.customcraftingcreator.Util;
+import io.github.greatericontop.customcraftingcreator.internal.IngredientType;
+import io.github.greatericontop.customcraftingcreator.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class EditCraft implements Listener {
-    private static final String INV_DESC = "§bEdit Craft";
+public class CraftEditor implements Listener {
+    private static final String INV_NAME = "§bEdit Craft";
     private static final int SLOT1 = 10;
     private static final int SLOT2 = 11;
     private static final int SLOT3 = 12;
@@ -37,16 +41,22 @@ public class EditCraft implements Listener {
             SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9,
             SLOT_RESULT, SLOT_ICON, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
     );
+    private static final Map<Integer, Integer> SLOT_INDEXER = Map.of(
+            SLOT1, 0, SLOT2, 1, SLOT3, 2,
+            SLOT4, 3, SLOT5, 4, SLOT6, 5,
+            SLOT7, 6, SLOT8, 7, SLOT9, 8
+    );
 
     private final GUIManager guiManager;
-    public EditCraft(GUIManager guiManager) {
+    public CraftEditor(GUIManager guiManager) {
         this.guiManager = guiManager;
     }
 
     public void openNew(Player player, String craftKey) {
-        ShapedRecipe recipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
+        SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
+        ShapedRecipe recipe = savedRecipe.recipe();
         UUID inventoryUUID = UUID.randomUUID();
-        Inventory gui = Bukkit.createInventory(player, 54, INV_DESC);
+        Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
         for (int i = 0; i < 54; i++) {
             gui.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1));
@@ -65,8 +75,10 @@ public class EditCraft implements Listener {
         gui.setItem(SLOT_RESULT, recipe.getResult());
         gui.setItem(SLOT_ICON, recipe.getResult());
         gui.setItem(45, Util.createItemStack(
-                Material.PAPER, 1, "§bInfo",
+                Material.ENCHANTED_BOOK, 1, "§bInfo",
                 "§7Place items in the grid, result, and icon slots.",
+                "§e§lSHIFT LEFT CLICK §7to toggle §fexact choice §7(exact NBT)",
+                "§e§lSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
                 "§7Discard, save, or save and activate your changes."
         ));
         gui.setItem(SLOT_DISCARD, Util.createItemStack(Material.BARRIER, 1, "§cDiscard Changes"));
@@ -78,6 +90,12 @@ public class EditCraft implements Listener {
 
         Map<String, Object> data = new HashMap<>();
         data.put("recipe", recipe);
+        // Stores the type of ingredient (e.g. whether to match NBT exactly or not)
+        data.put("ingredientTypes", savedRecipe.ingredientTypes());
+        // Stores the valid materials for material choice (has no effect if ingredientType is not set to material choice)
+        data.put("materialChoiceExtra", savedRecipe.materialChoiceExtra());
+        // For use with ExactChoiceToggler / MaterialChoiceToggler (initializing this is unnecessary)
+        //data.put("currentSlot", -1);
         guiManager.guiData.put(inventoryUUID, data);
         guiManager.playerMainInventories.put(player.getUniqueId(), player.getInventory());
         player.openInventory(gui);
@@ -87,7 +105,7 @@ public class EditCraft implements Listener {
     public void onClick(InventoryClickEvent event) {
         Inventory gui = event.getClickedInventory();
         if (gui == null)  return;
-        if (!event.getView().getTitle().equals(INV_DESC))  return;
+        if (!event.getView().getTitle().equals(INV_NAME))  return;
         if (!event.getView().getTopInventory().equals(event.getClickedInventory()))  return; // must click top inventory
         int slot = event.getSlot();
         if (!VALID_CLICK_SLOTS.contains(slot)) {
@@ -102,7 +120,8 @@ public class EditCraft implements Listener {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
                 ShapedRecipe recipe = (ShapedRecipe) data.get("recipe");
                 ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui);
-                guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(), newRecipe);
+                guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
+                        new SavedRecipe(newRecipe, (IngredientType[]) data.get("ingredientTypes"), (List<List<Material>>) data.get("materialChoiceExtra")));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.getKey());
                     Bukkit.addRecipe(newRecipe);
@@ -112,6 +131,15 @@ public class EditCraft implements Listener {
             guiManager.guiData.remove(inventoryUUID);
             guiManager.playerMainInventories.remove(player.getUniqueId());
             player.closeInventory();
+        }
+
+        if (SLOT_INDEXER.containsKey(slot)) {
+            int index = SLOT_INDEXER.get(slot);
+            if (event.getClick() == ClickType.SHIFT_LEFT) {
+                player.sendMessage("§7not implemented");
+            } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
+                player.sendMessage("§7not implemented");
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 package io.github.greatericontop.customcraftingcreator.gui;
 
 import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
-import io.github.greatericontop.customcraftingcreator.RecipeManager;
+import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;

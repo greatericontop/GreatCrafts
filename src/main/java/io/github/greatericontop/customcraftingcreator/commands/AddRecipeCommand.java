@@ -1,6 +1,8 @@
 package io.github.greatericontop.customcraftingcreator.commands;
 
 import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
+import io.github.greatericontop.customcraftingcreator.internal.IngredientType;
+import io.github.greatericontop.customcraftingcreator.internal.SavedRecipe;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -46,7 +48,8 @@ public class AddRecipeCommand implements CommandExecutor {
         basicRecipe.setIngredient('d', Material.EMERALD_ORE);
         basicRecipe.setIngredient('f', Material.EMERALD_ORE);
         basicRecipe.setIngredient('h', Material.EMERALD_ORE);
-        plugin.recipeManager.setRecipeShaped(key.toString(), basicRecipe);
+        plugin.recipeManager.setRecipeShaped(key.toString(),
+                new SavedRecipe(basicRecipe, IngredientType.defaults(), IngredientType.defaultMaterialChoiceExtra()));
         plugin.guiEditCraft.openNew(player, recipeName);
 
         return true;
