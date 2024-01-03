@@ -71,7 +71,9 @@ public class ExactChoiceToggler implements Listener {
             default -> throw new RuntimeException();
         }
         ((IngredientType[]) internalData.get("ingredientTypes"))[slotNumber] = newType;
+        System.out.println(internalData.get("ingredientTypes"));
 
+        Util.successSound(player);
         player.closeInventory(); // Will automatically return to previous
     }
 

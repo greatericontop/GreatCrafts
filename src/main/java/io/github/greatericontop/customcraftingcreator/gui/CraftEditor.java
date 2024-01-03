@@ -107,7 +107,7 @@ public class CraftEditor implements Listener {
         if (slot == SLOT_DISCARD || slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
                 ShapedRecipe recipe = (ShapedRecipe) data.get("recipe");
-                ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui);
+                ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, (IngredientType[]) data.get("ingredientTypes"));
                 guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
                         new SavedRecipe(newRecipe, (IngredientType[]) data.get("ingredientTypes"), (List<List<Material>>) data.get("materialChoiceExtra")));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
@@ -129,6 +129,7 @@ public class CraftEditor implements Listener {
                 guiManager.playerMainInventories.remove(player.getUniqueId());
                 player.closeInventory();
                 guiManager.playerMainInventories.put(player.getUniqueId(), save);
+                guiManager.guiData.get(player.getUniqueId()).put("currentSlot", index); // for use with the toggler
                 guiManager.getPlugin().guiExactChoiceToggler.openNew(player, index);
                 event.setCancelled(true);
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
@@ -160,7 +161,7 @@ public class CraftEditor implements Listener {
         }
     }
 
-    private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui) {
+    private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui, IngredientType[] ingredientTypes) {
         ShapedRecipe newRecipe = new ShapedRecipe(namespacedKey, gui.getItem(SLOT_RESULT));
         char[] layout = "         ".toCharArray();
         ItemStack[] slots = new ItemStack[]{
@@ -178,10 +179,20 @@ public class CraftEditor implements Listener {
                 new String(new char[]{layout[3], layout[4], layout[5]}),
                 new String(new char[]{layout[6], layout[7], layout[8]})
         );
+        // Ingredient must be set AFTER shape is set
         for (int i = 0; i < 9; i++) {
             if (slots[i] == null || slots[i].getType() == Material.AIR)  continue;
             char symbol = (char) ('a' + i);
-            newRecipe.setIngredient(symbol, slots[i].getType()); // Ingredient must be set AFTER shape is set
+            switch (ingredientTypes[i]) {
+                case NORMAL -> newRecipe.setIngredient(symbol, slots[i].getType());
+                case EXACT_CHOICE -> {
+                    RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(slots[i]);
+                    newRecipe.setIngredient(symbol, exactChoice);
+                }
+                case MATERIAL_CHOICE -> {
+                    // TODO
+                }
+            }
         }
         // TODO: smaller shapes
         return newRecipe;
