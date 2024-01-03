@@ -64,7 +64,12 @@ public class RecipeManager {
         serialized.add(shapedRecipe.getIngredientMap()); // 2 - ingredient map
         serialized.add(shapedRecipe.getShape()); // 3 - shape
         serialized.add(shapedRecipe.getResult()); // 4 - result
-        serialized.add(recipe.ingredientTypes()); // 5 - ingredient types
+        // IngredientType[] -> List<String> (since enums can't be saved like this)
+        List<String> convertedIngredientTypes = new ArrayList<>();
+        for (IngredientType ingredientType : recipe.ingredientTypes()) {
+            convertedIngredientTypes.add(ingredientType.toString());
+        }
+        serialized.add(convertedIngredientTypes); // 5 - ingredient types
         serialized.add(recipe.materialChoiceExtra()); // 6 - material choice extra
         return serialized;
     }
@@ -77,7 +82,11 @@ public class RecipeManager {
         List<String> shape = (List<String>) serialized.get(3);
         String[] shapeArray = shape.toArray(new String[0]);
         ItemStack result = (ItemStack) serialized.get(4);
-        IngredientType[] ingredientTypes = ((List<IngredientType>) serialized.get(5)).toArray(new IngredientType[0]);
+        List<String> ingredientTypesRaw = (List<String>) serialized.get(5);
+        IngredientType[] ingredientTypes = new IngredientType[9];
+        for (int i = 0; i < 9; i++) {
+            ingredientTypes[i] = IngredientType.valueOf(ingredientTypesRaw.get(i));
+        }
         List<List<Material>> materialChoiceExtra = (List<List<Material>>) serialized.get(6);
 
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(namespace, key), result);

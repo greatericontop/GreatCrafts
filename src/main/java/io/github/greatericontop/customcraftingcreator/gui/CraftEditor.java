@@ -13,13 +13,13 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 public class CraftEditor implements Listener {
     private static final String INV_NAME = "§bEdit Craft";
@@ -55,23 +55,12 @@ public class CraftEditor implements Listener {
     public void openNew(Player player, String craftKey) {
         SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
         ShapedRecipe recipe = savedRecipe.recipe();
-        UUID inventoryUUID = UUID.randomUUID();
         Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
         for (int i = 0; i < 54; i++) {
             gui.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1));
         }
-        gui.setItem(0, Util.createItemStack(Material.BLACK_STAINED_GLASS_PANE, 1, inventoryUUID.toString()));
-        // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
-        gui.setItem(SLOT1, recipe.getIngredientMap().getOrDefault('a', null));
-        gui.setItem(SLOT2, recipe.getIngredientMap().getOrDefault('b', null));
-        gui.setItem(SLOT3, recipe.getIngredientMap().getOrDefault('c', null));
-        gui.setItem(SLOT4, recipe.getIngredientMap().getOrDefault('d', null));
-        gui.setItem(SLOT5, recipe.getIngredientMap().getOrDefault('e', null));
-        gui.setItem(SLOT6, recipe.getIngredientMap().getOrDefault('f', null));
-        gui.setItem(SLOT7, recipe.getIngredientMap().getOrDefault('g', null));
-        gui.setItem(SLOT8, recipe.getIngredientMap().getOrDefault('h', null));
-        gui.setItem(SLOT9, recipe.getIngredientMap().getOrDefault('i', null));
+        fillCraftingSlots(gui, recipe, savedRecipe.ingredientTypes());
         gui.setItem(SLOT_RESULT, recipe.getResult());
         gui.setItem(SLOT_ICON, recipe.getResult());
         gui.setItem(45, Util.createItemStack(
@@ -96,8 +85,8 @@ public class CraftEditor implements Listener {
         data.put("materialChoiceExtra", savedRecipe.materialChoiceExtra());
         // For use with ExactChoiceToggler / MaterialChoiceToggler (initializing this is unnecessary)
         //data.put("currentSlot", -1);
-        guiManager.guiData.put(inventoryUUID, data);
-        guiManager.playerMainInventories.put(player.getUniqueId(), player.getInventory());
+        guiManager.guiData.put(player.getUniqueId(), data);
+        guiManager.playerMainInventories.put(player.getUniqueId(), gui);
         player.openInventory(gui);
     }
 
@@ -113,8 +102,7 @@ public class CraftEditor implements Listener {
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        UUID inventoryUUID = UUID.fromString(gui.getItem(0).getItemMeta().getDisplayName());
-        Map<String, Object> data = guiManager.guiData.get(inventoryUUID);
+        Map<String, Object> data = guiManager.guiData.get(player.getUniqueId());
 
         if (slot == SLOT_DISCARD || slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
@@ -128,7 +116,7 @@ public class CraftEditor implements Listener {
                 }
                 Util.successSound(player);
             }
-            guiManager.guiData.remove(inventoryUUID);
+            guiManager.guiData.remove(player.getUniqueId());
             guiManager.playerMainInventories.remove(player.getUniqueId());
             player.closeInventory();
         }
@@ -136,9 +124,38 @@ public class CraftEditor implements Listener {
         if (SLOT_INDEXER.containsKey(slot)) {
             int index = SLOT_INDEXER.get(slot);
             if (event.getClick() == ClickType.SHIFT_LEFT) {
-                player.sendMessage("§7not implemented");
+                // Temporarily "forget" the inventory so it doesn't get reopened
+                Inventory save = guiManager.playerMainInventories.get(player.getUniqueId());
+                guiManager.playerMainInventories.remove(player.getUniqueId());
+                player.closeInventory();
+                guiManager.playerMainInventories.put(player.getUniqueId(), save);
+                guiManager.getPlugin().guiExactChoiceToggler.openNew(player, index);
+                event.setCancelled(true);
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
                 player.sendMessage("§7not implemented");
+                event.setCancelled(true);
+            }
+        }
+    }
+
+
+
+    private void fillCraftingSlots(Inventory gui, ShapedRecipe recipe, IngredientType[] ingredientTypes) {
+        // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
+        int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
+        char[] KEYS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
+        for (int i = 0; i < 9; i++) {
+            switch (ingredientTypes[i]) {
+                case NORMAL -> {
+                    gui.setItem(SLOTS[i], recipe.getIngredientMap().get(KEYS[i]));
+                }
+                case EXACT_CHOICE -> {
+                    RecipeChoice.ExactChoice exactChoice = (RecipeChoice.ExactChoice) recipe.getChoiceMap().get(KEYS[i]);
+                    gui.setItem(SLOTS[i], exactChoice.getItemStack());
+                }
+                case MATERIAL_CHOICE -> {
+                    gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice"));
+                }
             }
         }
     }

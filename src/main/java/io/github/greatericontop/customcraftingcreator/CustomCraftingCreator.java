@@ -4,7 +4,9 @@ import io.github.greatericontop.customcraftingcreator.commands.AddRecipeCommand;
 import io.github.greatericontop.customcraftingcreator.commands.EditRecipeCommand;
 import io.github.greatericontop.customcraftingcreator.commands.ReloadRecipesCommand;
 import io.github.greatericontop.customcraftingcreator.gui.CraftEditor;
+import io.github.greatericontop.customcraftingcreator.gui.ExactChoiceToggler;
 import io.github.greatericontop.customcraftingcreator.gui.GUIManager;
+import io.github.greatericontop.customcraftingcreator.gui.InventoryCloseListener;
 import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,7 +20,8 @@ public class CustomCraftingCreator extends JavaPlugin {
 
     public RecipeManager recipeManager;
 
-    public CraftEditor guiEditCraft;
+    public CraftEditor guiCraftEditor;
+    public ExactChoiceToggler guiExactChoiceToggler;
 
     @Override
     public void onEnable() {
@@ -33,9 +36,11 @@ public class CustomCraftingCreator extends JavaPlugin {
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));
 
         GUIManager guiManager = new GUIManager(this);
-        guiEditCraft = new CraftEditor(guiManager);
-        this.getServer().getPluginManager().registerEvents(guiEditCraft, this);
-        // TODO: InventoryCloseListener
+        guiCraftEditor = new CraftEditor(guiManager);
+        this.getServer().getPluginManager().registerEvents(guiCraftEditor, this);
+        guiExactChoiceToggler = new ExactChoiceToggler(guiManager);
+        this.getServer().getPluginManager().registerEvents(guiExactChoiceToggler, this);
+        this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
 
 
 

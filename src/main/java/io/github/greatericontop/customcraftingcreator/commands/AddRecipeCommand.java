@@ -50,7 +50,7 @@ public class AddRecipeCommand implements CommandExecutor {
         basicRecipe.setIngredient('h', Material.EMERALD_ORE);
         plugin.recipeManager.setRecipeShaped(key.toString(),
                 new SavedRecipe(basicRecipe, IngredientType.defaults(), IngredientType.defaultMaterialChoiceExtra()));
-        plugin.guiEditCraft.openNew(player, recipeName);
+        plugin.guiCraftEditor.openNew(player, recipeName);
 
         return true;
     }
