@@ -133,7 +133,12 @@ public class CraftEditor implements Listener {
                 guiManager.getPlugin().guiExactChoiceToggler.openNew(player, index);
                 event.setCancelled(true);
             } else if (event.getClick() == ClickType.SHIFT_RIGHT) {
-                player.sendMessage("§7not implemented");
+                Inventory save = guiManager.playerMainInventories.get(player.getUniqueId());
+                guiManager.playerMainInventories.remove(player.getUniqueId());
+                player.closeInventory();
+                guiManager.playerMainInventories.put(player.getUniqueId(), save);
+                guiManager.guiData.get(player.getUniqueId()).put("currentSlot", index);
+                guiManager.getPlugin().guiMaterialChoiceToggler.openNew(player, index);
                 event.setCancelled(true);
             }
         }
@@ -184,13 +189,18 @@ public class CraftEditor implements Listener {
             if (slots[i] == null || slots[i].getType() == Material.AIR)  continue;
             char symbol = (char) ('a' + i);
             switch (ingredientTypes[i]) {
-                case NORMAL -> newRecipe.setIngredient(symbol, slots[i].getType());
+                case NORMAL -> {
+                    newRecipe.setIngredient(symbol, slots[i].getType());
+                }
                 case EXACT_CHOICE -> {
                     RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(slots[i]);
                     newRecipe.setIngredient(symbol, exactChoice);
                 }
                 case MATERIAL_CHOICE -> {
-                    // TODO
+                    newRecipe.setIngredient(symbol, slots[i].getType()); // TODO: placeholder
+                }
+                default -> {
+                    throw new RuntimeException();
                 }
             }
         }

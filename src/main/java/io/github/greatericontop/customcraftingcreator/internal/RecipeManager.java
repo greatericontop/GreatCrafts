@@ -111,11 +111,17 @@ public class RecipeManager {
             }
             int index = keyChar - 'a';
             switch (ingredientTypes[index]) {
+                case NORMAL -> {
+                    recipe.setIngredient(keyChar, entry.getValue().getType());
+                }
                 case EXACT_CHOICE -> {
                     recipe.setIngredient(keyChar, new RecipeChoice.ExactChoice(entry.getValue()));
                 }
+                case MATERIAL_CHOICE -> {
+                    recipe.setIngredient(keyChar, entry.getValue().getType()); // TODO: placeholder
+                }
                 default -> {
-                    recipe.setIngredient(keyChar, entry.getValue().getType());
+                    throw new RuntimeException();
                 }
             }
             // TODO: material choice

@@ -7,6 +7,7 @@ import io.github.greatericontop.customcraftingcreator.gui.CraftEditor;
 import io.github.greatericontop.customcraftingcreator.gui.ExactChoiceToggler;
 import io.github.greatericontop.customcraftingcreator.gui.GUIManager;
 import io.github.greatericontop.customcraftingcreator.gui.InventoryCloseListener;
+import io.github.greatericontop.customcraftingcreator.gui.MaterialChoiceToggler;
 import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,7 @@ public class CustomCraftingCreator extends JavaPlugin {
 
     public CraftEditor guiCraftEditor;
     public ExactChoiceToggler guiExactChoiceToggler;
+    public MaterialChoiceToggler guiMaterialChoiceToggler;
 
     @Override
     public void onEnable() {
@@ -40,6 +42,8 @@ public class CustomCraftingCreator extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(guiCraftEditor, this);
         guiExactChoiceToggler = new ExactChoiceToggler(guiManager);
         this.getServer().getPluginManager().registerEvents(guiExactChoiceToggler, this);
+        guiMaterialChoiceToggler = new MaterialChoiceToggler(guiManager);
+        this.getServer().getPluginManager().registerEvents(guiMaterialChoiceToggler, this);
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
 
 
