@@ -38,7 +38,7 @@ public class ExactChoiceToggler implements Listener {
             }
             case MATERIAL_CHOICE -> {
                 descriptionText = "§fExact Choice is currently §4OFF§f, but Material Choice is on";
-                toggleText = "§cEnable §7(disables Material Choice)";
+                toggleText = "§aEnable §7(disables Material Choice)";
                 toggleMaterial = Material.LIME_STAINED_GLASS;
             }
             default -> throw new RuntimeException();
