@@ -1,8 +1,8 @@
-package io.github.greatericontop.customcraftingcreator.commands;
+package io.github.greatericontop.greatcrafts.commands;
 
-import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
-import io.github.greatericontop.customcraftingcreator.internal.IngredientType;
-import io.github.greatericontop.customcraftingcreator.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,8 +15,8 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class AddRecipeCommand implements CommandExecutor {
 
-    private final CustomCraftingCreator plugin;
-    public AddRecipeCommand(CustomCraftingCreator plugin) {
+    private final GreatCrafts plugin;
+    public AddRecipeCommand(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 

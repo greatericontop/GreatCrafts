@@ -1,6 +1,6 @@
-package io.github.greatericontop.customcraftingcreator.commands;
+package io.github.greatericontop.greatcrafts.commands;
 
-import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
+import io.github.greatericontop.greatcrafts.GreatCrafts;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 public class EditRecipeCommand implements CommandExecutor {
 
-    private final CustomCraftingCreator plugin;
-    public EditRecipeCommand(CustomCraftingCreator plugin) {
+    private final GreatCrafts plugin;
+    public EditRecipeCommand(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 

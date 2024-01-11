@@ -1,6 +1,6 @@
-package io.github.greatericontop.customcraftingcreator.commands;
+package io.github.greatericontop.greatcrafts.commands;
 
-import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
+import io.github.greatericontop.greatcrafts.GreatCrafts;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ReloadRecipesCommand implements CommandExecutor {
 
-    private final CustomCraftingCreator plugin;
-    public ReloadRecipesCommand(CustomCraftingCreator plugin) {
+    private final GreatCrafts plugin;
+    public ReloadRecipesCommand(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 

@@ -1,6 +1,6 @@
-package io.github.greatericontop.customcraftingcreator.internal;
+package io.github.greatericontop.greatcrafts.internal;
 
-import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
+import io.github.greatericontop.greatcrafts.GreatCrafts;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,8 +16,8 @@ import java.util.Set;
 
 public class RecipeManager {
 
-    private final CustomCraftingCreator plugin;
-    public RecipeManager(CustomCraftingCreator plugin) {
+    private final GreatCrafts plugin;
+    public RecipeManager(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 

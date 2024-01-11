@@ -1,4 +1,4 @@
-package io.github.greatericontop.customcraftingcreator;
+package io.github.greatericontop.greatcrafts;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;

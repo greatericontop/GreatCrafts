@@ -1,4 +1,4 @@
-package io.github.greatericontop.customcraftingcreator.gui;
+package io.github.greatericontop.greatcrafts.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

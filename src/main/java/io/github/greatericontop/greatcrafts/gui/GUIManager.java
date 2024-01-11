@@ -1,7 +1,7 @@
-package io.github.greatericontop.customcraftingcreator.gui;
+package io.github.greatericontop.greatcrafts.gui;
 
-import io.github.greatericontop.customcraftingcreator.CustomCraftingCreator;
-import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
+import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -13,12 +13,12 @@ public class GUIManager {
     public final Map<UUID, Map<String, Object>> guiData = new HashMap<>();
     public final Map<UUID, Inventory> playerMainInventories = new HashMap<>();
 
-    private final CustomCraftingCreator plugin;
-    public CustomCraftingCreator getPlugin() {
+    private final GreatCrafts plugin;
+    public GreatCrafts getPlugin() {
         return plugin;
     }
 
-    public GUIManager(CustomCraftingCreator plugin) {
+    public GUIManager(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 

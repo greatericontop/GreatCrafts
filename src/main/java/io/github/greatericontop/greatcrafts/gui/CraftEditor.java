@@ -1,8 +1,8 @@
-package io.github.greatericontop.customcraftingcreator.gui;
+package io.github.greatericontop.greatcrafts.gui;
 
-import io.github.greatericontop.customcraftingcreator.Util;
-import io.github.greatericontop.customcraftingcreator.internal.IngredientType;
-import io.github.greatericontop.customcraftingcreator.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.Util;
+import io.github.greatericontop.greatcrafts.internal.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

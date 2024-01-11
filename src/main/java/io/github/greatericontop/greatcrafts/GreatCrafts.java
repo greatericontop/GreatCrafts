@@ -1,21 +1,21 @@
-package io.github.greatericontop.customcraftingcreator;
+package io.github.greatericontop.greatcrafts;
 
-import io.github.greatericontop.customcraftingcreator.commands.AddRecipeCommand;
-import io.github.greatericontop.customcraftingcreator.commands.EditRecipeCommand;
-import io.github.greatericontop.customcraftingcreator.commands.ReloadRecipesCommand;
-import io.github.greatericontop.customcraftingcreator.gui.CraftEditor;
-import io.github.greatericontop.customcraftingcreator.gui.ExactChoiceToggler;
-import io.github.greatericontop.customcraftingcreator.gui.GUIManager;
-import io.github.greatericontop.customcraftingcreator.gui.InventoryCloseListener;
-import io.github.greatericontop.customcraftingcreator.gui.MaterialChoiceToggler;
-import io.github.greatericontop.customcraftingcreator.internal.RecipeManager;
+import io.github.greatericontop.greatcrafts.commands.AddRecipeCommand;
+import io.github.greatericontop.greatcrafts.commands.EditRecipeCommand;
+import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
+import io.github.greatericontop.greatcrafts.gui.CraftEditor;
+import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
+import io.github.greatericontop.greatcrafts.gui.GUIManager;
+import io.github.greatericontop.greatcrafts.gui.InventoryCloseListener;
+import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
+import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-public class CustomCraftingCreator extends JavaPlugin {
+public class GreatCrafts extends JavaPlugin {
 
     public YamlConfiguration recipes;
 

@@ -1,27 +1,27 @@
-name: CustomCraftingCreator
+name: GreatCrafts
 version: "${project.version}"
-main: io.github.greatericontop.customcraftingcreator.CustomCraftingCreator
+main: io.github.greatericontop.greatcrafts.GreatCrafts
 api-version: 1.19
-authors: [greatericontop]
+authors: [greateric]
 
 commands:
   addrecipe:
     description: Add a recipe
     usage: "§c/addrecipe <namespace:name>"
-    permission: customcraftingcreator.modifyrecipes
+    permission: greatcrafts.modifyrecipes
   editrecipe:
     description: Edit a recipe
     usage: "§c/editrecipe <namespace:name>"
-    permission: customcraftingcreator.modifyrecipes
+    permission: greatcrafts.modifyrecipes
   reloadrecipes:
     description: Reload recipes
     usage: "§c/reloadrecipes"
-    permission: customcraftingcreator.modifyrecipes
+    permission: greatcrafts.modifyrecipes
 
 permissions:
-  customcraftingcreator.viewrecipes:
+  greatcrafts.viewrecipes:
     description: Allows viewing recipes
     default: true
-  customcraftingcreator.modifyrecipes:
+  greatcrafts.modifyrecipes:
     description: Allows modifying recipes
     default: op
