@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.greatericontop</groupId>
-    <artifactId>customcraftingcreator</artifactId>
+    <artifactId>greatcrafts</artifactId>
     <version>beta-1.0.0</version>
 
     <properties>
