@@ -51,7 +51,9 @@ public class MaterialChoiceEditor implements Listener {
         Map<String, Object> internalData = guiManager.guiData.get(player.getUniqueId());
         int recipeSlotNum = (int) internalData.get("currentSlot");
 
-        if (event.getSlot() == 52) {
+        if (event.getSlot() == 51) {
+            event.setCancelled(true);
+        } else if (event.getSlot() == 52) {
             player.closeInventory();
         } else if (event.getSlot() == 53) {
             List<Material> materialChoiceList = new ArrayList<>();
