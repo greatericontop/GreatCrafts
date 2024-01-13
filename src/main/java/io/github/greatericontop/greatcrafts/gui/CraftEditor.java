@@ -166,6 +166,9 @@ public class CraftEditor implements Listener {
         }
     }
 
+    // Save the layout in the GUI into a new recipe.
+    // NOTE: This modifies :ingredientTypes: in place.
+    //       Empty ExactChoice slots are changed to normal slots
     private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui, IngredientType[] ingredientTypes) {
         ShapedRecipe newRecipe = new ShapedRecipe(namespacedKey, gui.getItem(SLOT_RESULT));
         char[] layout = "         ".toCharArray();
@@ -202,6 +205,12 @@ public class CraftEditor implements Listener {
                 default -> {
                     throw new RuntimeException();
                 }
+            }
+        }
+        // Fix :ingredientType: empty ExactChoice slots converted to normal (MaterialChoice is left unchanged)
+        for (int i = 0; i < 9; i++) {
+            if ((slots[i] == null || slots[i].getType() == Material.AIR) && ingredientTypes[i] == IngredientType.EXACT_CHOICE) {
+                ingredientTypes[i] = IngredientType.NORMAL;
             }
         }
         // TODO: smaller shapes
