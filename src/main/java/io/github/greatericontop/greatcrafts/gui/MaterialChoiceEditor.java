@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,9 +49,22 @@ public class MaterialChoiceEditor implements Listener {
         Player player = (Player) event.getWhoClicked();
 
         Map<String, Object> internalData = guiManager.guiData.get(player.getUniqueId());
-        int slotNumber = (int) internalData.get("currentSlot");
+        int recipeSlotNum = (int) internalData.get("currentSlot");
 
-        // TODO: save, discard
+        if (event.getSlot() == 52) {
+            player.closeInventory();
+        } else if (event.getSlot() == 53) {
+            List<Material> materialChoiceList = new ArrayList<>();
+            for (int i = 0; i <= 50; i++) { // NOT 51, 52, 53
+                ItemStack stack = gui.getItem(i);
+                if (stack != null && stack.getType() != Material.AIR && !materialChoiceList.contains(stack.getType())) {
+                    materialChoiceList.add(stack.getType());
+                }
+            }
+            ((List<List<Material>>) internalData.get("materialChoiceExtra")).set(recipeSlotNum, materialChoiceList);
+            Util.successSound(player);
+            player.closeInventory();
+        }
 
     }
 

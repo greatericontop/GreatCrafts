@@ -71,9 +71,14 @@ public class MaterialChoiceToggler implements Listener {
         } else if (event.getSlot() == 8) {
             ((IngredientType[]) internalData.get("ingredientTypes"))[slotNumber] = IngredientType.MATERIAL_CHOICE;
             Util.successSound(player);
+
+            // TODO: temporarily disable reopening thing
+            Inventory save = guiManager.playerMainInventories.get(player.getUniqueId());
+            guiManager.playerMainInventories.remove(player.getUniqueId());
             player.closeInventory();
-            // TODO: `TemporarilyDisableReopening` map in RecipeManager
-            // TODO: now open MaterialChoiceEditor
+            guiManager.playerMainInventories.put(player.getUniqueId(), save);
+            guiManager.getPlugin().guiMaterialChoiceEditor.openNew(player);
+
         } else {
             event.setCancelled(true);
         }
