@@ -82,7 +82,16 @@ public class RecipeManager {
             convertedIngredientTypes.add(ingredientType.toString());
         }
         serialized.add(convertedIngredientTypes); // 5 - ingredient types
-        serialized.add(recipe.materialChoiceExtra()); // 6 - material choice extra
+        // List<List<Material>> -> List<List<String>> (Material enum)
+        List<List<String>> materialChoiceStrings = new ArrayList<>();
+        for (List<Material> originalList : recipe.materialChoiceExtra()) {
+            List<String> newList = new ArrayList<>();
+            for (Material material : originalList) {
+                newList.add(material.toString());
+            }
+            materialChoiceStrings.add(newList);
+        }
+        serialized.add(materialChoiceStrings); // 6 - material choice data
         return serialized;
     }
 
@@ -99,7 +108,15 @@ public class RecipeManager {
         for (int i = 0; i < 9; i++) {
             ingredientTypes[i] = IngredientType.valueOf(ingredientTypesRaw.get(i));
         }
-        List<List<Material>> materialChoiceExtra = (List<List<Material>>) serialized.get(6);
+        List<List<String>> materialChoiceStrings = (List<List<String>>) serialized.get(6);
+        List<List<Material>> materialChoiceExtra = new ArrayList<>();
+        for (List<String> originalList : materialChoiceStrings) {
+            List<Material> newList = new ArrayList<>();
+            for (String materialString : originalList) {
+                newList.add(Material.valueOf(materialString));
+            }
+            materialChoiceExtra.add(newList);
+        }
 
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(namespace, key), result);
         recipe.shape(shapeArray);
