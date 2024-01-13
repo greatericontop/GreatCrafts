@@ -60,14 +60,14 @@ public class CraftEditor implements Listener {
         for (int i = 0; i < 54; i++) {
             gui.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1));
         }
-        fillCraftingSlots(gui, recipe, savedRecipe.ingredientTypes());
+        fillCraftingSlots(gui, recipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, recipe.getResult());
         gui.setItem(SLOT_ICON, recipe.getResult());
         gui.setItem(45, Util.createItemStack(
                 Material.ENCHANTED_BOOK, 1, "§bInfo",
                 "§7Place items in the grid, result, and icon slots.",
-                "§e§lSHIFT LEFT CLICK §7to toggle §fexact choice §7(exact NBT)",
-                "§e§lSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
+                "§eSHIFT LEFT CLICK §7to toggle §fexact choice §7(exact NBT)",
+                "§eSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
                 "§7Discard, save, or save and activate your changes."
         ));
         gui.setItem(SLOT_DISCARD, Util.createItemStack(Material.BARRIER, 1, "§cDiscard Changes"));
@@ -75,7 +75,8 @@ public class CraftEditor implements Listener {
         gui.setItem(SLOT_SAVE_AND_ACTIVATE, Util.createItemStack(Material.LIME_CONCRETE, 1, "§aSave & Activate Changes",
                 "§fThis reloads the current recipe and applies the changes immediately.",
                 "§eNote: §fPlayers still need to reconnect to see the recipe client-side, but it will work on the server.",
-                "§7You can also use §e/reloadrecipes §7to reload all recipes."));
+                "§7You can also use §e/reloadrecipes §7to reload all recipes."
+        ));
 
         Map<String, Object> data = new HashMap<>();
         data.put("recipe", recipe);
@@ -146,7 +147,7 @@ public class CraftEditor implements Listener {
 
 
 
-    private void fillCraftingSlots(Inventory gui, ShapedRecipe recipe, IngredientType[] ingredientTypes) {
+    private void fillCraftingSlots(Inventory gui, ShapedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
         int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
         char[] KEYS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
@@ -160,7 +161,19 @@ public class CraftEditor implements Listener {
                     gui.setItem(SLOTS[i], exactChoice.getItemStack());
                 }
                 case MATERIAL_CHOICE -> {
-                    gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice"));
+                    List<Material> items = materialChoiceExtra.get(i);
+                    String[] names = new String[Math.min(5, items.size())];
+                    for (int j = 0; j < names.length; j++) {
+                        names[j] = items.get(j).name();
+                    }
+                    String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 5 ? ", ..." : "");
+                    gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
+                            "§eSHIFT RIGHT CLICK §fto edit!",
+                            "§dThis is a placeholder item. It is not actually in the recipe. Removing",
+                            "§dthis item from this menu does not have any effect.",
+                            "§7Items: §8(possibly outdated)",
+                            itemsDisplay
+                    ));
                 }
             }
         }
