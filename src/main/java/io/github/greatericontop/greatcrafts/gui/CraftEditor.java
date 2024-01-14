@@ -108,9 +108,11 @@ public class CraftEditor implements Listener {
         if (slot == SLOT_DISCARD || slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
                 ShapedRecipe recipe = (ShapedRecipe) data.get("recipe");
-                ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, (IngredientType[]) data.get("ingredientTypes"));
+                IngredientType[] ingredientTypes = (IngredientType[]) data.get("ingredientTypes");
+                List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
+                ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, ingredientTypes, materialChoiceExtra);
                 guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
-                        new SavedRecipe(newRecipe, (IngredientType[]) data.get("ingredientTypes"), (List<List<Material>>) data.get("materialChoiceExtra")));
+                        new SavedRecipe(newRecipe, ingredientTypes, materialChoiceExtra));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.getKey());
                     Bukkit.addRecipe(newRecipe);
@@ -182,7 +184,7 @@ public class CraftEditor implements Listener {
     // Save the layout in the GUI into a new recipe.
     // NOTE: This modifies :ingredientTypes: in place.
     //       Empty ExactChoice slots are changed to normal slots
-    private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui, IngredientType[] ingredientTypes) {
+    private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         ShapedRecipe newRecipe = new ShapedRecipe(namespacedKey, gui.getItem(SLOT_RESULT));
         char[] layout = "         ".toCharArray();
         ItemStack[] slots = new ItemStack[]{
@@ -213,7 +215,8 @@ public class CraftEditor implements Listener {
                     newRecipe.setIngredient(symbol, exactChoice);
                 }
                 case MATERIAL_CHOICE -> {
-                    newRecipe.setIngredient(symbol, slots[i].getType()); // TODO: placeholder
+                    RecipeChoice.MaterialChoice materialChoice = new RecipeChoice.MaterialChoice(materialChoiceExtra.get(i));
+                    newRecipe.setIngredient(symbol, materialChoice);
                 }
                 default -> {
                     throw new RuntimeException();
