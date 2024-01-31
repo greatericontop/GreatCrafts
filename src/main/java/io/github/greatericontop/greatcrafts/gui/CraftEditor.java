@@ -2,6 +2,7 @@ package io.github.greatericontop.greatcrafts.gui;
 
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
 import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -115,7 +116,7 @@ public class CraftEditor implements Listener {
                         new SavedRecipe(newRecipe, ingredientTypes, materialChoiceExtra));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.getKey());
-                    Bukkit.addRecipe(newRecipe);
+                    RecipeLoader.addUnshrinkedShapedRecipe(newRecipe);
                 }
                 Util.successSound(player);
             }
@@ -229,7 +230,6 @@ public class CraftEditor implements Listener {
                 ingredientTypes[i] = IngredientType.NORMAL;
             }
         }
-        // TODO: smaller shapes
         return newRecipe;
     }
 
