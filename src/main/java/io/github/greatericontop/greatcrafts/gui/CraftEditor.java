@@ -63,7 +63,7 @@ public class CraftEditor implements Listener {
         }
         fillCraftingSlots(gui, recipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, recipe.getResult());
-        gui.setItem(SLOT_ICON, recipe.getResult());
+        gui.setItem(SLOT_ICON, savedRecipe.iconItem());
         gui.setItem(45, Util.createItemStack(
                 Material.ENCHANTED_BOOK, 1, "§bInfo",
                 "§7Place items in the grid, result, and icon slots.",
@@ -113,7 +113,7 @@ public class CraftEditor implements Listener {
                 List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
                 ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, ingredientTypes, materialChoiceExtra);
                 guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
-                        new SavedRecipe(newRecipe, ingredientTypes, materialChoiceExtra));
+                        new SavedRecipe(newRecipe, ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON)));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.getKey());
                     RecipeLoader.addUnshrinkedShapedRecipe(newRecipe);

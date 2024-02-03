@@ -92,6 +92,7 @@ public class RecipeManager {
             materialChoiceStrings.add(newList);
         }
         serialized.add(materialChoiceStrings); // 6 - material choice data
+        serialized.add(recipe.iconItem()); // 7 - icon item
         return serialized;
     }
 
@@ -117,6 +118,7 @@ public class RecipeManager {
             }
             materialChoiceExtra.add(newList);
         }
+        ItemStack iconItem = (ItemStack) serialized.get(7);
 
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(namespace, key), result);
         recipe.shape(shapeArray);
@@ -143,7 +145,7 @@ public class RecipeManager {
             }
             // TODO: material choice
         }
-        return new SavedRecipe(recipe, ingredientTypes, materialChoiceExtra);
+        return new SavedRecipe(recipe, ingredientTypes, materialChoiceExtra, iconItem);
     }
 
 
