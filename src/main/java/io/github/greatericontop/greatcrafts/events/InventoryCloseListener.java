@@ -1,5 +1,6 @@
-package io.github.greatericontop.greatcrafts.gui;
+package io.github.greatericontop.greatcrafts.events;
 
+import io.github.greatericontop.greatcrafts.gui.GUIManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,11 @@ public class InventoryCloseListener implements Listener {
         Player player = (Player) event.getPlayer();
         Inventory lastInventory = guiManager.playerMainInventories.get(player.getUniqueId());
         if (lastInventory == null)  return;
+
+        // Check if trying to close out of the main inventory
+        if (event.getInventory().equals(lastInventory)) {
+            player.sendMessage("§cDiscard or save your changes first!");
+        }
 
         Bukkit.getScheduler().runTaskLater(guiManager.getPlugin(), () -> player.openInventory(lastInventory), 1L);
     }

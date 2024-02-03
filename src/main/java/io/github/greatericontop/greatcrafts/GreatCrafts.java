@@ -6,7 +6,7 @@ import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.GUIManager;
-import io.github.greatericontop.greatcrafts.gui.InventoryCloseListener;
+import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
