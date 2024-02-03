@@ -23,11 +23,11 @@ public class RecipeManager {
 
 
 
-    public List<ShapedRecipe> getAllRecipesShaped() {
+    public List<SavedRecipe> getAllRecipes() {
         Set<String> keys = plugin.recipes.getKeys(false);
-        List<ShapedRecipe> allRecipes = new ArrayList<>();
+        List<SavedRecipe> allRecipes = new ArrayList<>();
         for (String key : keys) {
-            allRecipes.add(getRecipeShaped(key).recipe());
+            allRecipes.add(getRecipeShaped(key));
         }
         return allRecipes;
     }

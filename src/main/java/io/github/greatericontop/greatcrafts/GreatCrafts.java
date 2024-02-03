@@ -2,11 +2,12 @@ package io.github.greatericontop.greatcrafts;
 
 import io.github.greatericontop.greatcrafts.commands.AddRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.EditRecipeCommand;
+import io.github.greatericontop.greatcrafts.commands.RecipeListCommand;
 import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
+import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.GUIManager;
-import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
@@ -35,6 +36,7 @@ public class GreatCrafts extends JavaPlugin {
 
         recipeManager = new RecipeManager(this);
 
+        this.getCommand("recipes").setExecutor(new RecipeListCommand(this));
         this.getCommand("addrecipe").setExecutor(new AddRecipeCommand(this));
         this.getCommand("editrecipe").setExecutor(new EditRecipeCommand(this));
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));

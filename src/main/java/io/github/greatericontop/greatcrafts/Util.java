@@ -7,17 +7,29 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Util {
 
-    public static ItemStack createItemStack(Material mat,int amount, String name, String... lore) {
+    public static ItemStack createItemStack(Material mat, int amount, String name, String... lore) {
         ItemStack stack = new ItemStack(mat, amount);
         ItemMeta im = stack.getItemMeta();
         im.setDisplayName(name);
         im.setLore(java.util.Arrays.asList(lore));
         stack.setItemMeta(im);
         return stack;
+    }
+
+    public static void appendLore(ItemStack stack, String... moreLore) {
+        ItemMeta im = stack.getItemMeta();
+        List<String> lore = im.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+        lore.addAll(Arrays.asList(moreLore));
+        im.setLore(lore);
+        stack.setItemMeta(im);
     }
 
     public static void successSound(Player player) {

@@ -5,6 +5,10 @@ api-version: 1.19
 authors: [greateric]
 
 commands:
+  recipes:
+    description: View recipes
+    usage: "§c/recipes"
+    permission: greatcrafts.viewrecipes
   addrecipe:
     description: Add a recipe
     usage: "§c/addrecipe <namespace:name>"

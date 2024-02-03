@@ -2,6 +2,7 @@ package io.github.greatericontop.greatcrafts.commands;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,8 +21,9 @@ public class ReloadRecipesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        List<ShapedRecipe> recipes = plugin.recipeManager.getAllRecipesShaped();
-        for (ShapedRecipe recipe : recipes) {
+        List<SavedRecipe> recipes = plugin.recipeManager.getAllRecipes();
+        for (SavedRecipe savedRecipe : recipes) {
+            ShapedRecipe recipe = savedRecipe.recipe();
             Bukkit.removeRecipe(recipe.getKey());
             RecipeLoader.addUnshrinkedShapedRecipe(recipe);
         }
