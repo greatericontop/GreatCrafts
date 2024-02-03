@@ -51,7 +51,7 @@ public class AddRecipeCommand implements CommandExecutor {
         ItemStack iconItem = Util.createItemStack(Material.EMERALD_BLOCK, 1, "§dDefault Icon",
                 "§7This is the icon for your recipe. This is displayed in the menu", "§7and doesn't affect the craft.");
         plugin.recipeManager.setRecipeShaped(key.toString(), new SavedRecipe(basicRecipe,
-                IngredientType.defaults(), IngredientType.defaultMaterialChoiceExtra(), iconItem));
+                IngredientType.defaults(), Util.defaultMaterialChoiceExtra(), iconItem));
         plugin.guiCraftEditor.openNew(player, recipeName);
 
         return true;

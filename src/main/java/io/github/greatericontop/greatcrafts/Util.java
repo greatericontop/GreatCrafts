@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Util {
 
     public static ItemStack createItemStack(Material mat,int amount, String name, String... lore) {
@@ -19,6 +22,14 @@ public class Util {
 
     public static void successSound(Player player) {
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1L, 1L);
+    }
+
+    public static List<List<Material>> defaultMaterialChoiceExtra() {
+        List<List<Material>> list = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            list.add(new ArrayList<>());
+        }
+        return list;
     }
 
 }
