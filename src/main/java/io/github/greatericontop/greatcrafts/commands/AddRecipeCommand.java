@@ -23,11 +23,10 @@ public class AddRecipeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("§cA player is required!");
             return true;
         }
-        Player player = (Player) sender;
         if (player.getGameMode() != GameMode.CREATIVE) {
             player.sendMessage("§cYour gamemode must be creative to edit recipes!");
             return true;
@@ -50,7 +49,7 @@ public class AddRecipeCommand implements CommandExecutor {
         basicRecipe.setIngredient('f', Material.EMERALD_ORE);
         basicRecipe.setIngredient('h', Material.EMERALD_ORE);
         ItemStack iconItem = Util.createItemStack(Material.EMERALD_BLOCK, 1, "§dDefault Icon",
-                "§7This is the icon for your recipe", "that will show up in the menu.");
+                "§7This is the icon for your recipe. This is displayed in the menu", "§7and doesn't affect the craft.");
         plugin.recipeManager.setRecipeShaped(key.toString(), new SavedRecipe(basicRecipe,
                 IngredientType.defaults(), IngredientType.defaultMaterialChoiceExtra(), iconItem));
         plugin.guiCraftEditor.openNew(player, recipeName);
