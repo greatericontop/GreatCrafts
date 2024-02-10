@@ -21,15 +21,13 @@ public class Util {
         return stack;
     }
 
-    public static void appendLore(ItemStack stack, String... moreLore) {
-        ItemMeta im = stack.getItemMeta();
+    public static void appendLore(ItemMeta im, String... moreLore) {
         List<String> lore = im.getLore();
         if (lore == null) {
             lore = new ArrayList<>();
         }
         lore.addAll(Arrays.asList(moreLore));
         im.setLore(lore);
-        stack.setItemMeta(im);
     }
 
     public static void successSound(Player player) {

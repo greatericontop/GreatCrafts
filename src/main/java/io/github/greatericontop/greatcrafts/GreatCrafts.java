@@ -10,6 +10,7 @@ import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.GUIManager;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
+import io.github.greatericontop.greatcrafts.gui.RecipeListMenu;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +28,7 @@ public class GreatCrafts extends JavaPlugin {
     public ExactChoiceToggler guiExactChoiceToggler;
     public MaterialChoiceToggler guiMaterialChoiceToggler;
     public MaterialChoiceEditor guiMaterialChoiceEditor;
+    public RecipeListMenu guiRecipeListMenu;
 
     @Override
     public void onEnable() {
@@ -50,6 +52,9 @@ public class GreatCrafts extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(guiMaterialChoiceToggler, this);
         guiMaterialChoiceEditor = new MaterialChoiceEditor(guiManager);
         this.getServer().getPluginManager().registerEvents(guiMaterialChoiceEditor, this);
+        guiRecipeListMenu = new RecipeListMenu(this);
+        this.getServer().getPluginManager().registerEvents(guiRecipeListMenu, this);
+
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
 
 
