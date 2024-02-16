@@ -9,7 +9,6 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,8 +21,7 @@ public class RecipeManager {
     }
 
 
-
-    public List<SavedRecipeShaped> getAllRecipes() {
+    public List<SavedRecipeShaped> getAllShapedRecipes() {
         Set<String> keys = plugin.recipes.getKeys(false);
         List<SavedRecipeShaped> allRecipes = new ArrayList<>();
         for (String key : keys) {
@@ -52,6 +50,10 @@ public class RecipeManager {
         plugin.recipes.set(key, yamlConfiguration.saveToString());
     }
 
+    // TODO: getRecipeShapeless / setRecipeShapeless
+    // TODO: serialize/deserialize
+    // TODO: fix the todo in deserializeShapedRecipe
+
 
 
 
@@ -63,17 +65,7 @@ public class RecipeManager {
         serialized.add(shapedRecipe.getKey().getNamespace()); // 0 - namespace
         serialized.add(shapedRecipe.getKey().getKey()); // 1 - key
         // similar to ingredient map but each item must have its own nbt
-        Map<Character, ItemStack> preciseIngredientMap = new HashMap<>();
-        for (int i = 0; i < 9; i++) {
-            char character = (char) ('a' + i);
-            if (recipe.ingredientTypes()[i] == IngredientType.EXACT_CHOICE) {
-                RecipeChoice.ExactChoice exactChoice = (RecipeChoice.ExactChoice) shapedRecipe.getChoiceMap().get(character);
-                preciseIngredientMap.put(character, exactChoice.getItemStack());
-            } else {
-                preciseIngredientMap.put(character, shapedRecipe.getIngredientMap().get(character));
-            }
-        }
-        serialized.add(preciseIngredientMap); // 2 - precise ingredient map
+        serialized.add(RecipeSerializationHelper.serializePreciseIngredientMap(recipe, shapedRecipe)); // 2 - precise ingredient map
         serialized.add(shapedRecipe.getShape()); // 3 - shape
         serialized.add(shapedRecipe.getResult()); // 4 - result
         // IngredientType[] -> List<String> (since enums can't be saved like this)

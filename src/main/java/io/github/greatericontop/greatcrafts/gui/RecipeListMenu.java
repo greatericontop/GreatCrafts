@@ -98,7 +98,7 @@ public class RecipeListMenu implements Listener {
     }
 
     public void openNew(Player player, String searchQuery) {
-        List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllRecipes();
+        List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
         Inventory gui = Bukkit.createInventory(null, 54, INV_NAME);
         updateInventory(allRecipes, gui, 1, false, searchQuery);
         // (Does not get added to :playerMainInventories:)
@@ -121,14 +121,14 @@ public class RecipeListMenu implements Listener {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllRecipes();
+            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
             updateInventory(allRecipes, gui, pageNum-1, true, null);
         } else if (slot == NEXT_PAGE_SLOT) {
             if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllRecipes();
+            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
             updateInventory(allRecipes, gui, pageNum+1, true, null);
         } else if (slot < CRAFTS_PER_PAGE) {
             ItemStack itemClicked = event.getCurrentItem();
