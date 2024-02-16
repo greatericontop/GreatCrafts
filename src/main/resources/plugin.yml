@@ -7,7 +7,7 @@ authors: [greateric]
 commands:
   recipes:
     description: View recipes
-    usage: "§c/recipes"
+    usage: "§c/recipes <optional search query>"
     permission: greatcrafts.viewrecipes
   addrecipe:
     description: Add a recipe

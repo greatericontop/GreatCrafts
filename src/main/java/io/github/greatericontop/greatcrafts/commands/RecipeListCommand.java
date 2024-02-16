@@ -24,7 +24,14 @@ public class RecipeListCommand implements CommandExecutor {
             player.sendMessage("§cYour gamemode must be creative to view and edit recipes!");
             return true;
         }
-        plugin.guiRecipeListMenu.openNew(player);
+        if (args.length == 0) {
+            plugin.guiRecipeListMenu.openNew(player, null);
+            return true;
+        } else if (args.length == 1) {
+            plugin.guiRecipeListMenu.openNew(player, args[0]);
+        } else {
+            return false;
+        }
         return true;
     }
 
