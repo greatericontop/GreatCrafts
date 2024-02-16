@@ -52,11 +52,11 @@ public class RecipeListMenu implements Listener {
             im.getPersistentDataContainer().set(recipeKeyPDC, PersistentDataType.STRING, savedRecipe.recipe().getKey().toString());
             Util.appendLore(im, "", "", resultDisplay, "§8§o"+savedRecipe.recipe().getKey());
             icon.setItemMeta(im);
-            gui.setItem(i, icon);
+            gui.setItem(i % CRAFTS_PER_PAGE, icon);
         }
         int totalPages = (int) Math.ceil(allRecipes.size() / (double) CRAFTS_PER_PAGE);
         // Previous page
-        if (visualPageNumber != 0) {
+        if (visualPageNumber != 1) {
             ItemStack prevPage = Util.createItemStack(Material.ARROW, 1, "Previous Page");
             gui.setItem(PREV_PAGE_SLOT, prevPage);
         }
@@ -92,10 +92,17 @@ public class RecipeListMenu implements Listener {
         int slot = event.getSlot();
 
         if (slot == PREV_PAGE_SLOT) {
+            if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
+                // If the arrow was removed and this slot is blank, then don't change the page
+                return;
+            }
             int pageNum = gui.getItem(PAGE_NUMBER_INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
             List<SavedRecipe> allRecipes = plugin.recipeManager.getAllRecipes();
             updateInventory(allRecipes, gui, pageNum-1);
         } else if (slot == NEXT_PAGE_SLOT) {
+            if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
+                return;
+            }
             int pageNum = gui.getItem(PAGE_NUMBER_INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
             List<SavedRecipe> allRecipes = plugin.recipeManager.getAllRecipes();
             updateInventory(allRecipes, gui, pageNum+1);
