@@ -6,10 +6,10 @@ import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.List;
 
-public record SavedRecipe(
+public record SavedRecipeShaped(
         ShapedRecipe recipe,
         IngredientType[] ingredientTypes,
-        List<List<Material>>  materialChoiceExtra,
+        List<List<Material>> materialChoiceExtra,
         ItemStack iconItem
 ) {
 }

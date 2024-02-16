@@ -3,7 +3,7 @@ package io.github.greatericontop.greatcrafts.gui;
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipeShaped;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -35,6 +35,7 @@ public class CraftEditor implements Listener {
     private static final int SLOT9 = 30;
     private static final int SLOT_RESULT = 23;
     private static final int SLOT_ICON = 16;
+    //private static final int SLOT_CHANGE_TYPE = 26;
     private static final int SLOT_DISCARD = 51;
     private static final int SLOT_SAVE = 52;
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
@@ -54,7 +55,7 @@ public class CraftEditor implements Listener {
     }
 
     public void openNew(Player player, String craftKey) {
-        SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
+        SavedRecipeShaped savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
         ShapedRecipe recipe = savedRecipe.recipe();
         Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
@@ -113,7 +114,7 @@ public class CraftEditor implements Listener {
                 List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
                 ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, ingredientTypes, materialChoiceExtra);
                 guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
-                        new SavedRecipe(newRecipe, ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON)));
+                        new SavedRecipeShaped(newRecipe, ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON)));
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.getKey());
                     RecipeLoader.addUnshrinkedShapedRecipe(newRecipe);

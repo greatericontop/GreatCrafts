@@ -23,16 +23,16 @@ public class RecipeManager {
 
 
 
-    public List<SavedRecipe> getAllRecipes() {
+    public List<SavedRecipeShaped> getAllRecipes() {
         Set<String> keys = plugin.recipes.getKeys(false);
-        List<SavedRecipe> allRecipes = new ArrayList<>();
+        List<SavedRecipeShaped> allRecipes = new ArrayList<>();
         for (String key : keys) {
             allRecipes.add(getRecipeShaped(key));
         }
         return allRecipes;
     }
 
-    public SavedRecipe getRecipeShaped(String key) {
+    public SavedRecipeShaped getRecipeShaped(String key) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         String string = plugin.recipes.getString(key);
         if (string == null) {
@@ -46,7 +46,7 @@ public class RecipeManager {
         return deserializeShapedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
     }
 
-    public void setRecipeShaped(String key, SavedRecipe recipe) {
+    public void setRecipeShaped(String key, SavedRecipeShaped recipe) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         yamlConfiguration.set("shapedrecipe", serializeShapedRecipe(recipe));
         plugin.recipes.set(key, yamlConfiguration.saveToString());
@@ -57,7 +57,7 @@ public class RecipeManager {
 
 
 
-    public List<Object> serializeShapedRecipe(SavedRecipe recipe) {
+    public List<Object> serializeShapedRecipe(SavedRecipeShaped recipe) {
         List<Object> serialized = new ArrayList<>();
         ShapedRecipe shapedRecipe = recipe.recipe();
         serialized.add(shapedRecipe.getKey().getNamespace()); // 0 - namespace
@@ -97,7 +97,7 @@ public class RecipeManager {
     }
 
     @SuppressWarnings("unchecked")
-    public SavedRecipe deserializeShapedRecipe(List<Object> serialized) {
+    public SavedRecipeShaped deserializeShapedRecipe(List<Object> serialized) {
         String namespace = (String) serialized.get(0);
         String key = (String) serialized.get(1);
         Map<String, ItemStack> ingredientMap = (Map<String, ItemStack>) serialized.get(2);
@@ -145,7 +145,7 @@ public class RecipeManager {
             }
             // TODO: material choice
         }
-        return new SavedRecipe(recipe, ingredientTypes, materialChoiceExtra, iconItem);
+        return new SavedRecipeShaped(recipe, ingredientTypes, materialChoiceExtra, iconItem);
     }
 
 
