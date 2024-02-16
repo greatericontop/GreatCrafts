@@ -84,9 +84,10 @@ public class RecipeListMenu implements Listener {
         }
         // Page number indicator
         ItemStack nextPage = Util.createItemStack(Material.PAPER, 1,
-                String.format("§ePage %d / %d", visualPageNumber, totalPages),
-                "§7You can also use §f/recipes <search> §7to only look at",
-                "§7recipes that match a search.");
+                String.format("§fPage §e%d §f/ §e%d", visualPageNumber, totalPages),
+                "§7Currently searching for: §f"+searchQuery,
+                "§8You can also use §7/recipes <search> §8to only look at",
+                "§8recipes that match a search.");
         ItemMeta im = nextPage.getItemMeta();
         im.getPersistentDataContainer().set(pageNumberIndicatorPDC, PersistentDataType.INTEGER, visualPageNumber);
         if (searchQuery != null) {
