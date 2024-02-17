@@ -99,6 +99,10 @@ public class RecipeListMenu implements Listener {
 
     public void openNew(Player player, String searchQuery) {
         List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+        if (allRecipes.isEmpty()) {
+            player.sendMessage("§3There are no recipes! Add one with §b/addrecipe§3.");
+            return;
+        }
         Inventory gui = Bukkit.createInventory(null, 54, INV_NAME);
         updateInventory(allRecipes, gui, 1, false, searchQuery);
         // (Does not get added to :playerMainInventories:)
