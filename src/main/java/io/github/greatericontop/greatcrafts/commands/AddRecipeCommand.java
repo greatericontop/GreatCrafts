@@ -3,7 +3,7 @@ package io.github.greatericontop.greatcrafts.commands;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipeShaped;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,6 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class AddRecipeCommand implements CommandExecutor {
 
@@ -43,15 +46,15 @@ public class AddRecipeCommand implements CommandExecutor {
         }
         NamespacedKey key = new NamespacedKey(recipeNameParts[0], recipeNameParts[1]);
         ShapedRecipe basicRecipe = new ShapedRecipe(key, new ItemStack(Material.EMERALD_BLOCK));
-        basicRecipe.shape(" b ", "d f", " h ");
-        basicRecipe.setIngredient('b', Material.EMERALD_ORE);
-        basicRecipe.setIngredient('d', Material.EMERALD_ORE);
-        basicRecipe.setIngredient('f', Material.EMERALD_ORE);
-        basicRecipe.setIngredient('h', Material.EMERALD_ORE);
+        List<ItemStack> items = Arrays.asList(
+                null, null, null,
+                null, new ItemStack(Material.EMERALD_ORE, 1), null,
+                null, null, null
+        );
         ItemStack iconItem = Util.createItemStack(Material.EMERALD_BLOCK, 1, "§dDefault Icon",
                 "§7This is the icon for your recipe. This is displayed in the menu", "§7and doesn't affect the craft.");
-        plugin.recipeManager.setRecipeShaped(key.toString(), new SavedRecipeShaped(basicRecipe,
-                IngredientType.defaults(), Util.defaultMaterialChoiceExtra(), iconItem));
+        plugin.recipeManager.setRecipeShaped(key.toString(), new SavedRecipe(
+                key, items, new ItemStack(Material.EMERALD_BLOCK, 1), IngredientType.defaults(), Util.defaultMaterialChoiceExtra(), iconItem));
         plugin.guiCraftEditor.openNew(player, recipeName);
 
         return true;

@@ -3,7 +3,7 @@ package io.github.greatericontop.greatcrafts.gui;
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipeShaped;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,9 +14,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,15 +54,14 @@ public class CraftEditor implements Listener {
     }
 
     public void openNew(Player player, String craftKey) {
-        SavedRecipeShaped savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
-        ShapedRecipe recipe = savedRecipe.recipe();
+        SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
         Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
         for (int i = 0; i < 54; i++) {
             gui.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1));
         }
-        fillCraftingSlots(gui, recipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
-        gui.setItem(SLOT_RESULT, recipe.getResult());
+        fillCraftingSlots(gui, savedRecipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
+        gui.setItem(SLOT_RESULT, savedRecipe.result());
         gui.setItem(SLOT_ICON, savedRecipe.iconItem());
         gui.setItem(45, Util.createItemStack(
                 Material.ENCHANTED_BOOK, 1, "§bInfo",
@@ -81,7 +79,7 @@ public class CraftEditor implements Listener {
         ));
 
         Map<String, Object> data = new HashMap<>();
-        data.put("recipe", recipe);
+        data.put("recipe", savedRecipe);
         // Stores the type of ingredient (e.g. whether to match NBT exactly or not)
         data.put("ingredientTypes", savedRecipe.ingredientTypes());
         // Stores the valid materials for material choice (has no effect if ingredientType is not set to material choice)
@@ -109,15 +107,12 @@ public class CraftEditor implements Listener {
 
         if (slot == SLOT_DISCARD || slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
-                ShapedRecipe recipe = (ShapedRecipe) data.get("recipe");
-                IngredientType[] ingredientTypes = (IngredientType[]) data.get("ingredientTypes");
-                List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
-                ShapedRecipe newRecipe = saveLayout(recipe.getKey(), gui, ingredientTypes, materialChoiceExtra);
-                guiManager.getRecipeManager().setRecipeShaped(newRecipe.getKey().toString(),
-                        new SavedRecipeShaped(newRecipe, ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON)));
+                SavedRecipe oldRecipe = (SavedRecipe) data.get("recipe");
+                SavedRecipe newRecipe = saveIntoNewRecipe(gui, oldRecipe.key(), data);
+                guiManager.getRecipeManager().setRecipeShaped(oldRecipe.key().toString(), newRecipe);
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
-                    Bukkit.removeRecipe(newRecipe.getKey());
-                    RecipeLoader.addUnshrinkedShapedRecipe(newRecipe);
+                    Bukkit.removeRecipe(newRecipe.key());
+                    RecipeLoader.compileAndAddShapedRecipe(newRecipe);
                 }
                 Util.successSound(player);
             }
@@ -149,20 +144,26 @@ public class CraftEditor implements Listener {
         }
     }
 
+    private SavedRecipe saveIntoNewRecipe(Inventory gui, NamespacedKey key, Map<String, Object> data) {
+        List<ItemStack> items = Arrays.asList(
+                gui.getItem(SLOT1), gui.getItem(SLOT2), gui.getItem(SLOT3),
+                gui.getItem(SLOT4), gui.getItem(SLOT5), gui.getItem(SLOT6),
+                gui.getItem(SLOT7), gui.getItem(SLOT8), gui.getItem(SLOT9)
+        );
+        // FYI: the end portal frame placeholder (or something else) gets saved in here, but it is unused because
+        //      the recipe will be compiled using the actual material choice items
+        IngredientType[] ingredientTypes = (IngredientType[]) data.get("ingredientTypes");
+        List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
+        return new SavedRecipe(key, items, gui.getItem(SLOT_RESULT), ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON));
+    }
 
-
-    private void fillCraftingSlots(Inventory gui, ShapedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
+    private void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
         int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
-        char[] KEYS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
         for (int i = 0; i < 9; i++) {
             switch (ingredientTypes[i]) {
-                case NORMAL -> {
-                    gui.setItem(SLOTS[i], recipe.getIngredientMap().get(KEYS[i]));
-                }
-                case EXACT_CHOICE -> {
-                    RecipeChoice.ExactChoice exactChoice = (RecipeChoice.ExactChoice) recipe.getChoiceMap().get(KEYS[i]);
-                    gui.setItem(SLOTS[i], exactChoice.getItemStack());
+                case NORMAL, EXACT_CHOICE -> {
+                    gui.setItem(SLOTS[i], recipe.items().get(i));
                 }
                 case MATERIAL_CHOICE -> {
                     List<Material> items = materialChoiceExtra.get(i);
@@ -181,57 +182,6 @@ public class CraftEditor implements Listener {
                 }
             }
         }
-    }
-
-    // Save the layout in the GUI into a new recipe.
-    // NOTE: This modifies :ingredientTypes: in place.
-    //       Empty ExactChoice slots are changed to normal slots
-    private ShapedRecipe saveLayout(NamespacedKey namespacedKey, Inventory gui, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
-        ShapedRecipe newRecipe = new ShapedRecipe(namespacedKey, gui.getItem(SLOT_RESULT));
-        char[] layout = "         ".toCharArray();
-        ItemStack[] slots = new ItemStack[]{
-                gui.getItem(SLOT1), gui.getItem(SLOT2), gui.getItem(SLOT3),
-                gui.getItem(SLOT4), gui.getItem(SLOT5), gui.getItem(SLOT6),
-                gui.getItem(SLOT7), gui.getItem(SLOT8), gui.getItem(SLOT9)
-        };
-        for (int i = 0; i < 9; i++) {
-            if (slots[i] == null || slots[i].getType() == Material.AIR)  continue;
-            char symbol = (char) ('a' + i);
-            layout[i] = symbol;
-        }
-        newRecipe.shape(
-                new String(new char[]{layout[0], layout[1], layout[2]}),
-                new String(new char[]{layout[3], layout[4], layout[5]}),
-                new String(new char[]{layout[6], layout[7], layout[8]})
-        );
-        // Ingredient must be set AFTER shape is set
-        for (int i = 0; i < 9; i++) {
-            if (slots[i] == null || slots[i].getType() == Material.AIR)  continue;
-            char symbol = (char) ('a' + i);
-            switch (ingredientTypes[i]) {
-                case NORMAL -> {
-                    newRecipe.setIngredient(symbol, slots[i].getType());
-                }
-                case EXACT_CHOICE -> {
-                    RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(slots[i]);
-                    newRecipe.setIngredient(symbol, exactChoice);
-                }
-                case MATERIAL_CHOICE -> {
-                    RecipeChoice.MaterialChoice materialChoice = new RecipeChoice.MaterialChoice(materialChoiceExtra.get(i));
-                    newRecipe.setIngredient(symbol, materialChoice);
-                }
-                default -> {
-                    throw new RuntimeException();
-                }
-            }
-        }
-        // Fix :ingredientType: empty ExactChoice slots converted to normal (MaterialChoice is left unchanged)
-        for (int i = 0; i < 9; i++) {
-            if ((slots[i] == null || slots[i].getType() == Material.AIR) && ingredientTypes[i] == IngredientType.EXACT_CHOICE) {
-                ingredientTypes[i] = IngredientType.NORMAL;
-            }
-        }
-        return newRecipe;
     }
 
 }

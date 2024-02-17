@@ -2,12 +2,11 @@ package io.github.greatericontop.greatcrafts.commands;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipeShaped;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.List;
 
@@ -21,11 +20,10 @@ public class ReloadRecipesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        List<SavedRecipeShaped> recipes = plugin.recipeManager.getAllShapedRecipes();
-        for (SavedRecipeShaped savedRecipe : recipes) {
-            ShapedRecipe recipe = savedRecipe.recipe();
-            Bukkit.removeRecipe(recipe.getKey());
-            RecipeLoader.addUnshrinkedShapedRecipe(recipe);
+        List<SavedRecipe> recipes = plugin.recipeManager.getAllShapedRecipes();
+        for (SavedRecipe savedRecipe : recipes) {
+            Bukkit.removeRecipe(savedRecipe.key());
+            RecipeLoader.compileAndAddShapedRecipe(savedRecipe);
         }
         sender.sendMessage(String.format("§3Successfully reloaded %s recipes.", recipes.size()));
         sender.sendMessage("§eNote: §3Players still need to reconnect to see the recipe client-side, but it will work on the server.");

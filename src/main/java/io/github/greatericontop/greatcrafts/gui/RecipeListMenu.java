@@ -2,7 +2,7 @@ package io.github.greatericontop.greatcrafts.gui;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.Util;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipeShaped;
+import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,7 +36,7 @@ public class RecipeListMenu implements Listener {
         this.searchQueryPDC = new NamespacedKey(plugin, "searchQuery");
     }
 
-    private void updateInventory(List<SavedRecipeShaped> allRecipes, Inventory gui, int visualPageNumber, boolean shouldLookupSearchQuery, @Nullable String searchQuery) {
+    private void updateInventory(List<SavedRecipe> allRecipes, Inventory gui, int visualPageNumber, boolean shouldLookupSearchQuery, @Nullable String searchQuery) {
         if (shouldLookupSearchQuery) {
             // read it from slot INDICATOR_SLOT
             searchQuery = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(searchQueryPDC, PersistentDataType.STRING);
@@ -47,27 +47,27 @@ public class RecipeListMenu implements Listener {
         }
         // Take sub-list that contains our search query
         String finalSearchQuery = searchQuery;
-        List<SavedRecipeShaped> searchResults;
+        List<SavedRecipe> searchResults;
         if (searchQuery == null) {
             searchResults = allRecipes;
         } else {
             searchResults = allRecipes.stream()
-                    .filter(savedRecipe -> savedRecipe.recipe().getKey().toString().contains(finalSearchQuery))
+                    .filter(savedRecipe -> savedRecipe.key().toString().contains(finalSearchQuery))
                     .toList();
         }
         for (int i = indexStart; i < indexStart+CRAFTS_PER_PAGE; i++) {
             if (i >= searchResults.size())  break;
-            SavedRecipeShaped savedRecipe = searchResults.get(i);
+            SavedRecipe savedRecipe = searchResults.get(i);
             ItemStack icon = savedRecipe.iconItem();
             ItemMeta im = icon.getItemMeta();
-            ItemStack resultItem = savedRecipe.recipe().getResult();
+            ItemStack resultItem = savedRecipe.result();
             String resultName = (resultItem.hasItemMeta() && resultItem.getItemMeta().hasDisplayName())
                     ? resultItem.getItemMeta().getDisplayName() : "§8§o"+resultItem.getType().getKey().getKey();
             String resultDisplay = String.format("%s x%d%s",
                     resultName, resultItem.getAmount(),
                     resultItem.hasItemMeta() ? " §8§o(+NBT)" : "");
-            im.getPersistentDataContainer().set(recipeKeyPDC, PersistentDataType.STRING, savedRecipe.recipe().getKey().toString());
-            Util.appendLore(im, "", "", resultDisplay, "§8§o"+savedRecipe.recipe().getKey());
+            im.getPersistentDataContainer().set(recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString());
+            Util.appendLore(im, "", "", resultDisplay, "§8§o"+savedRecipe.key());
             icon.setItemMeta(im);
             gui.setItem(i % CRAFTS_PER_PAGE, icon);
         }
@@ -98,7 +98,7 @@ public class RecipeListMenu implements Listener {
     }
 
     public void openNew(Player player, String searchQuery) {
-        List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+        List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
         Inventory gui = Bukkit.createInventory(null, 54, INV_NAME);
         updateInventory(allRecipes, gui, 1, false, searchQuery);
         // (Does not get added to :playerMainInventories:)
@@ -121,14 +121,14 @@ public class RecipeListMenu implements Listener {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
             updateInventory(allRecipes, gui, pageNum-1, true, null);
         } else if (slot == NEXT_PAGE_SLOT) {
             if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipeShaped> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
             updateInventory(allRecipes, gui, pageNum+1, true, null);
         } else if (slot < CRAFTS_PER_PAGE) {
             ItemStack itemClicked = event.getCurrentItem();

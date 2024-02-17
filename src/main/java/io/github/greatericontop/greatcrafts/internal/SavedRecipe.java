@@ -1,13 +1,15 @@
 package io.github.greatericontop.greatcrafts.internal;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.List;
 
-public record SavedRecipeShaped(
-        ShapedRecipe recipe,
+public record SavedRecipe(
+        NamespacedKey key,
+        List<ItemStack> items,
+        ItemStack result,
         IngredientType[] ingredientTypes,
         List<List<Material>> materialChoiceExtra,
         ItemStack iconItem
