@@ -3,6 +3,7 @@ package io.github.greatericontop.greatcrafts.gui;
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
+import io.github.greatericontop.greatcrafts.internal.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,7 +35,7 @@ public class CraftEditor implements Listener {
     private static final int SLOT9 = 30;
     private static final int SLOT_RESULT = 23;
     private static final int SLOT_ICON = 16;
-    //private static final int SLOT_CHANGE_TYPE = 26;
+    private static final int SLOT_CHANGE_TYPE = 26;
     private static final int SLOT_DISCARD = 51;
     private static final int SLOT_SAVE = 52;
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
@@ -70,6 +71,7 @@ public class CraftEditor implements Listener {
                 "§eSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
                 "§7Discard, save, or save and activate your changes."
         ));
+        gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(savedRecipe.type()));
         gui.setItem(SLOT_DISCARD, Util.createItemStack(Material.BARRIER, 1, "§cDiscard Changes"));
         gui.setItem(SLOT_SAVE, Util.createItemStack(Material.LIME_STAINED_GLASS, 1, "§aSave Changes"));
         gui.setItem(SLOT_SAVE_AND_ACTIVATE, Util.createItemStack(Material.LIME_CONCRETE, 1, "§aSave & Activate Changes",
@@ -80,6 +82,7 @@ public class CraftEditor implements Listener {
 
         Map<String, Object> data = new HashMap<>();
         data.put("recipe", savedRecipe);
+        data.put("type", savedRecipe.type());
         // Stores the type of ingredient (e.g. whether to match NBT exactly or not)
         data.put("ingredientTypes", savedRecipe.ingredientTypes());
         // Stores the valid materials for material choice (has no effect if ingredientType is not set to material choice)
@@ -104,6 +107,14 @@ public class CraftEditor implements Listener {
         }
         Player player = (Player) event.getWhoClicked();
         Map<String, Object> data = guiManager.guiData.get(player.getUniqueId());
+
+        if (slot == SLOT_CHANGE_TYPE) {
+            RecipeType currentType = (RecipeType) data.get("type");
+            RecipeType newType = currentType == RecipeType.SHAPED ? RecipeType.SHAPELESS : RecipeType.SHAPED;
+            data.put("type", newType);
+            gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(newType));
+            event.setCancelled(true);
+        }
 
         if (slot == SLOT_DISCARD || slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
@@ -152,9 +163,10 @@ public class CraftEditor implements Listener {
         );
         // FYI: the end portal frame placeholder (or something else) gets saved in here, but it is unused because
         //      the recipe will be compiled using the actual material choice items
+        RecipeType type = (RecipeType) data.get("type");
         IngredientType[] ingredientTypes = (IngredientType[]) data.get("ingredientTypes");
         List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
-        return new SavedRecipe(key, items, gui.getItem(SLOT_RESULT), ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON));
+        return new SavedRecipe(key, type, items, gui.getItem(SLOT_RESULT), ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON));
     }
 
     private void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
@@ -180,6 +192,31 @@ public class CraftEditor implements Listener {
                             itemsDisplay
                     ));
                 }
+            }
+        }
+    }
+
+    private ItemStack getDisplayItemStackForRecipeType(RecipeType type) {
+        switch (type) {
+            case SHAPED -> {
+                return Util.createItemStack(Material.CRAFTING_TABLE, 1, "§3Recipe Type",
+                        "§f>> SHAPED",
+                        "  §7The required items must be in this shape.",
+                        "  §7If the grid is less than 3x3, the empty space is ignored.",
+                        "§7>> SHAPELESS",
+                        "§eCLICK §7to toggle"
+                );
+            }
+            case SHAPELESS -> {
+                return Util.createItemStack(Material.CRAFTING_TABLE, 1, "§3Recipe Type",
+                        "§7>> SHAPED",
+                        "§f>> SHAPELESS",
+                        "  §7The required items can be in any configuration.",
+                        "§eCLICK §7to toggle"
+                );
+            }
+            default -> {
+                throw new IllegalArgumentException();
             }
         }
     }

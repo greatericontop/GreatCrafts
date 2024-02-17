@@ -8,6 +8,7 @@ import java.util.List;
 
 public record SavedRecipe(
         NamespacedKey key,
+        RecipeType type,
         List<ItemStack> items,
         ItemStack result,
         IngredientType[] ingredientTypes,

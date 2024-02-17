@@ -3,6 +3,7 @@ package io.github.greatericontop.greatcrafts.commands;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.Util;
 import io.github.greatericontop.greatcrafts.internal.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -12,7 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +45,6 @@ public class AddRecipeCommand implements CommandExecutor {
             return true;
         }
         NamespacedKey key = new NamespacedKey(recipeNameParts[0], recipeNameParts[1]);
-        ShapedRecipe basicRecipe = new ShapedRecipe(key, new ItemStack(Material.EMERALD_BLOCK));
         List<ItemStack> items = Arrays.asList(
                 null, null, null,
                 null, new ItemStack(Material.EMERALD_ORE, 1), null,
@@ -54,7 +53,8 @@ public class AddRecipeCommand implements CommandExecutor {
         ItemStack iconItem = Util.createItemStack(Material.EMERALD_BLOCK, 1, "§dDefault Icon",
                 "§7This is the icon for your recipe. This is displayed in the menu", "§7and doesn't affect the craft.");
         plugin.recipeManager.setRecipeShaped(key.toString(), new SavedRecipe(
-                key, items, new ItemStack(Material.EMERALD_BLOCK, 1), IngredientType.defaults(), Util.defaultMaterialChoiceExtra(), iconItem));
+                key, RecipeType.SHAPED, items, new ItemStack(Material.EMERALD_BLOCK, 1),
+                IngredientType.defaults(), Util.defaultMaterialChoiceExtra(), iconItem));
         plugin.guiCraftEditor.openNew(player, recipeName);
 
         return true;

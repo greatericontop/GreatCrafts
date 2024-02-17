@@ -75,6 +75,7 @@ public class RecipeManager {
         }
         serialized.add(materialChoiceStrings); // 5 - material choice data
         serialized.add(recipe.iconItem()); // 6 - icon item
+        serialized.add(recipe.type().toString()); // 7 - recipe type (as a string)
         return serialized;
     }
 
@@ -100,7 +101,8 @@ public class RecipeManager {
             materialChoiceExtra.add(newList);
         }
         ItemStack iconItem = (ItemStack) serialized.get(6);
-        return new SavedRecipe(nameKey, items, result, ingredientTypes, materialChoiceExtra, iconItem);
+        RecipeType type = RecipeType.valueOf((String) serialized.get(7));
+        return new SavedRecipe(nameKey, type, items, result, ingredientTypes, materialChoiceExtra, iconItem);
     }
 
 
