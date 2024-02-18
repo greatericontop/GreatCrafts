@@ -123,7 +123,7 @@ public class CraftEditor implements Listener {
                 guiManager.getRecipeManager().setRecipeShaped(oldRecipe.key().toString(), newRecipe);
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.key());
-                    RecipeLoader.compileAndAddShapedRecipe(newRecipe);
+                    RecipeLoader.compileAndAddRecipe(newRecipe);
                 }
                 Util.successSound(player);
             }
