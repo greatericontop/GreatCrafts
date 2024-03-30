@@ -41,7 +41,7 @@ public class CraftEditor implements Listener {
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
     private static final Set<Integer> VALID_CLICK_SLOTS = Set.of(
             SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9,
-            SLOT_RESULT, SLOT_ICON, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
+            SLOT_RESULT, SLOT_ICON, SLOT_CHANGE_TYPE, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
     );
     private static final Map<Integer, Integer> SLOT_INDEXER = Map.of(
             SLOT1, 0, SLOT2, 1, SLOT3, 2,
