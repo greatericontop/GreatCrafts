@@ -16,16 +16,15 @@ public class ShapeAnalyzer {
         // A middle row can't be deleted unless the edge row (otherwise you would be collapsing the middle row)
         // Examples: [ABC, DEF, ___] -> [ABC, DEF];    [___, ___, GHI] -> [GHI]
         if (shape[2].equals("   ")) {
-            shape = new String[]{shape[0], shape[1]};
+            shape = trimRow(shape, 2); // remove last
             if (shape[1].equals("   ")) {
-                shape = new String[]{shape[0]};
+                shape = trimRow(shape, 1); // remove last
             }
         }
         if (shape[0].equals("   ")) {
-            shape = new String[]{shape[1], shape[2]};
-            // the middle row is now shape[0]
+            shape = trimRow(shape, 0); // remove first
             if (shape[0].equals("   ")) {
-                shape = new String[]{shape[1]};
+                shape = trimRow(shape, 0); // remove first
             }
         }
 
@@ -41,7 +40,6 @@ public class ShapeAnalyzer {
         }
         if (checkColumnEmpty(shape, 0)) {
             trimColumn(shape, 0);
-            // again, middle is now 0
             if (checkColumnEmpty(shape, 0)) {
                 trimColumn(shape, 0);
             }
@@ -57,6 +55,19 @@ public class ShapeAnalyzer {
             }
         }
         return true;
+    }
+
+    private static String[] trimRow(String[] shape, int row) {
+        // Basically the java equivalent of shape[:row] + shape[row+1:]
+        // Note that this is NOT done in-place
+        String[] newShape = new String[shape.length - 1];
+        if (row >= 0) {
+            System.arraycopy(shape, 0, newShape, 0, row);
+        }
+        if (shape.length - (row + 1) >= 0) {
+            System.arraycopy(shape, row + 1, newShape, row, shape.length - row - 1);
+        }
+        return newShape;
     }
 
     private static void trimColumn(String[] shape, int col) {
