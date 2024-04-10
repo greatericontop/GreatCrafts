@@ -1,6 +1,9 @@
 package io.github.greatericontop.greatcrafts.internal;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,6 +1,6 @@
 package io.github.greatericontop.greatcrafts.gui;
 
-import io.github.greatericontop.greatcrafts.Util;
+import io.github.greatericontop.greatcrafts.internal.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,8 +1,8 @@
 package io.github.greatericontop.greatcrafts.gui;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
-import io.github.greatericontop.greatcrafts.Util;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.internal.Util;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

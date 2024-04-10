@@ -1,4 +1,4 @@
-package io.github.greatericontop.greatcrafts.internal;
+package io.github.greatericontop.greatcrafts.internal.datastructures;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

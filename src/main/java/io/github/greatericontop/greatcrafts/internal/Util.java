@@ -1,4 +1,4 @@
-package io.github.greatericontop.greatcrafts;
+package io.github.greatericontop.greatcrafts.internal;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;

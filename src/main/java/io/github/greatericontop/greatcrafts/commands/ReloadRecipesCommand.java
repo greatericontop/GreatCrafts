@@ -2,7 +2,7 @@ package io.github.greatericontop.greatcrafts.commands;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

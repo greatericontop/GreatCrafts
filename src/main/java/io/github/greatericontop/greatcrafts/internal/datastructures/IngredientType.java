@@ -1,4 +1,4 @@
-package io.github.greatericontop.greatcrafts.internal;
+package io.github.greatericontop.greatcrafts.internal.datastructures;
 
 public enum IngredientType {
     NORMAL,

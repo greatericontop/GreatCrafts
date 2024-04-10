@@ -1,10 +1,10 @@
 package io.github.greatericontop.greatcrafts.gui;
 
-import io.github.greatericontop.greatcrafts.Util;
-import io.github.greatericontop.greatcrafts.internal.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.Util;
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
-import io.github.greatericontop.greatcrafts.internal.RecipeType;
-import io.github.greatericontop.greatcrafts.internal.SavedRecipe;
+import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

@@ -1,5 +1,6 @@
 package io.github.greatericontop.greatcrafts.internal;
 
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
