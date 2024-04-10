@@ -110,7 +110,11 @@ public class CraftEditor implements Listener {
 
         if (slot == SLOT_CHANGE_TYPE) {
             RecipeType currentType = (RecipeType) data.get("type");
-            RecipeType newType = currentType == RecipeType.SHAPED ? RecipeType.SHAPELESS : RecipeType.SHAPED;
+            RecipeType newType = switch (currentType) {
+                case SHAPED -> RecipeType.SHAPELESS;
+                case SHAPELESS -> RecipeType.STACKED_ITEMS;
+                case STACKED_ITEMS -> RecipeType.SHAPED;
+            };
             data.put("type", newType);
             gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(newType));
             event.setCancelled(true);
@@ -204,6 +208,7 @@ public class CraftEditor implements Listener {
                         "  §7The required items must be in this shape.",
                         "  §7If the grid is less than 3x3, the empty space is ignored.",
                         "§7>> SHAPELESS",
+                        "§7>> STACKED ITEMS",
                         "§eCLICK §7to toggle"
                 );
             }
@@ -212,6 +217,18 @@ public class CraftEditor implements Listener {
                         "§7>> SHAPED",
                         "§f>> SHAPELESS",
                         "  §7The required items can be in any configuration.",
+                        "§7>> STACKED ITEMS",
+                        "§eCLICK §7to toggle"
+                );
+            }
+            case STACKED_ITEMS -> {
+                return Util.createItemStack(Material.CRAFTING_TABLE, 1, "§3Recipe Type",
+                        "§7>> SHAPED",
+                        "§7>> SHAPELESS",
+                        "§f>> STACKED ITEMS",
+                        "  §7The required items in the grid can be stacked, so rather than",
+                        "  §7requiring 9 items, you can require 9 stacks of items.",
+                        "  §7The recipe is shaped and only normal and exact choice are supported.",
                         "§eCLICK §7to toggle"
                 );
             }

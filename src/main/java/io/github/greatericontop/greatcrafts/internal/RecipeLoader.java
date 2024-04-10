@@ -16,6 +16,10 @@ public class RecipeLoader {
         switch (recipe.type()) {
             case SHAPED -> compileAndAddShapedRecipe(recipe);
             case SHAPELESS -> compileAndAddShapelessRecipe(recipe);
+            case STACKED_ITEMS -> {
+                throw new RuntimeException("not implemented");
+            }
+            default -> throw new IllegalArgumentException();
         }
     }
 
