@@ -98,7 +98,7 @@ public class RecipeListMenu implements Listener {
     }
 
     public void openNew(Player player, String searchQuery) {
-        List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+        List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
         if (allRecipes.isEmpty()) {
             player.sendMessage("§3There are no recipes! Add one with §b/addrecipe§3.");
             return;
@@ -125,14 +125,14 @@ public class RecipeListMenu implements Listener {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
             updateInventory(allRecipes, gui, pageNum-1, true, null);
         } else if (slot == NEXT_PAGE_SLOT) {
             if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
-            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllShapedRecipes();
+            List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
             updateInventory(allRecipes, gui, pageNum+1, true, null);
         } else if (slot < CRAFTS_PER_PAGE) {
             ItemStack itemClicked = event.getCurrentItem();

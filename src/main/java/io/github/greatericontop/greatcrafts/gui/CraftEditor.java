@@ -55,7 +55,7 @@ public class CraftEditor implements Listener {
     }
 
     public void openNew(Player player, String craftKey) {
-        SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipeShaped(craftKey);
+        SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipe(craftKey);
         Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
         for (int i = 0; i < 54; i++) {
@@ -124,7 +124,7 @@ public class CraftEditor implements Listener {
             if (slot == SLOT_SAVE || slot == SLOT_SAVE_AND_ACTIVATE) {
                 SavedRecipe oldRecipe = (SavedRecipe) data.get("recipe");
                 SavedRecipe newRecipe = saveIntoNewRecipe(gui, oldRecipe.key(), data);
-                guiManager.getRecipeManager().setRecipeShaped(oldRecipe.key().toString(), newRecipe);
+                guiManager.getRecipeManager().setRecipe(oldRecipe.key().toString(), newRecipe);
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.key());
                     RecipeLoader.compileAndAddRecipe(newRecipe);

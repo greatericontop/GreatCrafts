@@ -21,16 +21,16 @@ public class RecipeManager {
     }
 
 
-    public List<SavedRecipe> getAllShapedRecipes() {
+    public List<SavedRecipe> getAllSavedRecipes() {
         Set<String> keys = plugin.recipes.getKeys(false);
         List<SavedRecipe> allRecipes = new ArrayList<>();
         for (String key : keys) {
-            allRecipes.add(getRecipeShaped(key));
+            allRecipes.add(getRecipe(key));
         }
         return allRecipes;
     }
 
-    public SavedRecipe getRecipeShaped(String key) {
+    public SavedRecipe getRecipe(String key) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         String string = plugin.recipes.getString(key);
         if (string == null) {
@@ -41,12 +41,12 @@ public class RecipeManager {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-        return deserializeShapedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
+        return deserializeSavedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
     }
 
-    public void setRecipeShaped(String key, SavedRecipe recipe) {
+    public void setRecipe(String key, SavedRecipe recipe) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        yamlConfiguration.set("shapedrecipe", serializeShapedRecipe(recipe));
+        yamlConfiguration.set("shapedrecipe", serializeSavedRecipe(recipe));
         plugin.recipes.set(key, yamlConfiguration.saveToString());
     }
 
@@ -55,7 +55,7 @@ public class RecipeManager {
 
 
 
-    public List<Object> serializeShapedRecipe(SavedRecipe recipe) {
+    public List<Object> serializeSavedRecipe(SavedRecipe recipe) {
         List<Object> serialized = new ArrayList<>();
         serialized.add(recipe.key().getNamespace()); // 0 - namespace
         serialized.add(recipe.key().getKey()); // 1 - key
@@ -83,7 +83,7 @@ public class RecipeManager {
     }
 
     @SuppressWarnings("unchecked")
-    public SavedRecipe deserializeShapedRecipe(List<Object> serialized) {
+    public SavedRecipe deserializeSavedRecipe(List<Object> serialized) {
         String namespace = (String) serialized.get(0);
         String key = (String) serialized.get(1);
         NamespacedKey nameKey = new NamespacedKey(namespace, key);

@@ -20,7 +20,7 @@ public class ReloadRecipesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        List<SavedRecipe> recipes = plugin.recipeManager.getAllShapedRecipes();
+        List<SavedRecipe> recipes = plugin.recipeManager.getAllSavedRecipes();
         for (SavedRecipe savedRecipe : recipes) {
             Bukkit.removeRecipe(savedRecipe.key());
             RecipeLoader.compileAndAddRecipe(savedRecipe);
