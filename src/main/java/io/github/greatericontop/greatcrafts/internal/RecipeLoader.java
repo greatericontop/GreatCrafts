@@ -16,9 +16,7 @@ public class RecipeLoader {
         switch (recipe.type()) {
             case SHAPED -> compileAndAddShapedRecipe(recipe);
             case SHAPELESS -> compileAndAddShapelessRecipe(recipe);
-            case STACKED_ITEMS -> {
-                throw new RuntimeException("not implemented");
-            }
+            case STACKED_ITEMS -> compileAndAddStackedItemsRecipe(recipe);
             default -> throw new IllegalArgumentException();
         }
     }
@@ -89,6 +87,45 @@ public class RecipeLoader {
             }
         }
         Bukkit.addRecipe(shapelessRec);
+    }
+
+    private static void compileAndAddStackedItemsRecipe(SavedRecipe shapedSavedRecipe) {
+        // This is almost a copy of compileAndAddShapedRecipe
+        ShapedRecipe shapedRecipe = new ShapedRecipe(shapedSavedRecipe.key(), shapedSavedRecipe.result());
+        List<ItemStack> slots = shapedSavedRecipe.items();
+        char[] layout = "         ".toCharArray();
+        for (int i = 0; i < 9; i++) {
+            if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
+            char symbol = (char) ('a' + i);
+            layout[i] = symbol;
+        }
+        shapedRecipe.shape(
+                new String(new char[]{layout[0], layout[1], layout[2]}),
+                new String(new char[]{layout[3], layout[4], layout[5]}),
+                new String(new char[]{layout[6], layout[7], layout[8]})
+        );
+        for (int i = 0; i < 9; i++) {
+            if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
+            char symbol = (char) ('a' + i);
+            switch (shapedSavedRecipe.ingredientTypes()[i]) {
+                case NORMAL -> {
+                    shapedRecipe.setIngredient(symbol, slots.get(i).getType());
+                }
+                case EXACT_CHOICE -> {
+                    RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(slots.get(i));
+                    shapedRecipe.setIngredient(symbol, exactChoice);
+                }
+                case MATERIAL_CHOICE -> {
+                    Bukkit.getServer().getLogger().warning("("+shapedSavedRecipe.key()+") material choice used in a stacked items craft!");
+                }
+                default -> {
+                    throw new RuntimeException();
+                }
+            }
+        }
+        String[] newShape = ShapeAnalyzer.shrink(shapedRecipe.getShape());
+        shapedRecipe.shape(newShape);
+        Bukkit.addRecipe(shapedRecipe);
     }
 
 }
