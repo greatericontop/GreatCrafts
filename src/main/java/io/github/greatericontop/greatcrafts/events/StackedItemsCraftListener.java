@@ -44,12 +44,14 @@ public class StackedItemsCraftListener implements Listener {
         // Check for sufficient items
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
+            player.sendMessage(String.format("§7%d (inv slot %d): %s", slotNum, slotNum+1, event.getInventory().getItem(slotNum+1)));
             if (requiredItemStack == null) {
+                player.sendMessage(String.format("§7%d skip", slotNum));
                 continue;
             }
             // We already know that the material is right (including exact choice if applicable), just check counts
             int required = requiredItemStack.getAmount();
-            if (event.getInventory().getItem(slotNum).getAmount() < required) {
+            if (event.getInventory().getItem(slotNum+1).getAmount() < required) { // slot 0 in the event inventory is the result
                 player.sendMessage("§cYou don't have enough items in the crafting table!");
                 player.sendMessage("§3This is a special §bstacked items §3recipe.");
                 player.sendMessage("§3Check §f<will be implemented later> §3for more information.");
@@ -63,9 +65,9 @@ public class StackedItemsCraftListener implements Listener {
                 continue;
             }
             int required = requiredItemStack.getAmount();
-            ItemStack stack = event.getInventory().getItem(slotNum);
+            ItemStack stack = event.getInventory().getItem(slotNum+1); // see above
             stack.setAmount(stack.getAmount() - required);
-            event.getInventory().setItem(slotNum, stack);
+            event.getInventory().setItem(slotNum+1, stack);
         }
         player.setItemOnCursor(savedRecipe.result().clone());
 
