@@ -1,4 +1,4 @@
-package io.github.greatericontop.greatcrafts.stackeditems;
+package io.github.greatericontop.greatcrafts.events;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
@@ -12,10 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-public class OnCraftListener implements Listener {
+public class StackedItemsCraftListener implements Listener {
 
     private final GreatCrafts plugin;
-    public OnCraftListener(GreatCrafts plugin) {
+    public StackedItemsCraftListener(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 
