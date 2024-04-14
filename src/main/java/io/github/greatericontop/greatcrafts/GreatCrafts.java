@@ -64,6 +64,9 @@ public class GreatCrafts extends JavaPlugin {
 
         Bukkit.getScheduler().runTaskTimer(this, this::saveAll, 1200L, 1200L);
 
+        // Recipes are not loaded in by default, so do this (later)
+        Bukkit.getScheduler().runTaskLater(this, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "greatcrafts:reloadrecipes"), 20L);
+
     }
 
     @Override
