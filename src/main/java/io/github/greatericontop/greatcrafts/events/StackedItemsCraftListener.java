@@ -56,8 +56,18 @@ public class StackedItemsCraftListener implements Listener {
                 return;
             }
         }
-
-        // TODO: remove items and allow craft
+        // Remove them & set result
+        for (int slotNum = 0; slotNum < 9; slotNum++) {
+            ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
+            if (requiredItemStack == null) {
+                continue;
+            }
+            int required = requiredItemStack.getAmount();
+            ItemStack stack = event.getInventory().getItem(slotNum);
+            stack.setAmount(stack.getAmount() - required);
+            event.getInventory().setItem(slotNum, stack);
+        }
+        player.setItemOnCursor(savedRecipe.result().clone());
 
 
         // TODO: handle shift click?

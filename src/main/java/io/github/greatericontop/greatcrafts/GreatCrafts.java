@@ -5,6 +5,7 @@ import io.github.greatericontop.greatcrafts.commands.EditRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.RecipeListCommand;
 import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
+import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.GUIManager;
@@ -56,6 +57,7 @@ public class GreatCrafts extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(guiRecipeListMenu, this);
 
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
+        this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
 
 
