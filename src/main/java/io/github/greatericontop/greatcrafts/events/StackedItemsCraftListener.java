@@ -4,6 +4,7 @@ import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,11 +25,12 @@ public class StackedItemsCraftListener implements Listener {
         // Our stacked items recipe is registered as a shaped recipe (in its basic form), so we know that this event
         // will always fire
         event.setCancelled(true);
-        Recipe _recipe = event.getRecipe();
-        if (!(_recipe instanceof ShapedRecipe recipe)) {
+        Player player = (Player) event.getWhoClicked();
+        Recipe _rawRecipe = event.getRecipe();
+        if (!(_rawRecipe instanceof ShapedRecipe _shapedRecipe)) {
             return;
         }
-        NamespacedKey recipeKey = recipe.getKey();
+        NamespacedKey recipeKey = _shapedRecipe.getKey();
         // Check if it is a stacked items recipe
         SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
         if (savedRecipe == null) {
@@ -45,10 +47,17 @@ public class StackedItemsCraftListener implements Listener {
             if (requiredItemStack == null) {
                 continue;
             }
-            // We already know that the material is right
-
-            // TODO
+            // We already know that the material is right (including exact choice if applicable), just check counts
+            int required = requiredItemStack.getAmount();
+            if (event.getInventory().getItem(slotNum).getAmount() < required) {
+                player.sendMessage("§cYou don't have enough items in the crafting table!");
+                player.sendMessage("§3This is a special §bstacked items §3recipe.");
+                player.sendMessage("§3Check §f<will be implemented later> §3for more information.");
+                return;
+            }
         }
+
+        // TODO: remove items and allow craft
 
 
         // TODO: handle shift click?
