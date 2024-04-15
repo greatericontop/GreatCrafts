@@ -25,8 +25,6 @@ public class StackedItemsCraftListener implements Listener {
     public void onCraft(CraftItemEvent event) {
         // Our stacked items recipe is registered as a shaped recipe (in its basic form), so we know that this event
         // will always fire
-        event.setCancelled(true);
-        Player player = (Player) event.getWhoClicked();
         Recipe _rawRecipe = event.getRecipe();
         if (!(_rawRecipe instanceof ShapedRecipe _shapedRecipe)) {
             return;
@@ -35,13 +33,14 @@ public class StackedItemsCraftListener implements Listener {
         // Check if it is a stacked items recipe
         SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
         if (savedRecipe == null) {
-            System.out.printf("debug: skipping, savedRecipe == null (%s)\n", recipeKey);
             return;
         }
         if (savedRecipe.type() != RecipeType.STACKED_ITEMS) {
-            System.out.printf("debug: skipping, not stacked items (%s)\n", recipeKey);
             return;
         }
+
+        Player player = (Player) event.getWhoClicked();
+        event.setCancelled(true);
         // Check for sufficient items
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
