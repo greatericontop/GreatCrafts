@@ -3,6 +3,7 @@ package io.github.greatericontop.greatcrafts.events;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -58,7 +59,7 @@ public class StackedItemsCraftListener implements Listener {
                 return;
             }
         }
-        // Remove them & set result
+        // Remove them
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
             if (requiredItemStack == null) {
@@ -69,8 +70,22 @@ public class StackedItemsCraftListener implements Listener {
             stack.setAmount(stack.getAmount() - required);
             event.getInventory().setItem(slotNum+1, stack);
         }
-        player.setItemOnCursor(savedRecipe.result().clone());
-
+        // Set result
+        ItemStack result = savedRecipe.result().clone();
+        if (player.getItemOnCursor() == null || player.getItemOnCursor().getType() == Material.AIR) {
+            // Empty, simply set
+            player.setItemOnCursor(result);
+        } else if (player.getItemOnCursor().isSimilar(result)
+                && player.getItemOnCursor().getAmount() + result.getAmount() <= result.getMaxStackSize()) {
+            // Combine (sufficient stack size)
+            player.getItemOnCursor().setAmount(result.getAmount() + player.getItemOnCursor().getAmount());
+        } else {
+            // Incompatible, place item in inventory
+            if (!player.getInventory().addItem(result).isEmpty()) {
+                // Drop item
+                player.getWorld().dropItemNaturally(player.getLocation(), result);
+            }
+        }
 
         // TODO: handle shift click?
     }
