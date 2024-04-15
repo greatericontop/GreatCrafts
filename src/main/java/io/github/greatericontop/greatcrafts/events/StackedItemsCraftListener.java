@@ -44,9 +44,7 @@ public class StackedItemsCraftListener implements Listener {
         // Check for sufficient items
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
-            player.sendMessage(String.format("§7%d (inv slot %d): %s", slotNum, slotNum+1, event.getInventory().getItem(slotNum+1)));
             if (requiredItemStack == null) {
-                player.sendMessage(String.format("§7%d skip", slotNum));
                 continue;
             }
             // We already know that the material is right (including exact choice if applicable), just check counts
@@ -69,8 +67,16 @@ public class StackedItemsCraftListener implements Listener {
             stack.setAmount(stack.getAmount() - required);
             event.getInventory().setItem(slotNum+1, stack);
         }
+
         // Set result
         ItemStack result = savedRecipe.result().clone();
+
+        //if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)
+
+
+
+
+
         if (player.getItemOnCursor() == null || player.getItemOnCursor().getType() == Material.AIR) {
             // Empty, simply set
             player.setItemOnCursor(result);
@@ -78,13 +84,14 @@ public class StackedItemsCraftListener implements Listener {
                 && player.getItemOnCursor().getAmount() + result.getAmount() <= result.getMaxStackSize()) {
             // Combine (sufficient stack size)
             player.getItemOnCursor().setAmount(result.getAmount() + player.getItemOnCursor().getAmount());
-        } else {
-            // Incompatible, place item in inventory
-            if (!player.getInventory().addItem(result).isEmpty()) {
-                // Drop item
-                player.getWorld().dropItemNaturally(player.getLocation(), result);
-            }
         }
+//        else {
+//            // Incompatible, place item in inventory
+//            if (!player.getInventory().addItem(result).isEmpty()) {
+//                // Drop item
+//                player.getWorld().dropItemNaturally(player.getLocation(), result);
+//            }
+//        }
 
         // TODO: handle shift click?
     }
