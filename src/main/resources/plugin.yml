@@ -6,8 +6,12 @@ authors: [greateric]
 
 commands:
   recipes:
-    description: View recipes
+    description: View all recipes
     usage: "§c/recipes <optional search query>"
+    permission: greatcrafts.viewrecipes
+  viewrecipe:
+    description: View a recipe
+    usage: "§c/viewrecipe <namespace:name>"
     permission: greatcrafts.viewrecipes
   addrecipe:
     description: Add a recipe
