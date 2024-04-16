@@ -25,7 +25,7 @@ public class ViewRecipeCommand implements CommandExecutor {
         }
 
         String recipeName = args[0]; // TODO: maybe have distinct tagline vs namespace in the future
-        //plugin.guiCraftReadOnlyViewer.openNew(player, recipeName);
+        plugin.guiCraftReadOnlyViewer.openNew(player, recipeName);
 
         return true;
     }

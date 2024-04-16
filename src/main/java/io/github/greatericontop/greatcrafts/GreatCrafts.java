@@ -8,6 +8,7 @@ import io.github.greatericontop.greatcrafts.commands.ViewRecipeCommand;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
+import io.github.greatericontop.greatcrafts.gui.CraftReadOnlyViewer;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.GUIManager;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
@@ -27,6 +28,7 @@ public class GreatCrafts extends JavaPlugin {
     public RecipeManager recipeManager;
 
     public CraftEditor guiCraftEditor;
+    public CraftReadOnlyViewer guiCraftReadOnlyViewer;
     public ExactChoiceToggler guiExactChoiceToggler;
     public MaterialChoiceToggler guiMaterialChoiceToggler;
     public MaterialChoiceEditor guiMaterialChoiceEditor;
@@ -49,6 +51,8 @@ public class GreatCrafts extends JavaPlugin {
         GUIManager guiManager = new GUIManager(this);
         guiCraftEditor = new CraftEditor(guiManager);
         this.getServer().getPluginManager().registerEvents(guiCraftEditor, this);
+        guiCraftReadOnlyViewer = new CraftReadOnlyViewer(guiManager);
+        this.getServer().getPluginManager().registerEvents(guiCraftReadOnlyViewer, this);
         guiExactChoiceToggler = new ExactChoiceToggler(guiManager);
         this.getServer().getPluginManager().registerEvents(guiExactChoiceToggler, this);
         guiMaterialChoiceToggler = new MaterialChoiceToggler(guiManager);
