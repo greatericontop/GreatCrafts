@@ -59,7 +59,7 @@ public class StackedItemsCraftListener implements Listener {
         if (maxCraftsAvailable == 0) {
             player.sendMessage("§cYou don't have enough items in the crafting table!");
             player.sendMessage("§3This is a special §bstacked items §3recipe.");
-            player.sendMessage("§3Check §f<will be implemented later> §3for more information.");
+            player.sendMessage(String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
             return;
         }
 
