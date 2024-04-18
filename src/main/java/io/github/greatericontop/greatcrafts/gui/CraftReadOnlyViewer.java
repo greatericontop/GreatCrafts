@@ -5,12 +5,14 @@ import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientTy
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
@@ -28,9 +30,11 @@ public class CraftReadOnlyViewer implements Listener {
     private static final int SLOT_RESULT = 23;
     private static final int SLOT_EDIT = 53;
 
-    private GUIManager guiManager;
+    private final GUIManager guiManager;
+    private final NamespacedKey recipeKeyPDC;
     public CraftReadOnlyViewer(GUIManager guiManager) {
         this.guiManager = guiManager;
+        this.recipeKeyPDC = new NamespacedKey(guiManager.getPlugin(), "recipeKey");
     }
 
     public void openNew(Player player, String craftKey) {
@@ -42,13 +46,23 @@ public class CraftReadOnlyViewer implements Listener {
         }
         fillViewCraftingSlots(gui, savedRecipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, savedRecipe.result());
-        gui.setItem(SLOT_EDIT, Util.createItemStack(Material.WRITABLE_BOOK, 1, "§aEdit §eCLICK HERE"));
+        gui.setItem(SLOT_EDIT, Util.createItemStackWithPDC(Material.WRITABLE_BOOK, 1, recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString(), "§aEdit §eCLICK HERE"));
         player.openInventory(gui);
     }
 
     @EventHandler()
     public void onClick(InventoryClickEvent event) {
-        // TODO
+        Inventory gui = event.getClickedInventory();
+        if (gui == null)  return;
+        if (!event.getView().getTitle().equals(INV_NAME))  return;
+        if (!event.getView().getTopInventory().equals(event.getClickedInventory()))  return; // must click top inventory
+        event.setCancelled(true);
+        if (event.getSlot() == SLOT_EDIT) {
+            Player player = (Player) event.getWhoClicked();
+            String recipeKey = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(recipeKeyPDC, PersistentDataType.STRING);
+            player.closeInventory();
+            player.chat(String.format("/editrecipe %s", recipeKey));
+        }
     }
 
     private void fillViewCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {

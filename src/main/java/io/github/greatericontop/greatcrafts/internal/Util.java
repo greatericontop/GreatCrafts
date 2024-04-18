@@ -1,10 +1,12 @@
 package io.github.greatericontop.greatcrafts.internal;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,16 @@ public class Util {
         ItemStack stack = new ItemStack(mat, amount);
         ItemMeta im = stack.getItemMeta();
         im.setDisplayName(name);
+        im.setLore(java.util.Arrays.asList(lore));
+        stack.setItemMeta(im);
+        return stack;
+    }
+
+    public static ItemStack createItemStackWithPDC(Material mat, int amount, NamespacedKey key, PersistentDataType dtype, Object value, String name, String... lore) {
+        ItemStack stack = new ItemStack(mat, amount);
+        ItemMeta im = stack.getItemMeta();
+        im.setDisplayName(name);
+        im.getPersistentDataContainer().set(key, dtype, value);
         im.setLore(java.util.Arrays.asList(lore));
         stack.setItemMeta(im);
         return stack;
