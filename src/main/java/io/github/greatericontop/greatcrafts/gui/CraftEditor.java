@@ -170,7 +170,15 @@ public class CraftEditor implements Listener {
         RecipeType type = (RecipeType) data.get("type");
         IngredientType[] ingredientTypes = (IngredientType[]) data.get("ingredientTypes");
         List<List<Material>> materialChoiceExtra = (List<List<Material>>) data.get("materialChoiceExtra");
-        return new SavedRecipe(key, type, items, gui.getItem(SLOT_RESULT), ingredientTypes, materialChoiceExtra, gui.getItem(SLOT_ICON));
+        ItemStack resultItem = gui.getItem(SLOT_RESULT);
+        if (resultItem == null || resultItem.getType() == Material.AIR) { // prevent breaking from empty slot here
+            resultItem = new ItemStack(Material.GRASS_BLOCK, 1);
+        }
+        ItemStack slotIconItem = gui.getItem(SLOT_ICON);
+        if (slotIconItem == null || slotIconItem.getType() == Material.AIR) {
+            slotIconItem = new ItemStack(Material.GRASS_BLOCK, 1);
+        }
+        return new SavedRecipe(key, type, items, resultItem, ingredientTypes, materialChoiceExtra, slotIconItem);
     }
 
     private void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
