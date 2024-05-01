@@ -5,6 +5,9 @@ api-version: 1.19
 authors: [greateric]
 
 commands:
+  greatcrafts:
+    description: Main command
+    usage: "§c/greatcrafts"
   recipes:
     description: View all recipes
     usage: "§c/recipes <optional search query>"

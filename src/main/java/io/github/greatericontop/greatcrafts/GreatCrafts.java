@@ -2,6 +2,7 @@ package io.github.greatericontop.greatcrafts;
 
 import io.github.greatericontop.greatcrafts.commands.AddRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.EditRecipeCommand;
+import io.github.greatericontop.greatcrafts.commands.GreatCraftsCommand;
 import io.github.greatericontop.greatcrafts.commands.RecipeListCommand;
 import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
 import io.github.greatericontop.greatcrafts.commands.ViewRecipeCommand;
@@ -42,6 +43,7 @@ public class GreatCrafts extends JavaPlugin {
 
         recipeManager = new RecipeManager(this);
 
+        this.getCommand("greatcrafts").setExecutor(new GreatCraftsCommand(this));
         this.getCommand("recipes").setExecutor(new RecipeListCommand(this));
         this.getCommand("viewrecipe").setExecutor(new ViewRecipeCommand(this));
         this.getCommand("addrecipe").setExecutor(new AddRecipeCommand(this));
