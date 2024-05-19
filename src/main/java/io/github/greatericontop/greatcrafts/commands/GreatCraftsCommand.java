@@ -14,19 +14,19 @@ public class GreatCraftsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        sender.sendMessage("§9------------------------------------------------------------");
+        sender.sendMessage("§9--------------------------------------------------");
         sender.sendMessage("");
         sender.sendMessage(String.format("§aGreat§bCrafts §7v%s", plugin.getDescription().getVersion()));
         sender.sendMessage("");
         sender.sendMessage(String.format("§b%d §3recipes", plugin.recipeManager.getAllSavedRecipes().size()));
         sender.sendMessage("");
-        sender.sendMessage("§3/recipes");
-        sender.sendMessage("§3/viewrecipe ...");
-        sender.sendMessage("§3/addrecipe ...");
-        sender.sendMessage("§3/editrecipe ...");
-        sender.sendMessage("§3/reloadrecipes");
+        sender.sendMessage("§e/recipes");
+        sender.sendMessage("§e/viewrecipe");
+        sender.sendMessage("§e/addrecipe");
+        sender.sendMessage("§e/editrecipe");
+        sender.sendMessage("§e/reloadrecipes");
         sender.sendMessage("");
-        sender.sendMessage("§9------------------------------------------------------------");
+        sender.sendMessage("§9--------------------------------------------------");
         return true;
     }
 
