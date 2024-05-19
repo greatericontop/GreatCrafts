@@ -55,7 +55,6 @@ public class CraftReadOnlyViewer implements Listener {
         Inventory gui = event.getClickedInventory();
         if (gui == null)  return;
         if (!event.getView().getTitle().equals(INV_NAME))  return;
-        if (!event.getView().getTopInventory().equals(event.getClickedInventory()))  return; // must click top inventory
         event.setCancelled(true);
         if (event.getSlot() == SLOT_EDIT) {
             Player player = (Player) event.getWhoClicked();
@@ -72,7 +71,11 @@ public class CraftReadOnlyViewer implements Listener {
             switch (ingredientTypes[i]) {
                 case NORMAL -> {
                     // Strip special stuff
-                    gui.setItem(SLOTS[i], new ItemStack(recipe.items().get(i).getType(), recipe.items().get(i).getAmount()));
+                    if (recipe.items().get(i) == null) {
+                        gui.setItem(SLOTS[i], null);
+                    } else {
+                        gui.setItem(SLOTS[i], new ItemStack(recipe.items().get(i).getType(), recipe.items().get(i).getAmount()));
+                    }
                 }
                 case EXACT_CHOICE -> {
                     gui.setItem(SLOTS[i], recipe.items().get(i));
