@@ -1,7 +1,7 @@
 package io.github.greatericontop.greatcrafts.internal.datastructures;
 
 /*
- * Copyright (C) 2024-present greateric.
+ * Copyright (C) 2023-present greateric.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
