@@ -23,6 +23,12 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 
 `/reloadrecipes` - Reloads any changes to recipes (if they weren't already reloaded/activated already)
 
+## Permissions
+
+`greatcrafts.viewrecipes` - Allows viewing recipes through `/recipes` and `/viewrecipes`
+
+`greatcrafts.modifyrecipes` - Allows modifying recipes through `/addrecipe` and `/editrecipe` and `/reloadrecipes`
+
 ## Creating/editing recipes
 
 Run `/addrecipe <craft>` or `/editrecipe <craft>`.
