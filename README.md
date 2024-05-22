@@ -1,5 +1,11 @@
 # GreatCrafts
 
+**No other plugin allows for stacked items in recipe ingredients!**
+
+**Have fun with your enchanted diamond block that requires 25,600 diamonds, or if you're even meaner, diamond blocks, to make!**
+
+![Stacked items example](https://raw.githubusercontent.com/greatericontop/GreatCrafts/main/assets/stacked-items-example.png)
+
 GreatCrafts is a crafting recipe plugin that allows you to create and customize your own crafting table recipes.
 
 ## Features
