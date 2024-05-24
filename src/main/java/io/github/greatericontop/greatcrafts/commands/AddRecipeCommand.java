@@ -62,6 +62,11 @@ public class AddRecipeCommand implements CommandExecutor {
             return true;
         }
         NamespacedKey key = new NamespacedKey(recipeNameParts[0], recipeNameParts[1]);
+        if (plugin.recipeManager.getRecipe(key.toString()) != null) {
+            player.sendMessage("§cThis recipe already exists!");
+            return true;
+        }
+
         List<ItemStack> items = Arrays.asList(
                 null, null, null,
                 null, new ItemStack(Material.EMERALD_ORE, 1), null,
