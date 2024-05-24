@@ -17,6 +17,7 @@ package io.github.greatericontop.greatcrafts.internal;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -40,8 +41,19 @@ public class RecipeLoader {
 
     private static void compileAndAddShapedRecipe(SavedRecipe shapedSavedRecipe) {
         ShapedRecipe shapedRecipe = new ShapedRecipe(shapedSavedRecipe.key(), shapedSavedRecipe.result());
-        // Add our ingredients to the shaped recipe
         List<ItemStack> slots = shapedSavedRecipe.items();
+        // Kind of hacky fix: if a material choice is active, we need to put a placeholder item into the slot
+        // If it is air/null, we assume that the slot is empty even though there is a material choice there
+        for (int i = 0; i < 9; i++) {
+            if (shapedSavedRecipe.ingredientTypes()[i] == IngredientType.MATERIAL_CHOICE) {
+                if (shapedSavedRecipe.materialChoiceExtra().get(i).isEmpty()) {
+                    slots.set(i, null);
+                } else {
+                    slots.set(i, new ItemStack(Material.END_PORTAL_FRAME));
+                }
+            }
+        }
+        // Add our ingredients to the shaped recipe
         char[] layout = "         ".toCharArray();
         for (int i = 0; i < 9; i++) {
             if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
