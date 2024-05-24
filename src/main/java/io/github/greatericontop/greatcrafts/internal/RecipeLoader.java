@@ -94,8 +94,18 @@ public class RecipeLoader {
 
     private static void compileAndAddShapelessRecipe(SavedRecipe shapelessSavedRecipe) {
         ShapelessRecipe shapelessRec = new ShapelessRecipe(shapelessSavedRecipe.key(), shapelessSavedRecipe.result());
-        // Add ingredients
         List<ItemStack> slots = shapelessSavedRecipe.items();
+        // Same fix as above
+        for (int i = 0; i < 9; i++) {
+            if (shapelessSavedRecipe.ingredientTypes()[i] == IngredientType.MATERIAL_CHOICE) {
+                if (shapelessSavedRecipe.materialChoiceExtra().get(i).isEmpty()) {
+                    slots.set(i, null);
+                } else {
+                    slots.set(i, new ItemStack(Material.END_PORTAL_FRAME));
+                }
+            }
+        }
+        // Add ingredients
         for (int i = 0; i < 9; i++) {
             if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
             switch (shapelessSavedRecipe.ingredientTypes()[i]) {
@@ -122,6 +132,7 @@ public class RecipeLoader {
         // This is almost a copy of compileAndAddShapedRecipe
         ShapedRecipe shapedRecipe = new ShapedRecipe(shapedSavedRecipe.key(), shapedSavedRecipe.result());
         List<ItemStack> slots = shapedSavedRecipe.items();
+        // (Material choice not used in stacked items so no fix here)
         char[] layout = "         ".toCharArray();
         for (int i = 0; i < 9; i++) {
             if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
