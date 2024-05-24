@@ -132,7 +132,18 @@ public class RecipeLoader {
         // This is almost a copy of compileAndAddShapedRecipe
         ShapedRecipe shapedRecipe = new ShapedRecipe(shapedSavedRecipe.key(), shapedSavedRecipe.result());
         List<ItemStack> slots = shapedSavedRecipe.items();
-        // (Material choice not used in stacked items so no fix here)
+        // Material choice here is not used here, but we still have to put something in the grid so the stacked items
+        // verifier doesn't break, so we just put the end portal frame in (the craft will be impossible to use until
+        // it is fixed)
+        for (int i = 0; i < 9; i++) {
+            if (shapedSavedRecipe.ingredientTypes()[i] == IngredientType.MATERIAL_CHOICE) {
+                if (shapedSavedRecipe.materialChoiceExtra().get(i).isEmpty()) {
+                    slots.set(i, null);
+                } else {
+                    slots.set(i, new ItemStack(Material.END_PORTAL_FRAME, 64));
+                }
+            }
+        }
         char[] layout = "         ".toCharArray();
         for (int i = 0; i < 9; i++) {
             if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
@@ -156,6 +167,7 @@ public class RecipeLoader {
                     shapedRecipe.setIngredient(symbol, exactChoice);
                 }
                 case MATERIAL_CHOICE -> {
+                    shapedRecipe.setIngredient(symbol, slots.get(i).getType()); // see above note
                     Bukkit.getServer().getLogger().warning("("+shapedSavedRecipe.key()+") material choice used in a stacked items craft!");
                 }
                 default -> {
