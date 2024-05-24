@@ -21,20 +21,22 @@ import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientTy
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class RecipeLoader {
 
-    public static void compileAndAddRecipe(SavedRecipe recipe) {
+    public static void compileAndAddRecipe(SavedRecipe recipe, @Nullable CommandSender commandSender) {
         switch (recipe.type()) {
             case SHAPED -> compileAndAddShapedRecipe(recipe);
             case SHAPELESS -> compileAndAddShapelessRecipe(recipe);
-            case STACKED_ITEMS -> compileAndAddStackedItemsRecipe(recipe);
+            case STACKED_ITEMS -> compileAndAddStackedItemsRecipe(recipe, commandSender);
             default -> throw new IllegalArgumentException();
         }
     }
@@ -128,7 +130,7 @@ public class RecipeLoader {
         Bukkit.addRecipe(shapelessRec);
     }
 
-    private static void compileAndAddStackedItemsRecipe(SavedRecipe shapedSavedRecipe) {
+    private static void compileAndAddStackedItemsRecipe(SavedRecipe shapedSavedRecipe, @Nullable CommandSender commandSender) {
         // This is almost a copy of compileAndAddShapedRecipe
         ShapedRecipe shapedRecipe = new ShapedRecipe(shapedSavedRecipe.key(), shapedSavedRecipe.result());
         List<ItemStack> slots = shapedSavedRecipe.items();
@@ -168,7 +170,9 @@ public class RecipeLoader {
                 }
                 case MATERIAL_CHOICE -> {
                     shapedRecipe.setIngredient(symbol, slots.get(i).getType()); // see above note
-                    Bukkit.getServer().getLogger().warning("("+shapedSavedRecipe.key()+") material choice used in a stacked items craft!");
+                    if (commandSender != null) {
+                        commandSender.sendMessage("§c("+shapedSavedRecipe.key()+") material choice used in a stacked items craft!");
+                    }
                 }
                 default -> {
                     throw new RuntimeException();

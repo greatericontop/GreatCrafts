@@ -144,7 +144,7 @@ public class CraftEditor implements Listener {
                 guiManager.getRecipeManager().setRecipe(oldRecipe.key().toString(), newRecipe);
                 if (slot == SLOT_SAVE_AND_ACTIVATE) {
                     Bukkit.removeRecipe(newRecipe.key());
-                    RecipeLoader.compileAndAddRecipe(newRecipe);
+                    RecipeLoader.compileAndAddRecipe(newRecipe, player);
                 }
                 Util.successSound(player);
             }

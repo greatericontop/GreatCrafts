@@ -19,6 +19,7 @@ package io.github.greatericontop.greatcrafts.gui;
 
 import io.github.greatericontop.greatcrafts.internal.Util;
 import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -98,16 +99,23 @@ public class CraftReadOnlyViewer implements Listener {
                     gui.setItem(SLOTS[i], recipe.items().get(i));
                 }
                 case MATERIAL_CHOICE -> {
-                    List<Material> items = materialChoiceExtra.get(i);
-                    String[] names = new String[Math.min(8, items.size())];
-                    for (int j = 0; j < names.length; j++) {
-                        names[j] = items.get(j).name();
+                    if (recipe.type() == RecipeType.STACKED_ITEMS) {
+                        // Error message
+                        gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 64, "§cMaterial Choice",
+                                "§fMaterial choice is unsupported! Please fix this recipe!"
+                        ));
+                    } else {
+                        List<Material> items = materialChoiceExtra.get(i);
+                        String[] names = new String[Math.min(8, items.size())];
+                        for (int j = 0; j < names.length; j++) {
+                            names[j] = items.get(j).name();
+                        }
+                        String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 8 ? ", ..." : "");
+                        gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
+                                "§8Items:",
+                                itemsDisplay
+                        ));
                     }
-                    String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 8 ? ", ..." : "");
-                    gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
-                            "§8Items:",
-                            itemsDisplay
-                    ));
                 }
             }
         }
