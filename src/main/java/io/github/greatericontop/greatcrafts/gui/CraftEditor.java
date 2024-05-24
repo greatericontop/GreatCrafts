@@ -73,6 +73,10 @@ public class CraftEditor implements Listener {
 
     public void openNew(Player player, String craftKey) {
         SavedRecipe savedRecipe = guiManager.getRecipeManager().getRecipe(craftKey);
+        if (savedRecipe == null) {
+            player.sendMessage("§cRecipe not found!");
+            return;
+        }
         Inventory gui = Bukkit.createInventory(player, 54, INV_NAME);
 
         for (int i = 0; i < 54; i++) {
