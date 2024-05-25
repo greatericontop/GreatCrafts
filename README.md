@@ -77,3 +77,7 @@ Creating them is the same process; just put stacks of items in the crafting grid
 Make sure to also click on the crafting table on the right to change the recipe type to stacked items.
 
 These can also be combined with exact and material choice the same way as before, so if you're really mean you can require 160 enchanted diamonds to make an enchanted diamond block...
+
+## Compiling
+
+`mvn package`
