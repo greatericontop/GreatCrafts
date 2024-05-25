@@ -86,7 +86,8 @@ public class StackedItemsCraftListener implements Listener {
         if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
             actualAmountCrafted = 0;
             while (maxCraftsAvailable > 0) {
-                Map<Integer, ItemStack> unadded = player.getInventory().addItem(result);
+                // The .clone is necessary because spigot is dumb
+                Map<Integer, ItemStack> unadded = player.getInventory().addItem(result.clone());
                 if (!unadded.isEmpty()) {
                     if (unadded.size() != 1)  throw new RuntimeException();
                     if (!unadded.containsKey(0))  throw new RuntimeException();
