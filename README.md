@@ -40,6 +40,8 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 Run `/addrecipe <craft>` or `/editrecipe <craft>`.
 For the `<craft>` argument, include both the namespace and name, for example `myspecialnamespace:mycustomcraft`.
 
+*Note: If your namespace is `minecraft:...`, you will overwrite the existing recipe, if any, in that name.*
+
 ![Edit craft menu](assets/edit-craft-menu.png)
 
 Place the items in the 3x3 crafting grid to the left, the result slot in the middle, and the icon slot (used to label the craft in the `/recipes` menu) in the top right.
