@@ -18,6 +18,8 @@ package io.github.greatericontop.greatcrafts.gui;
  */
 
 import io.github.greatericontop.greatcrafts.internal.Util;
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -81,6 +83,12 @@ public class MaterialChoiceEditor implements Listener {
                 }
             }
             ((List<List<Material>>) internalData.get("materialChoiceExtra")).set(recipeSlotNum, materialChoiceList);
+            // Update slot in the crafting menu with end portal frame
+            guiManager.getPlugin().guiCraftEditor.fillCraftingSlot(recipeSlotNum,
+                    guiManager.playerMainInventories.get(player.getUniqueId()),
+                    (SavedRecipe) internalData.get("recipe"),
+                    (IngredientType[]) internalData.get("ingredientTypes"),
+                    (List<List<Material>>) internalData.get("materialChoiceExtra"));
             Util.successSound(player);
             player.closeInventory();
         }

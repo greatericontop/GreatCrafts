@@ -202,14 +202,14 @@ public class CraftEditor implements Listener {
         return new SavedRecipe(key, type, items, resultItem, ingredientTypes, materialChoiceExtra, slotIconItem);
     }
 
-    private void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
+    void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
         for (int i = 0; i < 9; i++) {
             fillCraftingSlot(i, gui, recipe, ingredientTypes, materialChoiceExtra);
         }
     }
 
-    private void fillCraftingSlot(int slot, Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
+    void fillCraftingSlot(int slot, Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
         switch (ingredientTypes[slot]) {
             case NORMAL, EXACT_CHOICE -> {
