@@ -226,7 +226,7 @@ public class CraftEditor implements Listener {
                         "§eSHIFT RIGHT CLICK §fto edit!",
                         "§dThis is a placeholder item. It is not actually in the recipe. Removing",
                         "§dthis item from this menu does not have any effect.",
-                        "§7Items: §8(possibly outdated)",
+                        "§7Items:",
                         itemsDisplay
                 ));
             }
