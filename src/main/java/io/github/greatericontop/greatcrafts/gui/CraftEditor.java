@@ -204,27 +204,31 @@ public class CraftEditor implements Listener {
 
     private void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
         // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
-        int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
         for (int i = 0; i < 9; i++) {
-            switch (ingredientTypes[i]) {
-                case NORMAL, EXACT_CHOICE -> {
-                    gui.setItem(SLOTS[i], recipe.items().get(i));
+            fillCraftingSlot(i, gui, recipe, ingredientTypes, materialChoiceExtra);
+        }
+    }
+
+    private void fillCraftingSlot(int slot, Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
+        int[] SLOTS = {SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9};
+        switch (ingredientTypes[slot]) {
+            case NORMAL, EXACT_CHOICE -> {
+                gui.setItem(SLOTS[slot], recipe.items().get(slot));
+            }
+            case MATERIAL_CHOICE -> {
+                List<Material> items = materialChoiceExtra.get(slot);
+                String[] names = new String[Math.min(5, items.size())];
+                for (int j = 0; j < names.length; j++) {
+                    names[j] = items.get(j).name();
                 }
-                case MATERIAL_CHOICE -> {
-                    List<Material> items = materialChoiceExtra.get(i);
-                    String[] names = new String[Math.min(5, items.size())];
-                    for (int j = 0; j < names.length; j++) {
-                        names[j] = items.get(j).name();
-                    }
-                    String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 5 ? ", ..." : "");
-                    gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
-                            "§eSHIFT RIGHT CLICK §fto edit!",
-                            "§dThis is a placeholder item. It is not actually in the recipe. Removing",
-                            "§dthis item from this menu does not have any effect.",
-                            "§7Items: §8(possibly outdated)",
-                            itemsDisplay
-                    ));
-                }
+                String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 5 ? ", ..." : "");
+                gui.setItem(SLOTS[slot], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
+                        "§eSHIFT RIGHT CLICK §fto edit!",
+                        "§dThis is a placeholder item. It is not actually in the recipe. Removing",
+                        "§dthis item from this menu does not have any effect.",
+                        "§7Items: §8(possibly outdated)",
+                        itemsDisplay
+                ));
             }
         }
     }
