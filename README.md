@@ -27,6 +27,8 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 
 `/editrecipe <namespace:name>` - Edit a custom recipe
 
+`/deleterecipe <namespace:name>` - Delete a custom recipe
+
 `/reloadrecipes` - Reloads any changes to recipes (if they weren't already reloaded/activated already)
 
 ## Permissions
