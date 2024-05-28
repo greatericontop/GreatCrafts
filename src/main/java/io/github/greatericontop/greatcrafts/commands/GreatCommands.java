@@ -17,20 +17,28 @@ package io.github.greatericontop.greatcrafts.commands;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+/*
+ * Supposed to be a command helper, it's kind of general so you can steal this if you want (just follow GPL)
+ * It is kind of quirky though, so see the other command handlers for examples
+ */
 
-public class GCUtilCommand implements CommandExecutor {
+import javax.annotation.Nullable;
+import java.util.Arrays;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String subcommand = GreatCommands.argumentString(0, args);
-        if (subcommand == null)  return false;
+public class GreatCommands {
 
-        //if (subcommand.equalsIgnoreCase())
+    public static @Nullable String argumentString(int i, String[] args) {
+        if (args.length <= i) {
+            return null;
+        }
+        return args[i];
+    }
 
-        return false;
+    public static @Nullable String argumentStringConsumeRest(int iStart, String[] args) {
+        if (args.length <= iStart) {
+            return null;
+        }
+        return String.join(" ", Arrays.copyOfRange(args, iStart, args.length));
     }
 
 }
