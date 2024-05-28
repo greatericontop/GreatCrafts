@@ -74,6 +74,7 @@ public class GreatCrafts extends JavaPlugin {
         this.getCommand("deleterecipe").setExecutor(new DeleteRecipeCommand(this));
         this.getCommand("deleterecipe").setTabCompleter(new ViewEditRecipeTabCompleter(this));
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));
+        this.getCommand("greatcraftsutil").setExecutor(new GreatCraftsCommand(this));
 
         GUIManager guiManager = new GUIManager(this);
         guiCraftEditor = new CraftEditor(guiManager);

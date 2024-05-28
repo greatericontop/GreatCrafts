@@ -32,6 +32,11 @@ commands:
     description: Reload recipes
     usage: "§c/reloadrecipes"
     permission: greatcrafts.modifyrecipes
+  greatcraftsutil:
+    description: Random utility commands for GreatCrafts
+    usage: "§c/greatcraftsutil [duplicaterecipe <source> <target>]"
+    permission: greatcrafts.greatcraftsutil
+    aliases: [gcutil]
 
 permissions:
   greatcrafts.viewrecipes:
@@ -39,4 +44,7 @@ permissions:
     default: true
   greatcrafts.modifyrecipes:
     description: Allows modifying recipes
+    default: op
+  greatcrafts.greatcraftsutil:
+    description: Allows using /greatcraftsutil
     default: op
