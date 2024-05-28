@@ -67,6 +67,14 @@ public class RecipeManager {
         plugin.recipes.set(key, yamlConfiguration.saveToString());
     }
 
+    public boolean tryDeleteRecipe(String key) {
+        if (plugin.recipes.contains(key)) {
+            plugin.recipes.set(key, null);
+            return true;
+        }
+        return false;
+    }
+
 
 
 

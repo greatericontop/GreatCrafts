@@ -24,6 +24,10 @@ commands:
     description: Edit a recipe
     usage: "§c/editrecipe <namespace:name>"
     permission: greatcrafts.modifyrecipes
+  deleterecipe:
+    description: Delete a recipe
+    usage: "§c/deleterecipe <namespace:name>"
+    permission: greatcrafts.modifyrecipes
   reloadrecipes:
     description: Reload recipes
     usage: "§c/reloadrecipes"
