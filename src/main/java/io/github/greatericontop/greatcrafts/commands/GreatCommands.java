@@ -22,6 +22,9 @@ package io.github.greatericontop.greatcrafts.commands;
  * It is kind of quirky though, so see the other command handlers for examples
  */
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
@@ -65,6 +68,17 @@ public class GreatCommands {
             }
         }
         return result;
+    }
+
+    public static @Nullable Enchantment argumentMinecraftEnchantment(int i, String[] args) {
+        if (args.length <= i) {
+            return null;
+        }
+        try {
+            return Enchantment.getByKey(new NamespacedKey("minecraft", args[i]));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
 }

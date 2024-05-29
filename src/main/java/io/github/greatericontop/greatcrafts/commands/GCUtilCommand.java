@@ -21,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -79,6 +80,21 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             deleteLoreLines(player, lineNums);
+            return true;
+        }
+
+        if (subcommand.equalsIgnoreCase("enchant")) {
+            Enchantment enchant = GreatCommands.argumentMinecraftEnchantment(1, args);
+            Integer level = GreatCommands.argumentInteger(2, args);
+            if (enchant == null || level == null) {
+                sender.sendMessage("§c/greatcraftsutil enchant <enchantment (Minecraft ID)> <level (0 to remove)>");
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSorry, players only!");
+                return true;
+            }
+            enchant(player, enchant, level);
             return true;
         }
 
@@ -146,6 +162,24 @@ public class GCUtilCommand implements CommandExecutor {
         im.setLore(lore);
         handItem.setItemMeta(im);
         player.sendMessage("§3Deleted your item's lore lines.");
+    }
+
+    private void enchant(Player player, Enchantment enchant, int level) {
+        ItemStack handItem = player.getInventory().getItemInMainHand();
+        ItemMeta im = handItem.getItemMeta();
+        if (im == null) {
+            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            return;
+        }
+        if (level <= 0) {
+            im.removeEnchant(enchant);
+            handItem.setItemMeta(im);
+            player.sendMessage("§3Removed enchantment.");
+        } else {
+            im.addEnchant(enchant, level, true);
+            handItem.setItemMeta(im);
+            player.sendMessage("§3Enchanted your item.");
+        }
     }
 
 }
