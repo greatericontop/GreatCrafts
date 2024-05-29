@@ -33,14 +33,13 @@ public class GCUtilCommand implements CommandExecutor {
         if (subcommand == null)  return false;
 
         if (subcommand.equalsIgnoreCase("setcustomname")) {
-            String usageMessage = "§c/greatcraftsutil setcustomname <name... (use & for colors)>";
-            if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSorry, players only!");
-                return true;
-            }
             String name = GreatCommands.argumentStringConsumeRest(1, args);
             if (name == null) {
-                sender.sendMessage(usageMessage);
+                sender.sendMessage("§c/greatcraftsutil setcustomname <name... (use & for colors)>");
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSorry, players only!");
                 return true;
             }
             setCustomName(player, name);
