@@ -20,6 +20,7 @@ package io.github.greatericontop.greatcrafts;
 import io.github.greatericontop.greatcrafts.commands.AddRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.DeleteRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.EditRecipeCommand;
+import io.github.greatericontop.greatcrafts.commands.GCUtilCommand;
 import io.github.greatericontop.greatcrafts.commands.GreatCraftsCommand;
 import io.github.greatericontop.greatcrafts.commands.RecipeListCommand;
 import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
@@ -74,7 +75,7 @@ public class GreatCrafts extends JavaPlugin {
         this.getCommand("deleterecipe").setExecutor(new DeleteRecipeCommand(this));
         this.getCommand("deleterecipe").setTabCompleter(new ViewEditRecipeTabCompleter(this));
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));
-        this.getCommand("greatcraftsutil").setExecutor(new GreatCraftsCommand(this));
+        this.getCommand("greatcraftsutil").setExecutor(new GCUtilCommand());
 
         GUIManager guiManager = new GUIManager(this);
         guiCraftEditor = new CraftEditor(guiManager);

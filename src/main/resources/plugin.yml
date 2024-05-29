@@ -34,7 +34,7 @@ commands:
     permission: greatcrafts.modifyrecipes
   greatcraftsutil:
     description: Random utility commands for GreatCrafts
-    usage: "§c/greatcraftsutil [duplicaterecipe <source> <target>]"
+    usage: "§c/greatcraftsutil [setcustomname]"
     permission: greatcrafts.greatcraftsutil
     aliases: [gcutil]
 
