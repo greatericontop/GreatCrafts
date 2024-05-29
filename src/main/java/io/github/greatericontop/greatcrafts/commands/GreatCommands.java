@@ -41,4 +41,15 @@ public class GreatCommands {
         return String.join(" ", Arrays.copyOfRange(args, iStart, args.length));
     }
 
+    public static @Nullable Integer argumentInteger(int i, String[] args) {
+        if (args.length <= i) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(args[i]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
 }

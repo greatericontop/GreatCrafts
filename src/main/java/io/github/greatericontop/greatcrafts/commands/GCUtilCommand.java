@@ -25,6 +25,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GCUtilCommand implements CommandExecutor {
 
     @Override
@@ -46,6 +49,24 @@ public class GCUtilCommand implements CommandExecutor {
             return true;
         }
 
+        if (subcommand.equalsIgnoreCase("setloreline")) {
+            Integer lineNum = GreatCommands.argumentInteger(1, args);
+            String loreLine = GreatCommands.argumentStringConsumeRest(2, args);
+            if (loreLine == null) {
+                loreLine = "";
+            }
+            if (lineNum == null) {
+                sender.sendMessage("§c/greatcraftsutil setloreline <line # (starts from 0)> [<lore line... (use & for colors)>]");
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSorry, players only!");
+                return true;
+            }
+            setLoreLine(player, lineNum, loreLine);
+            return true;
+        }
+
         return false;
     }
 
@@ -59,6 +80,33 @@ public class GCUtilCommand implements CommandExecutor {
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         handItem.setItemMeta(im);
         player.sendMessage("§3Set your item's name.");
+    }
+
+    private void setLoreLine(Player player, int lineNum, String loreLine) {
+        ItemStack handItem = player.getInventory().getItemInMainHand();
+        ItemMeta im = handItem.getItemMeta();
+        if (im == null) {
+            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            return;
+        }
+        List<String> lore = im.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+        // Pad empty lines (up to 10 at a time)
+        if (lore.size() <= lineNum) {
+            if (lore.size() + 10 <= lineNum) {
+                player.sendMessage(String.format("§cDid you make a typo? The lore is currently only §f%d§c lines long.", lore.size()));
+                return;
+            }
+            for (int i = lore.size(); i <= lineNum; i++) {
+                lore.add("");
+            }
+        }
+        lore.set(lineNum, ChatColor.translateAlternateColorCodes('&', loreLine));
+        im.setLore(lore);
+        handItem.setItemMeta(im);
+        player.sendMessage("§3Set your item's lore.");
     }
 
 }
