@@ -52,4 +52,19 @@ public class GreatCommands {
         }
     }
 
+    public static @Nullable int[] argumentIntegerConsumeRest(int iStart, String[] args) {
+        if (args.length <= iStart) {
+            return null;
+        }
+        int[] result = new int[args.length - iStart];
+        for (int argIndex = iStart; argIndex < args.length; argIndex++) {
+            try {
+                result[argIndex - iStart] = Integer.parseInt(args[argIndex]);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return result;
+    }
+
 }

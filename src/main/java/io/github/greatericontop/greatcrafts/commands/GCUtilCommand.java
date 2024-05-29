@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GCUtilCommand implements CommandExecutor {
@@ -64,6 +65,20 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             setLoreLine(player, lineNum, loreLine);
+            return true;
+        }
+
+        if (subcommand.equalsIgnoreCase("deleteloreline") || subcommand.equalsIgnoreCase("deletelorelines")) {
+            int[] lineNums = GreatCommands.argumentIntegerConsumeRest(1, args);
+            if (lineNums == null) {
+                sender.sendMessage("§c/greatcraftsutil deleteloreline(s) <line # (starts from 0)> [<line #> <line #> ...]");
+                return true;
+            }
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage("§cSorry, players only!");
+                return true;
+            }
+            deleteLoreLines(player, lineNums);
             return true;
         }
 
@@ -107,6 +122,30 @@ public class GCUtilCommand implements CommandExecutor {
         im.setLore(lore);
         handItem.setItemMeta(im);
         player.sendMessage("§3Set your item's lore.");
+    }
+
+    private void deleteLoreLines(Player player, int[] lineNums) {
+        ItemStack handItem = player.getInventory().getItemInMainHand();
+        ItemMeta im = handItem.getItemMeta();
+        if (im == null) {
+            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            return;
+        }
+        List<String> lore = im.getLore();
+        if (lore == null) {
+            player.sendMessage("§cNo lore to delete!");
+            return;
+        }
+        lineNums = Arrays.stream(lineNums).distinct().sorted().toArray(); // distinct, sorted, and in reverse
+        for (int i = lineNums.length - 1; i >= 0; i--) {
+            int lineNum = lineNums[i];
+            if (lineNum >= 0 && lineNum < lore.size()) {
+                lore.remove(lineNum);
+            }
+        }
+        im.setLore(lore);
+        handItem.setItemMeta(im);
+        player.sendMessage("§3Deleted your item's lore lines.");
     }
 
 }
