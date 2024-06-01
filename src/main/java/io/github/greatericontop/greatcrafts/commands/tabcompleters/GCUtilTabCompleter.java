@@ -51,7 +51,7 @@ public class GCUtilTabCompleter implements TabCompleter {
             if (args.length == 2) {
                 return List.of("<line #>");
             } else {
-                return List.of("<lore line...>");
+                return List.of("[<lore line...>]");
             }
         }
 
