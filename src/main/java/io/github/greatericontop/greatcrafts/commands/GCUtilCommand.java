@@ -69,10 +69,10 @@ public class GCUtilCommand implements CommandExecutor {
             return true;
         }
 
-        if (subcommand.equalsIgnoreCase("deleteloreline") || subcommand.equalsIgnoreCase("deletelorelines")) {
+        if (subcommand.equalsIgnoreCase("deletelorelines")) {
             int[] lineNums = GreatCommands.argumentIntegerConsumeRest(1, args);
             if (lineNums == null) {
-                sender.sendMessage("§c/greatcraftsutil deleteloreline(s) <line # (starts from 0)> [<line #> <line #> ...]");
+                sender.sendMessage("§c/greatcraftsutil deletelorelines <line # (starts from 0)> [<line #> <line #> ...]");
                 return true;
             }
             if (!(sender instanceof Player player)) {
