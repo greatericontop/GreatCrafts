@@ -26,6 +26,7 @@ import io.github.greatericontop.greatcrafts.commands.RecipeListCommand;
 import io.github.greatericontop.greatcrafts.commands.ReloadRecipesCommand;
 import io.github.greatericontop.greatcrafts.commands.ViewRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.AddRecipeTabCompleter;
+import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewEditRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
@@ -76,6 +77,7 @@ public class GreatCrafts extends JavaPlugin {
         this.getCommand("deleterecipe").setTabCompleter(new ViewEditRecipeTabCompleter(this));
         this.getCommand("reloadrecipes").setExecutor(new ReloadRecipesCommand(this));
         this.getCommand("greatcraftsutil").setExecutor(new GCUtilCommand());
+        this.getCommand("greatcraftsutil").setTabCompleter(new GCUtilTabCompleter());
 
         GUIManager guiManager = new GUIManager(this);
         guiCraftEditor = new CraftEditor(guiManager);
