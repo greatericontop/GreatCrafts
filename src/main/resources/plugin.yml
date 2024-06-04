@@ -34,7 +34,7 @@ commands:
     permission: greatcrafts.modifyrecipes
   greatcraftsutil:
     description: Random utility commands for GreatCrafts
-    usage: "§c/greatcraftsutil [setcustomname | setloreline | deletelorelines | enchant]"
+    usage: "§c/greatcraftsutil [setcustomname | setloreline | deletelorelines | enchant | duplicaterecipe]"
     permission: greatcrafts.greatcraftsutil
     aliases: [gcutil]
 

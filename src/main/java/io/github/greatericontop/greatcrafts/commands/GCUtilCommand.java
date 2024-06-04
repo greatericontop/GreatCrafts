@@ -17,6 +17,8 @@ package io.github.greatericontop.greatcrafts.commands;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,6 +33,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GCUtilCommand implements CommandExecutor {
+
+    private final GreatCrafts plugin;
+    public GCUtilCommand(GreatCrafts plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -96,6 +103,16 @@ public class GCUtilCommand implements CommandExecutor {
             }
             enchant(player, enchant, level);
             return true;
+        }
+
+        if (subcommand.equalsIgnoreCase("duplicaterecipe")) {
+            String sourceRecKey = GreatCommands.argumentString(1, args);
+            String targetRecKey = GreatCommands.argumentString(2, args);
+            if (sourceRecKey == null || targetRecKey == null) {
+                sender.sendMessage("§c/greatcraftsutil duplicaterecipe <source namespace:name> <target namespace:name>");
+                return true;
+            }
+            duplicateRecipe(sender, sourceRecKey, targetRecKey);
         }
 
         return false;
@@ -180,6 +197,23 @@ public class GCUtilCommand implements CommandExecutor {
             handItem.setItemMeta(im);
             player.sendMessage("§3Enchanted your item.");
         }
+    }
+
+    private void duplicateRecipe(CommandSender sender, String sourceRecKey, String targetRecKey) {
+        if (sourceRecKey.split(":").length != 2 || targetRecKey.split(":").length != 2) {
+            sender.sendMessage("§cBoth recipe keys must be in the format §4namespace:name§c!");
+            return;
+        }
+        SavedRecipe rec = plugin.recipeManager.getRecipe(sourceRecKey);
+        if (rec == null) {
+            sender.sendMessage("§cRecipe not found.");
+            return;
+        }
+        if (plugin.recipeManager.getRecipe(targetRecKey) != null) {
+            sender.sendMessage("§cRecipe already exists.");
+            return;
+        }
+        plugin.recipeManager.setRecipe(targetRecKey, rec);
     }
 
 }
