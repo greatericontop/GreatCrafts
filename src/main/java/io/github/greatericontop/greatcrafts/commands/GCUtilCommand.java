@@ -113,6 +113,7 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             duplicateRecipe(sender, sourceRecKey, targetRecKey);
+            return true;
         }
 
         return false;
@@ -214,6 +215,7 @@ public class GCUtilCommand implements CommandExecutor {
             return;
         }
         plugin.recipeManager.setRecipe(targetRecKey, rec);
+        sender.sendMessage(String.format("§3Copied §f%s §3to §f%s§3.", sourceRecKey, targetRecKey));
     }
 
 }
