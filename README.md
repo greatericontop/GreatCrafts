@@ -31,6 +31,8 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 
 `/reloadrecipes` - Reloads any changes to recipes (if they weren't already reloaded/activated already)
 
+`/greatcraftsutil` - Contains utility commands (see below) 
+
 ## Permissions
 
 `greatcrafts.viewrecipes` - Allows viewing recipes through `/recipes` and `/viewrecipes`
@@ -79,6 +81,35 @@ Creating them is the same process; just put stacks of items in the crafting grid
 Make sure to also click on the crafting table on the right to change the recipe type to stacked items.
 
 These can also be combined with exact and material choice the same way as before, so if you're really mean you can require 160 enchanted diamonds to make an enchanted diamond block...
+
+## Utility commands
+
+- `/greatcraftsutil setcustomname <name... (use & for colors)>`
+
+Sets the custom name of the item in your hand to the specified name.
+Colors are supported (e.g., `&agreen text`).
+
+- `/greatcraftsutil setloreline <line # (starts from 0)> [<lore line... (use & for colors)>]`
+
+Modifies the lore of the item in your hand.
+Specify the line number (starting from 0) and the lore to set on that line, or leave blank to clear it.
+You can specify a line number that is longer than the current lore (or if there is no current lore) and empty lore lines will automatically be added.
+
+- `/greatcraftsutil deletelorelines <line # (starts from 0)> [<line #> <line #> ...]`
+
+Deletes the specified line numbers.
+You can specify multiple line numbers to delete.
+
+- `/greatcraftsutil enchant <enchantment (Minecraft ID)> <level (0 to remove)>`
+
+Adds an enchant to the item in your hand.
+You can use this command to add higher levels or incompatible enchants to items.
+The enchantment argument uses Minecraft IDs without the `minecraft:` prefix.
+
+- `/greatcraftsutil duplicaterecipe <source namespace:name> <target namespace:name>`
+
+Duplicates a recipe.
+The source and target recipe arguments are both in the `namespace:name` format.
 
 ## Compiling
 
