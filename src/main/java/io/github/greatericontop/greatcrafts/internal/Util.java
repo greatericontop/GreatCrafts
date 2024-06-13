@@ -28,6 +28,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Util {
 
@@ -69,6 +70,32 @@ public class Util {
             list.add(new ArrayList<>());
         }
         return list;
+    }
+
+    public static int performShiftClickCraft(Player player, ItemStack result, int maxCraftsAvailable) {
+        int actualAmountCrafted = 0;
+        while (maxCraftsAvailable > 0) {
+            // The .clone is necessary because spigot is dumb
+            Map<Integer, ItemStack> unadded = player.getInventory().addItem(result.clone());
+            if (!unadded.isEmpty()) {
+                if (unadded.size() != 1)  throw new RuntimeException();
+                if (!unadded.containsKey(0))  throw new RuntimeException();
+                ItemStack failedToAdd = unadded.get(0);
+                if (failedToAdd.getAmount() == result.getAmount()) {
+                    // All the items failed to add - pretend this craft never happened
+                    break;
+                } else {
+                    // Some added - drop the ones that didn't get added (this is the vanilla behavior)
+                    player.getWorld().dropItemNaturally(player.getLocation(), failedToAdd);
+                    actualAmountCrafted++;
+                    maxCraftsAvailable--;
+                    break;
+                }
+            }
+            actualAmountCrafted++;
+            maxCraftsAvailable--;
+        }
+        return actualAmountCrafted;
     }
 
 }
