@@ -21,4 +21,5 @@ public enum RecipeType {
     SHAPED,
     SHAPELESS,
     STACKED_ITEMS,
+    STACKED_ITEMS_SHAPELESS,
 }

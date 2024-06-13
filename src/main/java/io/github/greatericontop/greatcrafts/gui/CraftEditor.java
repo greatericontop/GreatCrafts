@@ -134,7 +134,8 @@ public class CraftEditor implements Listener {
             RecipeType newType = switch (currentType) {
                 case SHAPED -> RecipeType.SHAPELESS;
                 case SHAPELESS -> RecipeType.STACKED_ITEMS;
-                case STACKED_ITEMS -> RecipeType.SHAPED;
+                case STACKED_ITEMS -> RecipeType.STACKED_ITEMS_SHAPELESS;
+                case STACKED_ITEMS_SHAPELESS -> RecipeType.SHAPED;
             };
             data.put("type", newType);
             gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(newType));
@@ -242,6 +243,7 @@ public class CraftEditor implements Listener {
                         "  §7If the grid is less than 3x3, the empty space is ignored.",
                         "§7>> SHAPELESS",
                         "§7>> STACKED ITEMS",
+                        "§7>> STACKED ITEMS (SHAPELESS)",
                         "§eCLICK §7to toggle"
                 );
             }
@@ -251,6 +253,7 @@ public class CraftEditor implements Listener {
                         "§f>> SHAPELESS",
                         "  §7The required items can be in any configuration.",
                         "§7>> STACKED ITEMS",
+                        "§7>> STACKED ITEMS (SHAPELESS)",
                         "§eCLICK §7to toggle"
                 );
             }
@@ -262,6 +265,19 @@ public class CraftEditor implements Listener {
                         "  §7The required items in the grid can be stacked, so rather than",
                         "  §7requiring 9 items, you can require 9 stacks of items.",
                         "  §7The recipe is shaped and only normal and exact choice are supported.",
+                        "§7>> STACKED ITEMS (SHAPELESS)",
+                        "§eCLICK §7to toggle"
+                );
+            }
+            case STACKED_ITEMS_SHAPELESS -> {
+                return Util.createItemStack(Material.CRAFTING_TABLE, 1, "§3Recipe Type",
+                        "§7>> SHAPED",
+                        "§7>> SHAPELESS",
+                        "§7>> STACKED ITEMS",
+                        "§f>> STACKED ITEMS (SHAPELESS)",
+                        "  §7Shapeless version of stacked items.",
+                        "  §7Different quantities of the same item are allowed, but players will",
+                        "  §7need the exact amounts in those stacks (not just the total amount).",
                         "§eCLICK §7to toggle"
                 );
             }

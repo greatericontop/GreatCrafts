@@ -37,7 +37,7 @@ public class RecipeLoader {
             case SHAPED -> compileAndAddShapedRecipe(recipe);
             case SHAPELESS -> compileAndAddShapelessRecipe(recipe);
             case STACKED_ITEMS -> compileAndAddStackedItemsRecipe(recipe, commandSender);
-            default -> throw new IllegalArgumentException();
+            case STACKED_ITEMS_SHAPELESS -> compileAndAddStackedItemsShapelessRecipe(recipe, commandSender);
         }
     }
 
@@ -182,6 +182,44 @@ public class RecipeLoader {
         String[] newShape = ShapeAnalyzer.shrink(shapedRecipe.getShape());
         shapedRecipe.shape(newShape);
         Bukkit.addRecipe(shapedRecipe);
+    }
+
+    private static void compileAndAddStackedItemsShapelessRecipe(SavedRecipe shapelessSavedRecipe, @Nullable CommandSender commandSender) {
+        // Similar to add shapeless recipe but with no material choice
+        ShapelessRecipe shapelessRec = new ShapelessRecipe(shapelessSavedRecipe.key(), shapelessSavedRecipe.result());
+        List<ItemStack> slots = shapelessSavedRecipe.items();
+        // See shaped stacked items recipe note
+        for (int i = 0; i < 9; i++) {
+            if (shapelessSavedRecipe.ingredientTypes()[i] == IngredientType.MATERIAL_CHOICE) {
+                if (shapelessSavedRecipe.materialChoiceExtra().get(i).isEmpty()) {
+                    slots.set(i, null);
+                } else {
+                    slots.set(i, new ItemStack(Material.END_PORTAL_FRAME, 64));
+                }
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if (slots.get(i) == null || slots.get(i).getType() == Material.AIR)  continue;
+            switch (shapelessSavedRecipe.ingredientTypes()[i]) {
+                case NORMAL -> {
+                    shapelessRec.addIngredient(slots.get(i).getType());
+                }
+                case EXACT_CHOICE -> {
+                    RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(slots.get(i));
+                    shapelessRec.addIngredient(exactChoice);
+                }
+                case MATERIAL_CHOICE -> {
+                    shapelessRec.addIngredient(slots.get(i).getType()); // see above note
+                    if (commandSender != null) {
+                        commandSender.sendMessage("§c("+shapelessSavedRecipe.key()+") material choice used in a stacked items craft!");
+                    }
+                }
+                default -> {
+                    throw new RuntimeException();
+                }
+            }
+        }
+        Bukkit.addRecipe(shapelessRec);
     }
 
 }
