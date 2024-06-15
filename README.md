@@ -39,6 +39,8 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 
 `greatcrafts.modifyrecipes` - Allows modifying recipes through `/addrecipe` and `/editrecipe` and `/reloadrecipes`
 
+`greatcrafts.greatcraftsutil` - Allows `/greatcraftsutil`
+
 ## Creating/editing recipes
 
 Run `/addrecipe <craft>` or `/editrecipe <craft>`.
