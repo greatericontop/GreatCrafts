@@ -19,7 +19,6 @@ package io.github.greatericontop.greatcrafts.events;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.Util;
-import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -32,6 +31,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +48,19 @@ public class StackedItemsCraftListener implements Listener {
         // Our stacked items recipe is registered as a shaped recipe (in its basic form), so we know that this event
         // will always fire
         Recipe _rawRecipe = event.getRecipe();
-        if (!(_rawRecipe instanceof ShapedRecipe _shapedRecipe)) {
-            return;
-        }
-        NamespacedKey recipeKey = _shapedRecipe.getKey();
-        SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
-        if (savedRecipe == null) {
-            return;
-        }
-
-        if (savedRecipe.type() == RecipeType.STACKED_ITEMS) {
+        if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
+            NamespacedKey recipeKey = _shapedRecipe.getKey();
+            SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe == null) {
+                return;
+            }
             processStackedItems(event, savedRecipe, recipeKey);
-        } else if (savedRecipe.type() == RecipeType.STACKED_ITEMS_SHAPELESS) {
+        } else if (_rawRecipe instanceof ShapelessRecipe shapelessRec) {
+            NamespacedKey recipeKey = shapelessRec.getKey();
+            SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe == null) {
+                return;
+            }
             processShapelessStackedItems(event, savedRecipe, recipeKey);
         }
     }
@@ -113,12 +114,13 @@ public class StackedItemsCraftListener implements Listener {
             inventorySlotItems.add(event.getInventory().getItem(i)); // slots 1 to 9 in the inventory are the slots
         }
         int[] requiredItemsSlotMapping = new int[9]; // RISM[inventory slot 0-8] = index to use in requiredItems
-        int maxCraftsAvailable = 0;
+        int maxCraftsAvailable = Integer.MAX_VALUE;
+        requiredItems.removeIf(item -> (item == null || item.getType() == Material.AIR)); // remove empty
         requiredItems.sort((a, b) -> Integer.compare(b.getAmount(), a.getAmount()));
 
+        // Matching step (greedy-style pairing the highest quantity requirement to the highest quantity of item)
         for (int reqIndex = 0; reqIndex < requiredItems.size(); reqIndex++) {
             ItemStack reqItemStack = requiredItems.get(reqIndex);
-            // Find the highest quantity that matches
             int highestCountSoFar = 0;
             int highestCountSlot = -1;
             for (int slotNum = 0; slotNum < 9; slotNum++) {
@@ -131,9 +133,11 @@ public class StackedItemsCraftListener implements Listener {
                 }
             }
             inventorySlotItems.set(highestCountSlot, null); // we can't use this again
+            player.sendMessage(String.format("reqIndex %d (%s): using slotNum=%d with highest count %d", reqIndex, reqItemStack, highestCountSlot, highestCountSoFar));
             int craftsPossibleHere = highestCountSoFar / reqItemStack.getAmount();
+            player.sendMessage(String.format("                  possible here: %d", craftsPossibleHere));
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsPossibleHere);
-            requiredItemsSlotMapping[highestCountSlot] = reqIndex;
+            requiredItemsSlotMapping[highestCountSlot] = reqIndex; // Link up this inventory slot to the required ingredient so we know how many to remove later
         }
 
         if (maxCraftsAvailable == 0) {
@@ -144,13 +148,15 @@ public class StackedItemsCraftListener implements Listener {
         }
 
         int actualAmountCrafted = processCraft(savedRecipe, player, event, maxCraftsAvailable);
+        player.sendMessage(String.format("available %d   actual %d", maxCraftsAvailable, actualAmountCrafted));
+
 
         // Remove items
         for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
             int slotIndexInInvSetItem = slotIndex + 1;
-            if (event.getInventory().getItem(slotIndexInInvSetItem) == null)  continue;
-            int amountToRemove = requiredItems.get(requiredItemsSlotMapping[slotIndex]).getAmount() * actualAmountCrafted;
             ItemStack stack = event.getInventory().getItem(slotIndexInInvSetItem);
+            if (stack == null || stack.getType() == Material.AIR)  continue;
+            int amountToRemove = requiredItems.get(requiredItemsSlotMapping[slotIndex]).getAmount() * actualAmountCrafted;
             stack.setAmount(stack.getAmount() - amountToRemove);
             event.getInventory().setItem(slotIndexInInvSetItem, stack);
         }
