@@ -71,15 +71,16 @@ public class StackedItemsCraftListener implements Listener {
         // Figure out our offset
         // Example: In a 2x2 stacked items craft, the actual 2x2 grid could be in the top left, top right, bottom left, bottom right
         // We do this by finding the min/max (giving the top left and bottom right corners) of the items in the grid and comparing it to the min/max of the items in the crafting recipe
+        //   This always works since Minecraft already verified for us that the shapes match
         // Also automatically accounts for the fact that slot 0 in the event inventory is the result and that the grid actually starts at getInventory().getItem(1)
-        int minSlotInSavedRec = Integer.MAX_VALUE;
-        int maxSlotInSavedRec = Integer.MIN_VALUE;
-        for (int i = 0; i < 9; i++) {
-            if (savedRecipe.items().get(i) != null || savedRecipe.items().get(i).getType() != Material.AIR) {
-                minSlotInSavedRec = Math.min(minSlotInSavedRec, i);
-                maxSlotInSavedRec = Math.max(maxSlotInSavedRec, i);
+        int minSlotInSavedRec = getMinSlotInSavedRec(savedRecipe);
+        int minSlotInEventInv = Integer.MAX_VALUE;
+        for (int i = 1; i <= 9; i++) { // grid is 1 to 9
+            if (event.getInventory().getItem(i) != null && event.getInventory().getItem(i).getType() != Material.AIR) {
+                minSlotInEventInv = Math.min(minSlotInEventInv, i);
             }
         }
+        int savedRecToEventInvOffset = minSlotInEventInv - minSlotInSavedRec;
         // Check item count
         int maxCraftsAvailable = Integer.MAX_VALUE;
         for (int slotNum = 0; slotNum < 9; slotNum++) {
@@ -89,7 +90,7 @@ public class StackedItemsCraftListener implements Listener {
             }
             // We already know that the material is right (including exact choice if applicable), just check counts
             int required = requiredItemStack.getAmount();
-            int craftsAvailable = event.getInventory().getItem(slotNum+1).getAmount() / required; // TODO: change
+            int craftsAvailable = event.getInventory().getItem(slotNum+savedRecToEventInvOffset).getAmount() / required;
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsAvailable);
         }
         if (maxCraftsAvailable == 0) {
@@ -108,10 +109,20 @@ public class StackedItemsCraftListener implements Listener {
                 continue;
             }
             int required = requiredItemStack.getAmount();
-            ItemStack stack = event.getInventory().getItem(slotNum+1); // see above
+            ItemStack stack = event.getInventory().getItem(slotNum+savedRecToEventInvOffset); // see above
             stack.setAmount(stack.getAmount() - required*actualAmountCrafted);
-            event.getInventory().setItem(slotNum+1, stack);
+            event.getInventory().setItem(slotNum+savedRecToEventInvOffset, stack);
         }
+    }
+
+    private static int getMinSlotInSavedRec(SavedRecipe savedRecipe) {
+        int minSlotInSavedRec = Integer.MAX_VALUE;
+        for (int i = 0; i < 9; i++) {
+            if (savedRecipe.items().get(i) != null && savedRecipe.items().get(i).getType() != Material.AIR) {
+                minSlotInSavedRec = Math.min(minSlotInSavedRec, i);
+            }
+        }
+        return minSlotInSavedRec;
     }
 
     private void processShapelessStackedItems(CraftItemEvent event, SavedRecipe savedRecipe, NamespacedKey recipeKey) {
