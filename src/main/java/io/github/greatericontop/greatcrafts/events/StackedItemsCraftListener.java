@@ -133,9 +133,7 @@ public class StackedItemsCraftListener implements Listener {
                 }
             }
             inventorySlotItems.set(highestCountSlot, null); // we can't use this again
-            player.sendMessage(String.format("reqIndex %d (%s): using slotNum=%d with highest count %d", reqIndex, reqItemStack, highestCountSlot, highestCountSoFar));
             int craftsPossibleHere = highestCountSoFar / reqItemStack.getAmount();
-            player.sendMessage(String.format("                  possible here: %d", craftsPossibleHere));
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsPossibleHere);
             requiredItemsSlotMapping[highestCountSlot] = reqIndex; // Link up this inventory slot to the required ingredient so we know how many to remove later
         }
@@ -148,8 +146,6 @@ public class StackedItemsCraftListener implements Listener {
         }
 
         int actualAmountCrafted = processCraft(savedRecipe, player, event, maxCraftsAvailable);
-        player.sendMessage(String.format("available %d   actual %d", maxCraftsAvailable, actualAmountCrafted));
-
 
         // Remove items
         for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
