@@ -1,0 +1,12 @@
+# GreatCrafts config
+
+
+# Setting to unlock custom crafts
+#   never - Never automatically unlocks custom recipes
+#   have-all - Automatically unlocks custom recipes if the player has all the required ingredients
+#   have-one
+#   always - Automatically unlocks all custom recipes immediately
+
+
+# Do not change this manually (you will corrupt all your crafts)
+data-version: 1
