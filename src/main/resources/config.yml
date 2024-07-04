@@ -3,10 +3,9 @@
 
 # Setting to unlock custom crafts
 #   never - Never automatically unlocks custom recipes
-#   have-all - Automatically unlocks custom recipes if the player has all the required ingredients
-#   have-one
+#   have-each - Automatically unlocks custom recipes if the player has each of the required ingredients
+#                 To fix O(scary) stuff, you'll only need 1 of each item, e.g. if the requirement is 2 diamonds and
+#                 2 emeralds, the player only needs 1 diamond and 1 emerald.
+#   have-one - Automatically unlocks custom recipes if the player has at least one of the required ingredients
 #   always - Automatically unlocks all custom recipes immediately
-
-
-# Do not change this manually (you will corrupt all your crafts)
-data-version: 1
+automatically-unlock-recipes: never

@@ -38,6 +38,7 @@ import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.RecipeListMenu;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
+import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +46,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 public class GreatCrafts extends JavaPlugin {
+
+    public AutoUnlockSetting autoUnlockSetting;
 
     public YamlConfiguration recipes;
 
@@ -59,6 +62,11 @@ public class GreatCrafts extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        this.saveDefaultConfig();
+        this.getConfig().options().copyDefaults(true);
+        this.saveConfig();
+        updateConfigVars();
 
         File recipeFile = new File(this.getDataFolder(), "recipes.yml");
         recipes = YamlConfiguration.loadConfiguration(recipeFile);
@@ -111,7 +119,17 @@ public class GreatCrafts extends JavaPlugin {
         saveAll();
     }
 
+    private void updateConfigVars() {
+        autoUnlockSetting = AutoUnlockSetting.fromConfig(this.getConfig().getString("automatically-unlock-recipes"));
+        if (autoUnlockSetting == null) {
+            this.getLogger().warning("config option automatically-unlock-recipes was missing or invalid");
+            autoUnlockSetting = AutoUnlockSetting.NEVER;
+            this.getConfig().set("automatically-unlock-recipes", "never");
+        }
+    }
+
     public void saveAll() {
+        this.saveConfig();
         try {
             recipes.save(new File(this.getDataFolder(), "recipes.yml"));
         } catch (Exception e) {
