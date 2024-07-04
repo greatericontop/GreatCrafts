@@ -28,6 +28,7 @@ import io.github.greatericontop.greatcrafts.commands.ViewRecipeCommand;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.AddRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewEditRecipeTabCompleter;
+import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
@@ -101,6 +102,7 @@ public class GreatCrafts extends JavaPlugin {
         guiRecipeListMenu = new RecipeListMenu(this);
         this.getServer().getPluginManager().registerEvents(guiRecipeListMenu, this);
 
+        this.getServer().getPluginManager().registerEvents(new AutoUnlockListener(this), this);
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
         this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
@@ -126,6 +128,7 @@ public class GreatCrafts extends JavaPlugin {
             autoUnlockSetting = AutoUnlockSetting.NEVER;
             this.getConfig().set("automatically-unlock-recipes", "never");
         }
+        this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
     }
 
     public void saveAll() {
