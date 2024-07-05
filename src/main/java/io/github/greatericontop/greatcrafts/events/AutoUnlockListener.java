@@ -19,11 +19,15 @@ package io.github.greatericontop.greatcrafts.events;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class AutoUnlockListener implements Listener {
 
@@ -32,7 +36,7 @@ public class AutoUnlockListener implements Listener {
         this.plugin = plugin;
     }
 
-    // (setting = always) Unlock on player join
+    // (setting = ALWAYS) Unlock on player join
     @EventHandler()
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.autoUnlockSetting != AutoUnlockSetting.ALWAYS)  return;
@@ -45,6 +49,53 @@ public class AutoUnlockListener implements Listener {
         }
         if (counter > 0) {
             player.sendMessage(String.format("§3[§aGreat§bCrafts§3] §f%d §3new recipes were unlocked!", counter));
+        }
+    }
+
+    // (setting = EACH / ONE) Item pickup check
+    @EventHandler()
+    public void onItemPickup(PlayerPickupItemEvent event) {
+        if (plugin.autoUnlockSetting != AutoUnlockSetting.EACH && plugin.autoUnlockSetting != AutoUnlockSetting.ONE)  return;
+        Player player = event.getPlayer();
+        ItemStack pickedUpItem = event.getItem().getItemStack();
+        for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
+            boolean shouldUnlock = false;
+            // Check if the picked up item matches any of the required items in the recipe
+            outer:
+            for (int slot = 0; slot < 9; slot++) {
+                IngredientType type = rec.ingredientTypes()[slot];
+                switch (type) {
+                    case NORMAL -> {
+                        ItemStack requiredItem = rec.items().get(slot);
+                        if (requiredItem != null && requiredItem.getType() == pickedUpItem.getType()) {
+                            shouldUnlock = true;
+                            break outer;
+                        }
+                    }
+                    case EXACT_CHOICE -> {
+                        ItemStack requiredItem = rec.items().get(slot);
+                        if (requiredItem != null && requiredItem.isSimilar(pickedUpItem)) {
+                            shouldUnlock = true;
+                            break outer;
+                        }
+                    }
+                    case MATERIAL_CHOICE -> {
+                        for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
+                            if (requiredMat == pickedUpItem.getType()) {
+                                shouldUnlock = true;
+                                break outer;
+                            }
+                        }
+                    }
+                }
+            }
+            if (shouldUnlock) {
+                // (setting = EACH) Check if we have all items before unlocking
+                // TODO ...
+                // Unlock
+                // TODO: ...
+            }
+
         }
     }
 
