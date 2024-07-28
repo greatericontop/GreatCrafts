@@ -97,7 +97,7 @@ public class AutoUnlockListener implements Listener {
                 }
             }
             if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
-                if (shouldUnlock != shouldUnlockEach)  throw new RuntimeException();
+                if ((!shouldUnlock) && shouldUnlockEach)  throw new RuntimeException();
                 if (shouldUnlockEach) {
                     player.discoverRecipe(rec.key());
                     player.sendMessage("§a[Great§bCrafts] §3You have all the ingredients used in a new recipe! Check the recipe book for more!");
