@@ -61,8 +61,8 @@ public class AutoUnlockListener implements Listener {
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
             if (player.hasDiscoveredRecipe(rec.key()))  continue;
             boolean shouldUnlock = false;
+            boolean shouldUnlockEach = true;
             // Check if the picked up item matches any of the required items in the recipe
-            outer:
             for (int slot = 0; slot < 9; slot++) {
                 IngredientType type = rec.ingredientTypes()[slot];
                 switch (type) {
@@ -70,35 +70,44 @@ public class AutoUnlockListener implements Listener {
                         ItemStack requiredItem = rec.items().get(slot);
                         if (requiredItem != null && requiredItem.getType() == pickedUpItem.getType()) {
                             shouldUnlock = true;
-                            break outer;
+                        } else {
+                            shouldUnlockEach = false;
                         }
                     }
                     case EXACT_CHOICE -> {
                         ItemStack requiredItem = rec.items().get(slot);
                         if (requiredItem != null && requiredItem.isSimilar(pickedUpItem)) {
                             shouldUnlock = true;
-                            break outer;
+                        } else {
+                            shouldUnlockEach = false;
                         }
                     }
                     case MATERIAL_CHOICE -> {
+                        boolean match = false;
                         for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
                             if (requiredMat == pickedUpItem.getType()) {
+                                match = true;
                                 shouldUnlock = true;
-                                break outer;
                             }
+                        }
+                        if (!match) {
+                            shouldUnlockEach = false;
                         }
                     }
                 }
             }
-            if (shouldUnlock) {
-                // (setting = EACH) Check if we have all items before unlocking
-                // TODO ...
-
-                // Unlock
-                player.discoverRecipe(rec.key());
-                player.sendMessage("§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!");
+            if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
+                if (shouldUnlock != shouldUnlockEach)  throw new RuntimeException();
+                if (shouldUnlockEach) {
+                    player.discoverRecipe(rec.key());
+                    player.sendMessage("§a[Great§bCrafts] §3You have all the ingredients used in a new recipe! Check the recipe book for more!");
+                }
+            } else { // AutoUnlockSetting.ONE
+                if (shouldUnlock) {
+                    player.discoverRecipe(rec.key());
+                    player.sendMessage("§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!");
+                }
             }
-
         }
     }
 
