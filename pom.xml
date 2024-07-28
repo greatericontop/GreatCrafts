@@ -6,7 +6,7 @@
 
     <groupId>io.github.greatericontop</groupId>
     <artifactId>greatcrafts</artifactId>
-    <version>1.1.0-dev</version>
+    <version>1.2.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
