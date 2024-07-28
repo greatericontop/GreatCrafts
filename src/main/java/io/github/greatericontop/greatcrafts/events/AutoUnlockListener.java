@@ -59,6 +59,7 @@ public class AutoUnlockListener implements Listener {
         Player player = event.getPlayer();
         ItemStack pickedUpItem = event.getItem().getItemStack();
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
+            if (player.hasDiscoveredRecipe(rec.key()))  continue;
             boolean shouldUnlock = false;
             // Check if the picked up item matches any of the required items in the recipe
             outer:
