@@ -61,8 +61,8 @@ public class AutoUnlockListener implements Listener {
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
             if (player.hasDiscoveredRecipe(rec.key()))  continue;
             boolean shouldUnlock = false;
-            boolean shouldUnlockEach = true;
             // Check if the picked up item matches any of the required items in the recipe
+            outer:
             for (int slot = 0; slot < 9; slot++) {
                 IngredientType type = rec.ingredientTypes()[slot];
                 switch (type) {
@@ -70,34 +70,89 @@ public class AutoUnlockListener implements Listener {
                         ItemStack requiredItem = rec.items().get(slot);
                         if (requiredItem != null && requiredItem.getType() == pickedUpItem.getType()) {
                             shouldUnlock = true;
-                        } else {
-                            shouldUnlockEach = false;
+                            break outer;
                         }
                     }
                     case EXACT_CHOICE -> {
                         ItemStack requiredItem = rec.items().get(slot);
                         if (requiredItem != null && requiredItem.isSimilar(pickedUpItem)) {
                             shouldUnlock = true;
-                        } else {
-                            shouldUnlockEach = false;
+                            break outer;
                         }
                     }
                     case MATERIAL_CHOICE -> {
-                        boolean match = false;
                         for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
                             if (requiredMat == pickedUpItem.getType()) {
-                                match = true;
                                 shouldUnlock = true;
+                                break outer;
                             }
-                        }
-                        if (!match) {
-                            shouldUnlockEach = false;
                         }
                     }
                 }
             }
             if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
-                if ((!shouldUnlock) && shouldUnlockEach)  throw new RuntimeException();
+                // Now check for all the required items somewhere in inventory
+                player.sendMessage("§7debug: starting second check");
+                boolean shouldUnlockEach = true;
+                outer:
+                for (int slot = 0; slot < 9; slot++) {
+                    IngredientType type = rec.ingredientTypes()[slot];
+                    switch (type) {
+                        case NORMAL -> {
+                            ItemStack requiredItem = rec.items().get(slot);
+                            if (requiredItem == null || requiredItem.getType() == Material.AIR) {
+                                continue outer; // Empty requirement
+                            }
+                            boolean matched = false;
+                            primary:
+                            for (ItemStack invItem : player.getInventory().getContents()) {
+                                if (invItem != null && invItem.getType() == requiredItem.getType()) {
+                                    matched = true;
+                                    break primary;
+                                }
+                            }
+                            if (!matched) {
+                                player.sendMessage(String.format("§7debug: fail on (ctable slot) %d (%s)", slot, requiredItem.getType()));
+                                shouldUnlockEach = false;
+                                break outer;
+                            }
+                        }
+                        case EXACT_CHOICE -> {
+                            ItemStack requiredItem = rec.items().get(slot);
+                            if (requiredItem == null || requiredItem.getType() == Material.AIR) {
+                                continue outer; // Empty requirement
+                            }
+                            boolean matched = false;
+                            primary:
+                            for (ItemStack invItem : player.getInventory().getContents()) {
+                                if (invItem != null && invItem.isSimilar(requiredItem)) {
+                                    matched = true;
+                                    break primary;
+                                }
+                            }
+                            if (!matched) {
+                                shouldUnlockEach = false;
+                                break outer;
+                            }
+                        }
+                        case MATERIAL_CHOICE -> {
+                            boolean matched = false;
+                            primary:
+                            for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
+                                for (ItemStack invItem : player.getInventory().getContents()) {
+                                    if (invItem != null && invItem.getType() == requiredMat) {
+                                        matched = true;
+                                        break primary;
+                                    }
+                                }
+                            }
+                            if (!matched) {
+                                shouldUnlockEach = false;
+                                break outer;
+                            }
+                        }
+                    }
+                }
                 if (shouldUnlockEach) {
                     player.discoverRecipe(rec.key());
                     player.sendMessage("§a[Great§bCrafts] §3You have all the ingredients used in a new recipe! Check the recipe book for more!");
