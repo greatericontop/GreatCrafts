@@ -29,6 +29,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AutoUnlockListener implements Listener {
 
     private final GreatCrafts plugin;
@@ -94,6 +97,14 @@ public class AutoUnlockListener implements Listener {
                 // Now check for all the required items somewhere in inventory
                 player.sendMessage("§7debug: starting second check");
                 boolean shouldUnlockEach = true;
+                // The picked up item hasn't been added to the inventory yet, so need to make our own
+                List<ItemStack> invContents = new ArrayList<>(60);
+                for (ItemStack invItem : player.getInventory().getContents()) {
+                    if (invItem != null) {
+                        invContents.add(invItem);
+                    }
+                }
+                invContents.add(pickedUpItem);
                 outer:
                 for (int slot = 0; slot < 9; slot++) {
                     IngredientType type = rec.ingredientTypes()[slot];
@@ -105,7 +116,7 @@ public class AutoUnlockListener implements Listener {
                             }
                             boolean matched = false;
                             primary:
-                            for (ItemStack invItem : player.getInventory().getContents()) {
+                            for (ItemStack invItem : invContents) {
                                 if (invItem != null && invItem.getType() == requiredItem.getType()) {
                                     matched = true;
                                     break primary;
@@ -124,7 +135,7 @@ public class AutoUnlockListener implements Listener {
                             }
                             boolean matched = false;
                             primary:
-                            for (ItemStack invItem : player.getInventory().getContents()) {
+                            for (ItemStack invItem : invContents) {
                                 if (invItem != null && invItem.isSimilar(requiredItem)) {
                                     matched = true;
                                     break primary;
@@ -139,7 +150,7 @@ public class AutoUnlockListener implements Listener {
                             boolean matched = false;
                             primary:
                             for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
-                                for (ItemStack invItem : player.getInventory().getContents()) {
+                                for (ItemStack invItem : invContents) {
                                     if (invItem != null && invItem.getType() == requiredMat) {
                                         matched = true;
                                         break primary;
