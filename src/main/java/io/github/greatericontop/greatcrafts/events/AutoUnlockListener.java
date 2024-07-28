@@ -48,7 +48,7 @@ public class AutoUnlockListener implements Listener {
             }
         }
         if (counter > 0) {
-            player.sendMessage(String.format("§3[§aGreat§bCrafts§3] §f%d §3new recipes were unlocked!", counter));
+            player.sendMessage(String.format("§a[Great§bCrafts] §f%d §3new recipes were unlocked!", counter));
         }
     }
 
@@ -92,8 +92,10 @@ public class AutoUnlockListener implements Listener {
             if (shouldUnlock) {
                 // (setting = EACH) Check if we have all items before unlocking
                 // TODO ...
+
                 // Unlock
-                // TODO: ...
+                player.discoverRecipe(rec.key());
+                player.sendMessage("§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!");
             }
 
         }
