@@ -4,7 +4,7 @@
 
 **Have fun with your enchanted diamond block that requires 25,600 diamonds, or if you're even meaner, diamond blocks, to make!**
 
-![Stacked demo](assets/stacked-demo.gif)
+![Stacked demo](https://raw.githubusercontent.com/greatericontop/GreatCrafts/main/assets/stacked-demo.gif)
 
 GreatCrafts is a crafting recipe plugin that allows you to create and customize your own crafting table recipes.
 
@@ -49,7 +49,7 @@ For the `<craft>` argument, include both the namespace and name, for example `my
 
 *Note: If your namespace is `minecraft:...`, you will overwrite the existing recipe, if any, in that name.*
 
-![Edit craft menu](assets/edit-craft-menu.png)
+![Edit craft menu](https://raw.githubusercontent.com/greatericontop/GreatCrafts/main/assets/edit-craft-menu.png)
 
 Place the items in the 3x3 crafting grid to the left, the result slot in the middle, and the icon slot (used to label the craft in the `/recipes` menu) in the top right.
 You can put stacks of items or items with NBT in the ingredients and they will be saved, but players will only have to match the item type unless you enable exact choice and/or stacked items.
@@ -75,7 +75,7 @@ Activating your changes makes the craft available to players immediately, althou
 
 ## Stacked items
 
-![Stacked items example](assets/stacked-items-example.png)
+![Stacked items example](https://raw.githubusercontent.com/greatericontop/GreatCrafts/main/assets/stacked-items-example.png)
 
 Stacked items are a special type of recipe that require stacks of each ingredient instead of just 1 of each.
 In the example shown, it would take 160 diamond blocks to make 1 enchanted diamond.
