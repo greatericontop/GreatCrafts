@@ -15,6 +15,7 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 - Supports multiple choices for an ingredient (e.g., any type of wood plank)
 - Adds **stacked item recipes**, which require stacks of ingredients
   - This allows you to require up to 576 ingredients to craft a single item
+  - Exact choice still works, and both shaped and shapeless stacked item recipes are supported
 - Has a simple to use GUI for both players and admins
 
 ## Commands
@@ -60,7 +61,8 @@ Shift left click on an ingredient to toggle exact choice, and shift right click 
 Click on the crafting table to the right to change the type of the recipe:
 - Shaped (most recipes in the game; shape of the grid matters)
 - Shapeless (the ingredients can be in any order)
-- Stacked items (require stacks of ingredients in each slot instead of just a single item)
+- Stacked items shaped (require stacks of ingredients in each slot instead of just a single item)
+- Stacked items shapeless
 
 Finally, click the barrier block to discard your changes, the green glass to save your changes, or the green concrete to save and activate your changes.
 Activating your changes makes the craft available to players immediately, although the client doesn't recognize the craft until you disconnect and reconnect.
@@ -82,7 +84,22 @@ In the example shown, it would take 160 diamond blocks to make 1 enchanted diamo
 Creating them is the same process; just put stacks of items in the crafting grid.
 Make sure to also click on the crafting table on the right to change the recipe type to stacked items.
 
-These can also be combined with exact and material choice the same way as before, so if you're really mean you can require 160 enchanted diamonds to make an enchanted diamond block...
+These can also be combined with exact choice the same way as before, so if you're really mean you can require 160 enchanted diamonds to make an enchanted diamond block...
+
+Note for shapeless stacked items:
+Multiple stacks of the same item type are supported, and they must be matched exactly.
+For example, if a stack of 16 and a stack of 32 diamonds are required, players must use exactly 16 and 32 diamonds in the recipe.
+Other ways, like 48 diamonds in 1 slot, or 16 diamonds in 3 slots, will not work.
+
+## Automatically unlocking recipes
+
+Recipes can be automatically unlocked for players under certain conditions.
+This can be configured under `automatically-unlock-recipes` in the config file.
+
+- `never` - Never automatically unlocks custom recipes
+- `have-each` - Automatically unlocks custom recipes if the player has each of the required ingredients
+- `have-one` - Automatically unlocks custom recipes if the player has at least one of the required ingredients
+- `always` - Automatically unlocks all custom recipes immediately
 
 ## Utility commands
 
