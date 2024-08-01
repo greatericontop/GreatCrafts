@@ -95,7 +95,6 @@ public class AutoUnlockListener implements Listener {
             }
             if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
                 // Now check for all the required items somewhere in inventory
-                player.sendMessage("§7debug: starting second check");
                 boolean shouldUnlockEach = true;
                 // The picked up item hasn't been added to the inventory yet, so need to make our own
                 List<ItemStack> invContents = new ArrayList<>(60);
@@ -123,7 +122,6 @@ public class AutoUnlockListener implements Listener {
                                 }
                             }
                             if (!matched) {
-                                player.sendMessage(String.format("§7debug: fail on (ctable slot) %d (%s)", slot, requiredItem.getType()));
                                 shouldUnlockEach = false;
                                 break outer;
                             }
