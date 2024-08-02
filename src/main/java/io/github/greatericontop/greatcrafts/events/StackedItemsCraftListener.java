@@ -48,6 +48,7 @@ public class StackedItemsCraftListener implements Listener {
         // Our stacked items recipe is registered as a shaped recipe (in its basic form), so we know that this event
         // will always fire
         Recipe _rawRecipe = event.getRecipe();
+        // TODO for later: only call the handlers if the savedRecipe.type is a stacked shaped / stacked shapeless
         if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
             NamespacedKey recipeKey = _shapedRecipe.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
@@ -55,8 +56,8 @@ public class StackedItemsCraftListener implements Listener {
                 return;
             }
             processStackedItems(event, savedRecipe, recipeKey);
-        } else if (_rawRecipe instanceof ShapelessRecipe shapelessRec) {
-            NamespacedKey recipeKey = shapelessRec.getKey();
+        } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
+            NamespacedKey recipeKey = _shapelessRec.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
             if (savedRecipe == null) {
                 return;
@@ -85,12 +86,18 @@ public class StackedItemsCraftListener implements Listener {
         int maxCraftsAvailable = Integer.MAX_VALUE;
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
-            if (requiredItemStack == null) {
+            if (requiredItemStack == null) { // TODO: || requiredItemStack.getType() == Material.AIR
                 continue;
             }
             // We already know that the material is right (including exact choice if applicable), just check counts
             int required = requiredItemStack.getAmount();
-            int craftsAvailable = event.getInventory().getItem(slotNum+savedRecToEventInvOffset).getAmount() / required;
+            ItemStack itemStackInGrid = event.getInventory().getItem(slotNum+savedRecToEventInvOffset);
+            if (itemStackInGrid == null) {
+                player.sendMessage("§cTHIS SHOULD NEVER HAPPEN");
+                player.sendMessage("§7rec:" + recipeKey);
+                return;
+            }
+            int craftsAvailable = itemStackInGrid.getAmount() / required;
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsAvailable);
         }
         if (maxCraftsAvailable == 0) {
