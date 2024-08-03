@@ -20,6 +20,7 @@ package io.github.greatericontop.greatcrafts.events;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.Util;
 import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -53,7 +54,7 @@ public class StackedItemsCraftListener implements Listener {
         if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
             NamespacedKey recipeKey = _shapedRecipe.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
-            if (savedRecipe == null) {
+            if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS) {
                 return;
             }
             event.getWhoClicked().sendMessage("§7debug: call processStackedItems for "+recipeKey);
@@ -61,7 +62,7 @@ public class StackedItemsCraftListener implements Listener {
         } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
             NamespacedKey recipeKey = _shapelessRec.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
-            if (savedRecipe == null) {
+            if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS_SHAPELESS) {
                 return;
             }
             processShapelessStackedItems(event, savedRecipe, recipeKey);
@@ -88,7 +89,7 @@ public class StackedItemsCraftListener implements Listener {
         int maxCraftsAvailable = Integer.MAX_VALUE;
         for (int slotNum = 0; slotNum < 9; slotNum++) {
             ItemStack requiredItemStack = savedRecipe.items().get(slotNum);
-            if (requiredItemStack == null) { // TODO: || requiredItemStack.getType() == Material.AIR
+            if (requiredItemStack == null || requiredItemStack.getType() == Material.AIR) {
                 continue;
             }
             ItemStack itemStackInGrid = event.getInventory().getItem(slotNum+savedRecToEventInvOffset);
