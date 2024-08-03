@@ -19,6 +19,7 @@ package io.github.greatericontop.greatcrafts.events;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.Util;
+import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -55,6 +56,7 @@ public class StackedItemsCraftListener implements Listener {
             if (savedRecipe == null) {
                 return;
             }
+            event.getWhoClicked().sendMessage("§7debug: call processStackedItems for "+recipeKey);
             processStackedItems(event, savedRecipe, recipeKey);
         } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
             NamespacedKey recipeKey = _shapelessRec.getKey();
@@ -89,15 +91,19 @@ public class StackedItemsCraftListener implements Listener {
             if (requiredItemStack == null) { // TODO: || requiredItemStack.getType() == Material.AIR
                 continue;
             }
-            // We already know that the material is right (including exact choice if applicable), just check counts
-            int required = requiredItemStack.getAmount();
             ItemStack itemStackInGrid = event.getInventory().getItem(slotNum+savedRecToEventInvOffset);
-            if (itemStackInGrid == null) {
-                player.sendMessage("§cTHIS SHOULD NEVER HAPPEN");
-                player.sendMessage("§7rec:" + recipeKey);
+            // We actually don't know if the item will match, because Minecraft allows you to mirror the recipe
+            // horizontally and still pass its own check. If it doesn't match up, just fail with error.
+            if (itemStackInGrid == null
+                    || itemStackInGrid.getType() != requiredItemStack.getType()
+                    || (savedRecipe.ingredientTypes()[slotNum] == IngredientType.EXACT_CHOICE && !itemStackInGrid.isSimilar(requiredItemStack))
+            ) {
+                player.sendMessage("§cThe recipe doesn't exactly match!");
+                player.sendMessage("§3You probably mirrored the recipe.");
+                player.sendMessage(String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
                 return;
             }
-            int craftsAvailable = itemStackInGrid.getAmount() / required;
+            int craftsAvailable = itemStackInGrid.getAmount() / requiredItemStack.getAmount();;
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsAvailable);
         }
         if (maxCraftsAvailable == 0) {
