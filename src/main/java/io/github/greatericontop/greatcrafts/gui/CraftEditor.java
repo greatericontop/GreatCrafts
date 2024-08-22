@@ -53,12 +53,13 @@ public class CraftEditor implements Listener {
     private static final int SLOT_RESULT = 23;
     private static final int SLOT_ICON = 16;
     private static final int SLOT_CHANGE_TYPE = 26;
+    private static final int SLOT_DELETER = 46;
     private static final int SLOT_DISCARD = 51;
     private static final int SLOT_SAVE = 52;
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
     private static final Set<Integer> VALID_CLICK_SLOTS = Set.of(
             SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9,
-            SLOT_RESULT, SLOT_ICON, SLOT_CHANGE_TYPE, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
+            SLOT_RESULT, SLOT_ICON, SLOT_CHANGE_TYPE, SLOT_DELETER, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
     );
     private static final Map<Integer, Integer> SLOT_INDEXER = Map.of(
             SLOT1, 0, SLOT2, 1, SLOT3, 2,
@@ -92,6 +93,8 @@ public class CraftEditor implements Listener {
                 "§eSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
                 "§7Discard, save, or save and activate your changes."
         ));
+        gui.setItem(SLOT_DELETER, Util.createItemStack(Material.REDSTONE, 1, "§cItem Deleter",
+                "§7Place items here to delete them without dropping them on the ground."));
         gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(savedRecipe.type()));
         gui.setItem(SLOT_DISCARD, Util.createItemStack(Material.BARRIER, 1, "§cDiscard Changes"));
         gui.setItem(SLOT_SAVE, Util.createItemStack(Material.LIME_STAINED_GLASS, 1, "§aSave Changes"));
@@ -139,6 +142,11 @@ public class CraftEditor implements Listener {
             };
             data.put("type", newType);
             gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(newType));
+            event.setCancelled(true);
+        }
+
+        if (slot == SLOT_DELETER) {
+            player.setItemOnCursor(null);
             event.setCancelled(true);
         }
 
