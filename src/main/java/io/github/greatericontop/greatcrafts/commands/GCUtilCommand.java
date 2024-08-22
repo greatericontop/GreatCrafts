@@ -20,6 +20,7 @@ package io.github.greatericontop.greatcrafts.commands;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -214,7 +215,22 @@ public class GCUtilCommand implements CommandExecutor {
             sender.sendMessage("§cRecipe already exists.");
             return;
         }
-        plugin.recipeManager.setRecipe(targetRecKey, rec);
+
+        // Prepare new recipe (copying directly causes a lot of issues, especially with the namespaced key mismatch
+        // in config vs SavedRecipe), everything else won't be shadowed since we call setRecipe which saves it to disk.
+        String[] targetRecParts = targetRecKey.split(":");
+        NamespacedKey targetKey = new NamespacedKey(targetRecParts[0], targetRecParts[1]);
+
+        SavedRecipe newSavedRec = new SavedRecipe(
+                targetKey,
+                rec.type(),
+                rec.items(),
+                rec.result(),
+                rec.ingredientTypes(),
+                rec.materialChoiceExtra(),
+                rec.iconItem()
+        );
+        plugin.recipeManager.setRecipe(targetRecKey, newSavedRec);
         sender.sendMessage(String.format("§3Copied §f%s §3to §f%s§3.", sourceRecKey, targetRecKey));
     }
 

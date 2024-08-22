@@ -58,7 +58,11 @@ public class RecipeManager {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-        return deserializeSavedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
+        SavedRecipe savedRec = deserializeSavedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
+        if (savedRec.key().toString().equals(key)) {
+            throw new RuntimeException(String.format("Malformed config; key mismatch! Key requested %s, key found in savedRec %s", key, savedRec.key()));
+        }
+        return savedRec;
     }
 
     public void setRecipe(String key, SavedRecipe recipe) {
