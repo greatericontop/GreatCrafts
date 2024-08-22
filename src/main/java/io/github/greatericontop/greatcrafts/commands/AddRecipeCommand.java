@@ -61,6 +61,16 @@ public class AddRecipeCommand implements CommandExecutor {
             player.sendMessage("§cThe recipe must be in the format §4namespace:name§c!");
             return true;
         }
+        // Validate input
+        if (recipeNameParts[0].matches("[^a-z0-9_\\-.]+")) {
+            player.sendMessage("§cThe namespace can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, and §f.§c!");
+            return true;
+        }
+        if (recipeNameParts[1].matches("[^a-z0-9_\\-./]+")) {
+            player.sendMessage("§cThe key can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, §f.§c, and §f/§c!");
+            return true;
+        }
+
         NamespacedKey key = new NamespacedKey(recipeNameParts[0], recipeNameParts[1]);
         if (plugin.recipeManager.getRecipe(key.toString()) != null) {
             player.sendMessage("§cThis recipe already exists!");
