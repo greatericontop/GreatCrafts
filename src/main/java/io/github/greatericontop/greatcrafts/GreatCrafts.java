@@ -106,6 +106,12 @@ public class GreatCrafts extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
         this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
+        // Paper & Spigot: getBukkitVersion() -> "1.21-R0.1-SNAPSHOT"
+        String rawVersion = Bukkit.getServer().getBukkitVersion();
+        String minecraftVersion = rawVersion.split("-")[0];
+        int majorVersion = Integer.parseInt(minecraftVersion.split("\\.")[1]);
+        this.getLogger().info("Minecraft (major) version: "+majorVersion);
+
 
 
 
