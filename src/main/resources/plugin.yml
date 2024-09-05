@@ -1,7 +1,7 @@
 name: GreatCrafts
 version: "${project.version}"
 main: io.github.greatericontop.greatcrafts.GreatCrafts
-api-version: 1.19
+api-version: 1.21
 authors: [greateric]
 
 commands:
