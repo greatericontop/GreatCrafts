@@ -29,9 +29,9 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.AddRecipeTabC
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewEditRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
-import io.github.greatericontop.greatcrafts.events.CrafterEvents;
+import io.github.greatericontop.greatcrafts.events.stackeditems.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
-import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
+import io.github.greatericontop.greatcrafts.events.stackeditems.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.CraftReadOnlyViewer;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
