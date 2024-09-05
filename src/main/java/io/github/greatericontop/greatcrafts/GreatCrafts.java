@@ -29,6 +29,7 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.AddRecipeTabC
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewEditRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
+import io.github.greatericontop.greatcrafts.events.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
@@ -111,6 +112,11 @@ public class GreatCrafts extends JavaPlugin {
         String minecraftVersion = rawVersion.split("-")[0];
         int majorVersion = Integer.parseInt(minecraftVersion.split("\\.")[1]);
         this.getLogger().info("Minecraft (major) version: "+majorVersion);
+
+        if (majorVersion >= 21) {
+            this.getLogger().info("(1.21+) Enabling support for crafter block");
+            this.getServer().getPluginManager().registerEvents(new CrafterEvents(this), this);
+        }
 
 
 

@@ -17,7 +17,52 @@ package io.github.greatericontop.greatcrafts.events;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.CrafterCraftEvent;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
 public class CrafterEvents implements Listener {
+
+    private final GreatCrafts plugin;
+    public CrafterEvents(GreatCrafts plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler()
+    public void onCrafterCraft(CrafterCraftEvent event) {
+        Recipe _rawRecipe = event.getRecipe();
+        if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
+            NamespacedKey recipeKey = _shapedRecipe.getKey();
+            SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS) {
+                return;
+            }
+            // TODO: WIP
+            event.setCancelled(true);
+            for (Entity e : event.getBlock().getWorld().getNearbyEntities(event.getBlock().getLocation(), 10.0, 10.0, 10.0, entity -> entity instanceof Player)) {
+                e.sendMessage("§cCrafters cannot craft stacked items recipes yet!");
+            }
+        } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
+            NamespacedKey recipeKey = _shapelessRec.getKey();
+            SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS_SHAPELESS) {
+                return;
+            }
+            // TODO: WIP
+            event.setCancelled(true);
+            for (Entity e : event.getBlock().getWorld().getNearbyEntities(event.getBlock().getLocation(), 10.0, 10.0, 10.0, entity -> entity instanceof Player)) {
+                e.sendMessage("§cCrafters cannot craft stacked items recipes yet!");
+            }
+        }
+    }
+
 }
