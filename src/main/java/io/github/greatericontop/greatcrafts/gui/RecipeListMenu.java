@@ -123,6 +123,12 @@ public class RecipeListMenu implements Listener {
             player.sendMessage("§3There are no recipes! Add one with §b/addrecipe§3.");
             return;
         }
+        if (searchQuery != null) {
+            if (allRecipes.stream().filter(savedRecipe -> savedRecipe.key().toString().contains(searchQuery)).toList().isEmpty()) {
+                player.sendMessage("§3No recipes match with that search!");
+                return;
+            }
+        }
         Inventory gui = Bukkit.createInventory(null, 54, INV_NAME);
         updateInventory(allRecipes, gui, 1, false, searchQuery);
         // (Does not get added to :playerMainInventories:)
