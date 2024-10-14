@@ -26,6 +26,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -103,6 +104,7 @@ public class RecipeListMenu implements Listener {
         String searchQueryLine = searchQuery == null ? "§7Showing all recipes" : "§7Currently searching for: §f"+searchQuery;
         ItemStack nextPage = Util.createItemStack(Material.PAPER, 1,
                 String.format("§6Page §e%d §6/ §e%d", visualPageNumber, totalPages),
+                "§3Left click to view, right click to edit",
                 searchQueryLine,
                 "§8You can use §7/recipes <search keyword> §8to",
                 "§8search for specific recipes!");
@@ -158,7 +160,11 @@ public class RecipeListMenu implements Listener {
             ItemMeta im = itemClicked.getItemMeta();
             String recipeKey = im.getPersistentDataContainer().get(recipeKeyPDC, PersistentDataType.STRING);
             player.closeInventory();
-            player.chat(String.format("/editrecipe %s", recipeKey));
+            if (event.getClick() == ClickType.RIGHT) {
+                player.chat(String.format("/editrecipe %s", recipeKey));
+            } else {
+                player.chat(String.format("/viewrecipe %s", recipeKey));
+            }
         }
     }
 
