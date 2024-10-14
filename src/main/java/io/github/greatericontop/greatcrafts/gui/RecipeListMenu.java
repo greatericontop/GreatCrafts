@@ -100,11 +100,12 @@ public class RecipeListMenu implements Listener {
             gui.setItem(NEXT_PAGE_SLOT, nextPage);
         }
         // Page number indicator
+        String searchQueryLine = searchQuery == null ? "§7Showing all recipes" : "§7Currently searching for: §f"+searchQuery;
         ItemStack nextPage = Util.createItemStack(Material.PAPER, 1,
-                String.format("§fPage §e%d §f/ §e%d", visualPageNumber, totalPages),
-                "§7Currently searching for: §f"+searchQuery,
-                "§8You can also use §7/recipes <search> §8to only look at",
-                "§8recipes that match a search.");
+                String.format("§6Page §e%d §6/ §e%d", visualPageNumber, totalPages),
+                searchQueryLine,
+                "§8You can use §7/recipes <search keyword> §8to",
+                "§8search for specific recipes!");
         ItemMeta im = nextPage.getItemMeta();
         im.getPersistentDataContainer().set(pageNumberIndicatorPDC, PersistentDataType.INTEGER, visualPageNumber);
         if (searchQuery != null) {
