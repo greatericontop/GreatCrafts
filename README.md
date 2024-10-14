@@ -16,6 +16,7 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 - Adds **stacked item recipes**, which require stacks of ingredients
   - This allows you to require up to 576 ingredients to craft a single item
   - Exact choice still works, and both shaped and shapeless stacked item recipes are supported
+- Supports 1.21+ crafters for all recipes, including stacked items
 - Has a simple to use GUI for both players and admins
 
 ## Commands
