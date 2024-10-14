@@ -132,7 +132,7 @@ public class RecipeListMenu implements Listener {
         Inventory gui = event.getClickedInventory();
         if (gui == null) return;
         if (!event.getView().getTitle().equals(INV_NAME)) return;
-        event.setCancelled(true); // cancel all when inventory open (including, e.g., shift-clicking bottom inventory)
+        event.setCancelled(true); // cancel all when inventory open (including, e.g., shift-clicking bottom inventory) to prevent dupes in survival
         if (!event.getView().getTopInventory().equals(event.getClickedInventory())) return; // must click top inventory
         Player player = (Player) event.getWhoClicked();
         int slot = event.getSlot();
