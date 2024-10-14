@@ -80,12 +80,12 @@ public class RecipeListMenu implements Listener {
             ItemMeta im = icon.getItemMeta();
             ItemStack resultItem = savedRecipe.result();
             String resultName = (resultItem.hasItemMeta() && resultItem.getItemMeta().hasDisplayName())
-                    ? resultItem.getItemMeta().getDisplayName() : "§8§o"+resultItem.getType().getKey().getKey();
-            String resultDisplay = String.format("%s §8§ox%d%s",
+                    ? resultItem.getItemMeta().getDisplayName() : resultItem.getType().getKey().getKey();
+            String resultDisplay = String.format("  §f%s §7x§f%d%s",
                     resultName, resultItem.getAmount(),
-                    resultItem.hasItemMeta() ? " (+NBT)" : "");
+                    resultItem.hasItemMeta() ? " §7(+NBT)" : "");
             im.getPersistentDataContainer().set(recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString());
-            Util.appendLore(im, "", "", resultDisplay, "§8§o"+savedRecipe.key());
+            Util.appendLore(im, "", "", "§dResult item:", resultDisplay, "§dKey:", "  §7"+savedRecipe.key());
             icon.setItemMeta(im);
             gui.setItem(i % CRAFTS_PER_PAGE, icon);
         }
