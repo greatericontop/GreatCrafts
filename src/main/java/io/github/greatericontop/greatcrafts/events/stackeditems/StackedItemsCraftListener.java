@@ -129,7 +129,7 @@ public class StackedItemsCraftListener implements Listener {
         }
     }
 
-    private static int getMinSlotInSavedRec(SavedRecipe savedRecipe) {
+    public static int getMinSlotInSavedRec(SavedRecipe savedRecipe) {
         int minSlotInSavedRec = Integer.MAX_VALUE;
         for (int i = 0; i < 9; i++) {
             if (savedRecipe.items().get(i) != null && savedRecipe.items().get(i).getType() != Material.AIR) {
