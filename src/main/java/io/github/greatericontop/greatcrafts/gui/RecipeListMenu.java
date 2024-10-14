@@ -91,12 +91,12 @@ public class RecipeListMenu implements Listener {
         int totalPages = (int) Math.ceil(searchResults.size() / (double) CRAFTS_PER_PAGE);
         // Previous page
         if (visualPageNumber != 1) {
-            ItemStack prevPage = Util.createItemStack(Material.ARROW, 1, "Previous Page");
+            ItemStack prevPage = Util.createItemStack(Material.ARROW, 1, "§fPrevious Page");
             gui.setItem(PREV_PAGE_SLOT, prevPage);
         }
         // Next page
         if (visualPageNumber != totalPages) {
-            ItemStack nextPage = Util.createItemStack(Material.ARROW, 1, "Next Page");
+            ItemStack nextPage = Util.createItemStack(Material.ARROW, 1, "§fNext Page");
             gui.setItem(NEXT_PAGE_SLOT, nextPage);
         }
         // Page number indicator
