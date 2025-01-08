@@ -47,17 +47,15 @@ public class StackedItemsCraftListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCraft(CraftItemEvent event) {
-        // Our stacked items recipe is registered as a shaped recipe (in its basic form), so we know that this event
+        // Our stacked items recipe is registered as a recipe (in its basic form), so we know that this event
         // will always fire
         Recipe _rawRecipe = event.getRecipe();
-        // TODO for later: only call the handlers if the savedRecipe.type is a stacked shaped / stacked shapeless
         if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
             NamespacedKey recipeKey = _shapedRecipe.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
             if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS) {
                 return;
             }
-            event.getWhoClicked().sendMessage("§7debug: call processStackedItems for "+recipeKey);
             processStackedItems(event, savedRecipe, recipeKey);
         } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
             NamespacedKey recipeKey = _shapelessRec.getKey();
