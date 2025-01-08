@@ -44,11 +44,11 @@ public class AddRecipeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cA player is required!");
+            plugin.languager.commandErrorPlayerRequired(sender);
             return true;
         }
         if (player.getGameMode() != GameMode.CREATIVE) {
-            player.sendMessage("§cYour gamemode must be creative to edit recipes!");
+            plugin.languager.commandErrorCreativeRequired(player);
             return true;
         }
         if (args.length == 0) {
@@ -58,22 +58,22 @@ public class AddRecipeCommand implements CommandExecutor {
         String recipeName = args[0];
         String[] recipeNameParts = recipeName.split(":");
         if (recipeNameParts.length != 2) {
-            player.sendMessage("§cThe recipe must be in the format §4namespace:name§c!");
+            plugin.languager.commandErrorRecipeKeyFormat(player);
             return true;
         }
         // Validate input
         if (recipeNameParts[0].matches("[^a-z0-9_\\-.]+")) {
-            player.sendMessage("§cThe namespace can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, and §f.§c!");
+            plugin.languager.commandErrorRecipeKeyNamespace(player);
             return true;
         }
         if (recipeNameParts[1].matches("[^a-z0-9_\\-./]+")) {
-            player.sendMessage("§cThe key can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, §f.§c, and §f/§c!");
+            plugin.languager.commandErrorRecipeKeyKey(player);
             return true;
         }
 
         NamespacedKey key = new NamespacedKey(recipeNameParts[0], recipeNameParts[1]);
         if (plugin.recipeManager.getRecipe(key.toString()) != null) {
-            player.sendMessage("§cThis recipe already exists!");
+            plugin.languager.commandErrorRecipeExists(player);
             return true;
         }
 

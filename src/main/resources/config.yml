@@ -34,3 +34,42 @@ language-settings:
   - "§3This is a special §bstacked items §3recipe."
   - "§3Check §f/viewrecipe %recipekey% §3to make the craft."
 
+  # When console tries to run a command that needs a player.
+  commandErrorPlayerRequired:
+  - "§cA player is required!"
+
+  # When creative mode is required.
+  commandErrorCreativeRequired:
+  - "§cYour gamemode must be creative to edit recipes!"
+
+  # When the recipe key format is bad.
+  commandErrorRecipeKeyFormat:
+  - "§cThe recipe must be in the format §4namespace:name§c!"
+
+  # When the namespace is bad.
+  commandErrorRecipeKeyNamespace:
+  - "§cThe namespace can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, and §f.§c!"
+
+  # When the key is bad.
+  commandErrorRecipeKeyKey:
+  - "§cThe key can only contain §flowercase§c, §fnumbers§c, §f_§c, §f-§c, §f.§c, and §f/§c!"
+
+  # When the recipe already exists.
+  commandErrorRecipeExists:
+  - "§cThis recipe already exists!"
+
+  # The message that asks the command sender to confirm deletion.
+  # Placeholders: %recipekey% = the recipe key
+  commandConfirmDeletion:
+  - "§cAre you sure you want to delete %recipekey%?"
+  - "§cRun §f/deleterecipe %recipekey% confirm §cto confirm."
+
+  # When deletion is successful.
+  # Placeholders: %recipekey% = the recipe key
+  commandDeletionSuccess:
+  - "§3Deleted §f%recipekey%§3."
+
+  # When the recipe doesn't exist.
+  # Placeholders: %recipekey% = the recipe key
+  commandErrorRecipeNotExist:
+  - "§cRecipe §f%s §cdoes not exist."

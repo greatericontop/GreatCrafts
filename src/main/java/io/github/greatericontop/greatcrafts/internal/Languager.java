@@ -48,6 +48,62 @@ public class Languager {
         }
     }
 
+    public void commandErrorPlayerRequired(CommandSender sender) {
+        for (String s : getText("commandErrorPlayerRequired")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorCreativeRequired(CommandSender sender) {
+        for (String s : getText("commandErrorCreativeRequired")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorRecipeKeyFormat(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeKeyFormat")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorRecipeKeyNamespace(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeKeyNamespace")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorRecipeKeyKey(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeKeyKey")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorRecipeExists(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeExists")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandConfirmDeletion(CommandSender sender, String recipeKey) {
+        for (String s : getText("commandConfirmDeletion")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%recipekey%", recipeKey));
+        }
+    }
+
+    public void commandDeletionSuccess(CommandSender sender, String recipeKey) {
+        for (String s : getText("commandDeletionSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%recipekey%", recipeKey));
+        }
+    }
+
+    public void commandErrorRecipeNotExist(CommandSender sender, String recipeKey) {
+        for (String s : getText("commandErrorRecipeNotExist")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%recipekey%", recipeKey));
+        }
+    }
 
 
 

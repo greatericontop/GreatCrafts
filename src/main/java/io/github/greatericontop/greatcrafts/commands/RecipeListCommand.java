@@ -33,7 +33,7 @@ public class RecipeListCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cA player is required!");
+            plugin.languager.commandErrorPlayerRequired(sender);
             return true;
         }
         if (args.length == 0) {
