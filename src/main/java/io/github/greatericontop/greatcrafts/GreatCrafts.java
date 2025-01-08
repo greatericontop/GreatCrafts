@@ -40,6 +40,7 @@ import io.github.greatericontop.greatcrafts.gui.GUIManager;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.RecipeListMenu;
+import io.github.greatericontop.greatcrafts.internal.Languager;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
 import org.bukkit.Bukkit;
@@ -51,6 +52,7 @@ import java.io.File;
 public class GreatCrafts extends JavaPlugin {
 
     public AutoUnlockSetting autoUnlockSetting;
+    public Languager languager;
 
     public YamlConfiguration recipes;
 
@@ -143,6 +145,8 @@ public class GreatCrafts extends JavaPlugin {
             this.getConfig().set("automatically-unlock-recipes", "never");
         }
         this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
+        languager = new Languager(this);
+        this.getLogger().info("  Languager ready!");
     }
 
     public void saveAll() {

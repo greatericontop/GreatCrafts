@@ -9,3 +9,28 @@
 #   have-one - Automatically unlocks custom recipes if the player has at least one of the required ingredients
 #   always - Automatically unlocks all custom recipes immediately
 automatically-unlock-recipes: never
+
+
+# You can change the messages used by the plugin here.
+# The general format is
+#   message-thing:
+#   - "Line 1"
+#   - "Line 2"
+#   - "..."
+# Use § or & for color codes.
+language-settings:
+
+  # When an exact match is missed in a stacked items craft, usually because it's mirrored
+  # Placeholders: %recipekey% = the recipe key
+  stackedItemsErrorMissedExactMatch:
+  - "§cThe recipe doesn't exactly match!"
+  - "§3You probably mirrored the recipe."
+  - "§3Check §f/viewrecipe %recipekey% §3to make the craft."
+
+  # When you don't have enough items to make the stacked items craft.
+  # Placeholders: %recipekey% = the recipe key
+  stackedItemsErrorNotEnoughItems:
+  - "§cYou don't have enough items in the crafting table!"
+  - "§3This is a special §bstacked items §3recipe."
+  - "§3Check §f/viewrecipe %recipekey% §3to make the craft."
+

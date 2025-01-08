@@ -97,18 +97,14 @@ public class StackedItemsCraftListener implements Listener {
                     || itemStackInGrid.getType() != requiredItemStack.getType()
                     || (savedRecipe.ingredientTypes()[slotNum] == IngredientType.EXACT_CHOICE && !itemStackInGrid.isSimilar(requiredItemStack))
             ) {
-                player.sendMessage("§cThe recipe doesn't exactly match!");
-                player.sendMessage("§3You probably mirrored the recipe.");
-                player.sendMessage(String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
+                plugin.languager.stackedItemsErrorMissedExactMatch(player, recipeKey.toString());
                 return;
             }
             int craftsAvailable = itemStackInGrid.getAmount() / requiredItemStack.getAmount();;
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsAvailable);
         }
         if (maxCraftsAvailable == 0) {
-            player.sendMessage("§cYou don't have enough items in the crafting table!");
-            player.sendMessage("§3This is a special §bstacked items §3recipe.");
-            player.sendMessage(String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
+            plugin.languager.stackedItemsErrorNotEnoughItems(player, recipeKey.toString());
             return;
         }
 
@@ -174,9 +170,7 @@ public class StackedItemsCraftListener implements Listener {
         }
 
         if (maxCraftsAvailable == 0) {
-            player.sendMessage("§cYou don't have enough items in the crafting table!");
-            player.sendMessage("§3This is a special §bstacked items §3recipe.");
-            player.sendMessage(String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
+            plugin.languager.stackedItemsErrorNotEnoughItems(player, recipeKey.toString());
             return;
         }
 

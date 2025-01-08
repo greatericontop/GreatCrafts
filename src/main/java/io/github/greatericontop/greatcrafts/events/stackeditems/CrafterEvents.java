@@ -92,9 +92,7 @@ public class CrafterEvents implements Listener {
                     || itemStackInGrid.getType() != requiredItemStack.getType()
                     || (savedRecipe.ingredientTypes()[slotNum] == IngredientType.EXACT_CHOICE && !itemStackInGrid.isSimilar(requiredItemStack))
             ) {
-                messageNearbyPlayers(event, "§cThe recipe doesn't exactly match!",
-                        "§3This is a special §bstacked items §3recipe.",
-                        String.format("§3Check §f/viewrecipe %s §3to make the craft.", recipeKey));
+                messageNearbyPlayers(event, recipeKey.toString());
                 return;
             }
             if (itemStackInGrid.getAmount() < requiredItemStack.getAmount()) {
@@ -165,11 +163,9 @@ public class CrafterEvents implements Listener {
         event.setCancelled(false);
     }
 
-    private static void messageNearbyPlayers(CrafterCraftEvent event, String... messages) {
+    private void messageNearbyPlayers(CrafterCraftEvent event, String recipeKey) {
         for (Entity e : event.getBlock().getWorld().getNearbyEntities(event.getBlock().getLocation(), 20.0, 20.0, 20.0, entity -> entity instanceof Player)) {
-            for (String msg : messages) {
-                e.sendMessage(msg);
-            }
+            plugin.languager.stackedItemsErrorMissedExactMatch(e, recipeKey);
         }
     }
 
