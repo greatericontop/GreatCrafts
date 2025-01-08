@@ -40,7 +40,7 @@ public class InventoryCloseListener implements Listener {
 
         // Check if trying to close out of the main inventory
         if (event.getInventory().equals(lastInventory)) {
-            player.sendMessage("§cDiscard or save your changes first!");
+            guiManager.getPlugin().languager.inventoryCloseTooEarly(player);
         }
 
         Bukkit.getScheduler().runTaskLater(guiManager.getPlugin(), () -> player.openInventory(lastInventory), 1L);

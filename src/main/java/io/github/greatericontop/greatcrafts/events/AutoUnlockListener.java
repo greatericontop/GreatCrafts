@@ -51,7 +51,7 @@ public class AutoUnlockListener implements Listener {
             }
         }
         if (counter > 0) {
-            player.sendMessage(String.format("§a[Great§bCrafts] §f%d §3new recipes were unlocked!", counter));
+            plugin.languager.notifyAutoUnlockOnJoin(player, counter);
         }
     }
 
@@ -164,12 +164,12 @@ public class AutoUnlockListener implements Listener {
                 }
                 if (shouldUnlockEach) {
                     player.discoverRecipe(rec.key());
-                    player.sendMessage("§a[Great§bCrafts] §3You have all the ingredients used in a new recipe! Check the recipe book for more!");
+                    plugin.languager.notifyAutoUnlockEach(player);
                 }
             } else { // AutoUnlockSetting.ONE
                 if (shouldUnlock) {
                     player.discoverRecipe(rec.key());
-                    player.sendMessage("§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!");
+                    plugin.languager.notifyAutoUnlockOne(player);
                 }
             }
         }

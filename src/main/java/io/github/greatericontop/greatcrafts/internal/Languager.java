@@ -105,6 +105,31 @@ public class Languager {
         }
     }
 
+    public void inventoryCloseTooEarly(CommandSender sender) {
+        for (String s : getText("inventoryCloseTooEarly")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void notifyAutoUnlockOnJoin(CommandSender sender, int counter) {
+        for (String s : getText("notifyAutoUnlockOnJoin")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%counter%", String.valueOf(counter)));
+        }
+    }
+
+    public void notifyAutoUnlockEach(CommandSender sender) {
+        for (String s : getText("notifyAutoUnlockEach")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void notifyAutoUnlockOne(CommandSender sender) {
+        for (String s : getText("notifyAutoUnlockOne")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
 
 
 }

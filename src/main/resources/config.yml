@@ -73,3 +73,20 @@ language-settings:
   # Placeholders: %recipekey% = the recipe key
   commandErrorRecipeNotExist:
   - "§cRecipe §f%s §cdoes not exist."
+
+  # When inventory is closed before discarding or saving.
+  inventoryCloseTooEarly:
+  - "§cDiscard or save your changes first!"
+
+  # When recipes are auto-unlocked on join.
+  # Placeholders: %counter% = the number of recipes unlocked
+  notifyAutoUnlockOnJoin:
+  - "§a[Great§bCrafts] §f%counter% §3new recipes were unlocked!"
+
+  # When recipes are auto-unlocked when the player has each item.
+  notifyAutoUnlockEach:
+  - "§a[Great§bCrafts] §3You have all the ingredients used in a new recipe! Check the recipe book for more!"
+
+  # When recipes are auto-unlocked when the player has at least one item.
+  notifyAutoUnlockOne:
+  - "§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!"
