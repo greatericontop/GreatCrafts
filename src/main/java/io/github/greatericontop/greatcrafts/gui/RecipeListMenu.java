@@ -120,12 +120,12 @@ public class RecipeListMenu implements Listener {
     public void openNew(Player player, String searchQuery) {
         List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
         if (allRecipes.isEmpty()) {
-            player.sendMessage("§3There are no recipes! Add one with §b/addrecipe§3.");
+            plugin.languager.commandErrorRecipeListEmpty(player);
             return;
         }
         if (searchQuery != null) {
             if (allRecipes.stream().filter(savedRecipe -> savedRecipe.key().toString().contains(searchQuery)).toList().isEmpty()) {
-                player.sendMessage("§3No recipes match with that search!");
+                plugin.languager.commandErrorRecipeListNothingMatches(player);
                 return;
             }
         }

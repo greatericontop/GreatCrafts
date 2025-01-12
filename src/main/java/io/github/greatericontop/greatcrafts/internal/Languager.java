@@ -130,6 +130,18 @@ public class Languager {
         }
     }
 
+    public void commandErrorRecipeListEmpty(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeListEmpty")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorRecipeListNothingMatches(CommandSender sender) {
+        for (String s : getText("commandErrorRecipeListNothingMatches")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
 
 
 }

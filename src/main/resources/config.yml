@@ -90,3 +90,12 @@ language-settings:
   # When recipes are auto-unlocked when the player has at least one item.
   notifyAutoUnlockOne:
   - "§a[Great§bCrafts] §3You picked up an item used in a new recipe! Check the recipe book for more!"
+
+  # When in /recipes there are none.
+  commandErrorRecipeListEmpty:
+  - "§3There are no recipes! Add one with §b/addrecipe§3."
+
+  # When nothing matches the search in /recipes.
+  commandErrorRecipeListNothingMatches:
+  - "§3No recipes match with that search!"
+
