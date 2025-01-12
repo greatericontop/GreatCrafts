@@ -142,6 +142,69 @@ public class Languager {
         }
     }
 
+    public void commandErrorDuplicationRecipeExists(CommandSender sender) {
+        for (String s : getText("commandErrorDuplicationRecipeExists")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorNoItemMeta(CommandSender sender) {
+        for (String s : getText("commandErrorNoItemMeta")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandCustomNameSuccess(CommandSender sender) {
+        for (String s : getText("commandCustomNameSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorLoreLineTooBig(CommandSender sender, int currentSize) {
+        for (String s : getText("commandErrorLoreLineTooBig")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%currentsize%", String.valueOf(currentSize)));
+        }
+    }
+
+    public void commandLoreLineSuccess(CommandSender sender) {
+        for (String s : getText("commandLoreLineSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandErrorNoLoreToDelete(CommandSender sender) {
+        for (String s : getText("commandErrorNoLoreToDelete")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandLoreDeleteSuccess(CommandSender sender) {
+        for (String s : getText("commandLoreDeleteSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandRemoveEnchantSuccess(CommandSender sender) {
+        for (String s : getText("commandRemoveEnchantSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandAddEnchantSuccess(CommandSender sender) {
+        for (String s : getText("commandAddEnchantSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandDuplicationSuccess(CommandSender sender, String sourceRecKey, String targetRecKey) {
+        for (String s : getText("commandDuplicationSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%source%", sourceRecKey)
+                    .replaceAll("%target%", targetRecKey));
+        }
+    }
+
 
 
 }

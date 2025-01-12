@@ -52,7 +52,7 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSorry, players only!");
+                plugin.languager.commandErrorPlayerRequired(sender);
                 return true;
             }
             setCustomName(player, name);
@@ -70,7 +70,7 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSorry, players only!");
+                plugin.languager.commandErrorPlayerRequired(sender);
                 return true;
             }
             setLoreLine(player, lineNum, loreLine);
@@ -84,7 +84,7 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSorry, players only!");
+                plugin.languager.commandErrorPlayerRequired(sender);
                 return true;
             }
             deleteLoreLines(player, lineNums);
@@ -99,7 +99,7 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             if (!(sender instanceof Player player)) {
-                sender.sendMessage("§cSorry, players only!");
+                plugin.languager.commandErrorPlayerRequired(sender);
                 return true;
             }
             enchant(player, enchant, level);
@@ -124,19 +124,19 @@ public class GCUtilCommand implements CommandExecutor {
         ItemStack handItem = player.getInventory().getItemInMainHand();
         ItemMeta im = handItem.getItemMeta();
         if (im == null) {
-            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            plugin.languager.commandErrorNoItemMeta(player);
             return;
         }
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         handItem.setItemMeta(im);
-        player.sendMessage("§3Set your item's name.");
+        plugin.languager.commandCustomNameSuccess(player);
     }
 
     private void setLoreLine(Player player, int lineNum, String loreLine) {
         ItemStack handItem = player.getInventory().getItemInMainHand();
         ItemMeta im = handItem.getItemMeta();
         if (im == null) {
-            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            plugin.languager.commandErrorNoItemMeta(player);
             return;
         }
         List<String> lore = im.getLore();
@@ -146,7 +146,7 @@ public class GCUtilCommand implements CommandExecutor {
         // Pad empty lines (up to 10 at a time)
         if (lore.size() <= lineNum) {
             if (lore.size() + 10 <= lineNum) {
-                player.sendMessage(String.format("§cDid you make a typo? The lore is currently only §f%d§c lines long.", lore.size()));
+                plugin.languager.commandErrorLoreLineTooBig(player, lore.size());
                 return;
             }
             for (int i = lore.size(); i <= lineNum; i++) {
@@ -156,19 +156,19 @@ public class GCUtilCommand implements CommandExecutor {
         lore.set(lineNum, ChatColor.translateAlternateColorCodes('&', loreLine));
         im.setLore(lore);
         handItem.setItemMeta(im);
-        player.sendMessage("§3Set your item's lore.");
+        plugin.languager.commandLoreLineSuccess(player);
     }
 
     private void deleteLoreLines(Player player, int[] lineNums) {
         ItemStack handItem = player.getInventory().getItemInMainHand();
         ItemMeta im = handItem.getItemMeta();
         if (im == null) {
-            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            plugin.languager.commandErrorNoItemMeta(player);
             return;
         }
         List<String> lore = im.getLore();
         if (lore == null) {
-            player.sendMessage("§cNo lore to delete!");
+            plugin.languager.commandErrorNoLoreToDelete(player);
             return;
         }
         lineNums = Arrays.stream(lineNums).distinct().sorted().toArray(); // distinct, sorted, and in reverse
@@ -180,39 +180,39 @@ public class GCUtilCommand implements CommandExecutor {
         }
         im.setLore(lore);
         handItem.setItemMeta(im);
-        player.sendMessage("§3Deleted your item's lore lines.");
+        plugin.languager.commandLoreDeleteSuccess(player);
     }
 
     private void enchant(Player player, Enchantment enchant, int level) {
         ItemStack handItem = player.getInventory().getItemInMainHand();
         ItemMeta im = handItem.getItemMeta();
         if (im == null) {
-            player.sendMessage("§cNothing in your hand, or the thing in your hand can't be edited!");
+            plugin.languager.commandErrorNoItemMeta(player);
             return;
         }
         if (level <= 0) {
             im.removeEnchant(enchant);
             handItem.setItemMeta(im);
-            player.sendMessage("§3Removed enchantment.");
+            plugin.languager.commandRemoveEnchantSuccess(player);
         } else {
             im.addEnchant(enchant, level, true);
             handItem.setItemMeta(im);
-            player.sendMessage("§3Enchanted your item.");
+            plugin.languager.commandAddEnchantSuccess(player);
         }
     }
 
     private void duplicateRecipe(CommandSender sender, String sourceRecKey, String targetRecKey) {
         if (sourceRecKey.split(":").length != 2 || targetRecKey.split(":").length != 2) {
-            sender.sendMessage("§cBoth recipe keys must be in the format §4namespace:name§c!");
+            plugin.languager.commandErrorRecipeKeyFormat(sender);
             return;
         }
         SavedRecipe rec = plugin.recipeManager.getRecipe(sourceRecKey);
         if (rec == null) {
-            sender.sendMessage("§cRecipe not found.");
+            plugin.languager.commandErrorRecipeNotExist(sender, sourceRecKey);
             return;
         }
         if (plugin.recipeManager.getRecipe(targetRecKey) != null) {
-            sender.sendMessage("§cRecipe already exists.");
+            plugin.languager.commandErrorDuplicationRecipeExists(sender);
             return;
         }
 
@@ -231,7 +231,7 @@ public class GCUtilCommand implements CommandExecutor {
                 rec.iconItem()
         );
         plugin.recipeManager.setRecipe(targetRecKey, newSavedRec);
-        sender.sendMessage(String.format("§3Copied §f%s §3to §f%s§3.", sourceRecKey, targetRecKey));
+        plugin.languager.commandDuplicationSuccess(sender, sourceRecKey, targetRecKey);
     }
 
 }

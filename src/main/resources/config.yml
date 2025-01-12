@@ -99,3 +99,46 @@ language-settings:
   commandErrorRecipeListNothingMatches:
   - "§3No recipes match with that search!"
 
+  # Same as the error when the recipe already exists but specifically for /gcutil duplicaterecipe.
+  commandErrorDuplicationRecipeExists:
+  - "§cThe target recipe you're trying to copy to already exists!"
+
+  # When the item in your hand has no item meta (for /gcutil).
+  commandErrorNoItemMeta:
+  - "§cNothing in your hand, or the thing in your hand can't be edited!"
+
+  # When successfully set custom name.
+  commandCustomNameSuccess:
+  - "§3Set your item's name."
+
+  # When the lore line trying to be edited is more than the total lines.
+  # Placeholders: %currentsize% = current lore size
+  commandErrorLoreLineTooBig:
+  - "§cDid you make a typo? The lore is currently only §f%currentsize%§c lines long."
+
+  # When successfully set lore line.
+  commandLoreLineSuccess:
+  - "§3Set your item's lore."
+
+  # When lore is empty and can't be deleted.
+  commandErrorNoLoreToDelete:
+  - "§cNo lore to delete!"
+
+  # When successfully deleted lore line.
+  commandLoreDeleteSuccess:
+  - "§3Deleted your item's lore lines."
+
+  # When successfully removed enchantment.
+  commandRemoveEnchantSuccess:
+  - "§3Successfully removed enchantment."
+
+  # When successfully added enchantment.
+  commandAddEnchantSuccess:
+  - "§3Successfully added enchantment."
+
+  # When successfully duplicated recipe.
+  # Placeholders: %source% = source recipe key
+  #               %target% = target recipe key
+  commandDuplicationSuccess:
+  - "§3Copied §f%source% §3to §f%target%§3."
+
