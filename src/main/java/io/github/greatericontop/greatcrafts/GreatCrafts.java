@@ -144,7 +144,6 @@ public class GreatCrafts extends JavaPlugin {
         if (autoUnlockSetting == null) {
             this.getLogger().warning("config option automatically-unlock-recipes was missing or invalid");
             autoUnlockSetting = AutoUnlockSetting.NEVER;
-            this.getConfig().set("automatically-unlock-recipes", "never");
         }
         this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
         languager = new Languager(this);
@@ -152,7 +151,6 @@ public class GreatCrafts extends JavaPlugin {
     }
 
     public void saveAll() {
-        this.saveConfig();
         try {
             recipes.save(new File(this.getDataFolder(), "recipes.yml"));
         } catch (Exception e) {
