@@ -21,8 +21,11 @@ import io.github.greatericontop.greatcrafts.GreatCrafts;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class GreatCraftsCommand implements CommandExecutor {
+import java.util.List;
+
+public class GreatCraftsCommand implements CommandExecutor, TabCompleter {
 
     private final GreatCrafts plugin;
     public GreatCraftsCommand(GreatCrafts plugin) {
@@ -31,21 +34,45 @@ public class GreatCraftsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        sender.sendMessage("§9--------------------------------------------------");
-        sender.sendMessage("");
-        sender.sendMessage(String.format("§aGreat§bCrafts §7v%s", plugin.getDescription().getVersion()));
-        sender.sendMessage("");
-        sender.sendMessage(String.format("§b%d §3recipes", plugin.recipeManager.getAllSavedRecipes().size()));
-        sender.sendMessage("");
-        sender.sendMessage("§e/recipes");
-        sender.sendMessage("§e/viewrecipe");
-        sender.sendMessage("§e/addrecipe");
-        sender.sendMessage("§e/editrecipe");
-        sender.sendMessage("§e/deleterecipe");
-        sender.sendMessage("§e/reloadrecipes");
-        sender.sendMessage("");
-        sender.sendMessage("§9--------------------------------------------------");
-        return true;
+        String arg = GreatCommands.argumentString(0, args);
+
+        if (arg == null) {
+            sender.sendMessage("§9--------------------------------------------------");
+            sender.sendMessage("");
+            sender.sendMessage(String.format("§aGreat§bCrafts §7v%s", plugin.getDescription().getVersion()));
+            sender.sendMessage("");
+            sender.sendMessage(String.format("§b%d §3recipes", plugin.recipeManager.getAllSavedRecipes().size()));
+            sender.sendMessage("");
+            sender.sendMessage("§e/greatcrafts reload §3to reload config");
+            sender.sendMessage("");
+            sender.sendMessage("§e/recipes");
+            sender.sendMessage("§e/viewrecipe");
+            sender.sendMessage("§e/addrecipe");
+            sender.sendMessage("§e/editrecipe");
+            sender.sendMessage("§e/deleterecipe");
+            sender.sendMessage("§e/reloadrecipes");
+            sender.sendMessage("§e/greatcraftsutil");
+            sender.sendMessage("");
+            sender.sendMessage("§9--------------------------------------------------");
+            return true;
+        }
+
+        if (arg.equalsIgnoreCase("reload")) {
+            plugin.reloadConfig();
+            plugin.updateConfigVars();
+            sender.sendMessage("§3GreatCrafts config reloaded.");
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1) {
+            return List.of("reload");
+        }
+        return null;
     }
 
 }

@@ -78,7 +78,9 @@ public class GreatCrafts extends JavaPlugin {
 
         recipeManager = new RecipeManager(this);
 
-        this.getCommand("greatcrafts").setExecutor(new GreatCraftsCommand(this));
+        GreatCraftsCommand greatcraftscommand = new GreatCraftsCommand(this);
+        this.getCommand("greatcrafts").setExecutor(greatcraftscommand);
+        this.getCommand("greatcrafts").setTabCompleter(greatcraftscommand);
         this.getCommand("recipes").setExecutor(new RecipeListCommand(this));
         this.getCommand("recipes").setTabCompleter(new RecipeListTabCompleter());
         this.getCommand("viewrecipe").setExecutor(new ViewRecipeCommand(this));
@@ -137,7 +139,7 @@ public class GreatCrafts extends JavaPlugin {
         saveAll();
     }
 
-    private void updateConfigVars() {
+    public void updateConfigVars() {
         autoUnlockSetting = AutoUnlockSetting.fromConfig(this.getConfig().getString("automatically-unlock-recipes"));
         if (autoUnlockSetting == null) {
             this.getLogger().warning("config option automatically-unlock-recipes was missing or invalid");
