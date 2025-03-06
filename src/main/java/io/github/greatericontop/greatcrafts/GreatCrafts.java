@@ -30,8 +30,8 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabComp
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.RecipeListTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewEditRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
-import io.github.greatericontop.greatcrafts.events.stackeditems.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
+import io.github.greatericontop.greatcrafts.events.stackeditems.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.stackeditems.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.CraftReadOnlyViewer;
@@ -48,10 +48,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GreatCrafts extends JavaPlugin {
 
     public AutoUnlockSetting autoUnlockSetting;
+    public Map<String, AutoUnlockSetting> autoUnlockExceptions;
     public Languager languager;
 
     public YamlConfiguration recipes;
@@ -146,6 +149,17 @@ public class GreatCrafts extends JavaPlugin {
             autoUnlockSetting = AutoUnlockSetting.NEVER;
         }
         this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
+        Map<String, String> autoUnlockExceptionsRaw = (Map<String, String>) this.getConfig().get("automatically-unlock-recipes-exceptions");
+        autoUnlockExceptions = new HashMap<>();
+        for (Map.Entry<String, String> entry : autoUnlockExceptionsRaw.entrySet()) {
+            AutoUnlockSetting setting = AutoUnlockSetting.fromConfig(entry.getValue());
+            if (setting == null) {
+                this.getLogger().warning(String.format("automatically-unlock-recipes-exceptions: invalid value for %s ('%s')", entry.getKey(), entry.getValue()));
+            } else {
+                this.getLogger().info(String.format("  automatically-unlock-recipes-exceptions: %s = %s", entry.getKey(), setting.name()));
+                autoUnlockExceptions.put(entry.getKey(), setting);
+            }
+        }
         languager = new Languager(this);
         this.getLogger().info("  Languager ready!");
     }
