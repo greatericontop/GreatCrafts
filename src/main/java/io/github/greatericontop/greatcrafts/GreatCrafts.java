@@ -149,12 +149,13 @@ public class GreatCrafts extends JavaPlugin {
             autoUnlockSetting = AutoUnlockSetting.NEVER;
         }
         this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
-        Map<String, String> autoUnlockExceptionsRaw = (Map<String, String>) this.getConfig().get("automatically-unlock-recipes-exceptions"); // TODO: use the MemorySection properly
+        Map<String, Object> autoUnlockExceptionsRaw = this.getConfig().getConfigurationSection("automatically-unlock-recipes-exceptions").getValues(false); // TODO: use the MemorySection properly
         autoUnlockExceptions = new HashMap<>();
-        for (Map.Entry<String, String> entry : autoUnlockExceptionsRaw.entrySet()) {
-            AutoUnlockSetting setting = AutoUnlockSetting.fromConfig(entry.getValue());
+        for (Map.Entry<String, Object> entry : autoUnlockExceptionsRaw.entrySet()) {
+            String value = entry.getValue().toString();
+            AutoUnlockSetting setting = AutoUnlockSetting.fromConfig(value);
             if (setting == null) {
-                this.getLogger().warning(String.format("automatically-unlock-recipes-exceptions: invalid value for %s ('%s')", entry.getKey(), entry.getValue()));
+                this.getLogger().warning(String.format("automatically-unlock-recipes-exceptions: invalid value for %s ('%s')", entry.getKey(), value));
             } else {
                 this.getLogger().info(String.format("  automatically-unlock-recipes-exceptions: %s = %s", entry.getKey(), setting.name()));
                 autoUnlockExceptions.put(entry.getKey(), setting);
