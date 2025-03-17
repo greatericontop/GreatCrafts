@@ -96,6 +96,7 @@ Other ways, like 48 diamonds in 1 slot, or 16 diamonds in 3 slots, will not work
 
 Recipes can be automatically unlocked for players under certain conditions.
 This can be configured under `automatically-unlock-recipes` in the config file.
+That setting applies to all recipes by default, but you can get specific behavior for each recipe under the `automatically-unlock-recipes-exceptions` section.
 
 - `never` - Never automatically unlocks custom recipes
 - `have-each` - Automatically unlocks custom recipes if the player has each of the required ingredients
