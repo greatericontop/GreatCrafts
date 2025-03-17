@@ -42,12 +42,14 @@ public class AutoUnlockListener implements Listener {
     // (setting = ALWAYS) Unlock on player join
     @EventHandler()
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (plugin.autoUnlockSetting != AutoUnlockSetting.ALWAYS)  return;
         Player player = event.getPlayer();
         int counter = 0;
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
-            if (player.discoverRecipe(rec.key())) {
-                counter++;
+            AutoUnlockSetting setting = plugin.autoUnlockExceptions.getOrDefault(rec.key().toString(), plugin.autoUnlockSetting);
+            if (setting == AutoUnlockSetting.ALWAYS) {
+                if (player.discoverRecipe(rec.key())) {
+                    counter++;
+                }
             }
         }
         if (counter > 0) {
@@ -58,43 +60,13 @@ public class AutoUnlockListener implements Listener {
     // (setting = EACH / ONE) Item pickup check
     @EventHandler()
     public void onItemPickup(PlayerPickupItemEvent event) {
-        if (plugin.autoUnlockSetting != AutoUnlockSetting.EACH && plugin.autoUnlockSetting != AutoUnlockSetting.ONE)  return;
         Player player = event.getPlayer();
         ItemStack pickedUpItem = event.getItem().getItemStack();
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
             if (player.hasDiscoveredRecipe(rec.key()))  continue;
-            boolean shouldUnlock = false;
-            // Check if the picked up item matches any of the required items in the recipe
-            outer:
-            for (int slot = 0; slot < 9; slot++) {
-                IngredientType type = rec.ingredientTypes()[slot];
-                switch (type) {
-                    case NORMAL -> {
-                        ItemStack requiredItem = rec.items().get(slot);
-                        if (requiredItem != null && requiredItem.getType() == pickedUpItem.getType()) {
-                            shouldUnlock = true;
-                            break outer;
-                        }
-                    }
-                    case EXACT_CHOICE -> {
-                        ItemStack requiredItem = rec.items().get(slot);
-                        if (requiredItem != null && requiredItem.isSimilar(pickedUpItem)) {
-                            shouldUnlock = true;
-                            break outer;
-                        }
-                    }
-                    case MATERIAL_CHOICE -> {
-                        for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
-                            if (requiredMat == pickedUpItem.getType()) {
-                                shouldUnlock = true;
-                                break outer;
-                            }
-                        }
-                    }
-                }
-            }
+            AutoUnlockSetting setting = plugin.autoUnlockExceptions.getOrDefault(rec.key().toString(), plugin.autoUnlockSetting);
+
             if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
-                // Now check for all the required items somewhere in inventory
                 boolean shouldUnlockEach = true;
                 // The picked up item hasn't been added to the inventory yet, so need to make our own
                 List<ItemStack> invContents = new ArrayList<>(60);
@@ -104,6 +76,7 @@ public class AutoUnlockListener implements Listener {
                     }
                 }
                 invContents.add(pickedUpItem);
+                // Check that every ingredient is satisfied
                 outer:
                 for (int slot = 0; slot < 9; slot++) {
                     IngredientType type = rec.ingredientTypes()[slot];
@@ -166,8 +139,37 @@ public class AutoUnlockListener implements Listener {
                     player.discoverRecipe(rec.key());
                     plugin.languager.notifyAutoUnlockEach(player);
                 }
-            } else { // AutoUnlockSetting.ONE
-                if (shouldUnlock) {
+            } else if (setting == AutoUnlockSetting.ONE) {
+                boolean hasAtLeastOne = false;
+                outer:
+                for (int slot = 0; slot < 9; slot++) {
+                    IngredientType type = rec.ingredientTypes()[slot];
+                    switch (type) {
+                        case NORMAL -> {
+                            ItemStack requiredItem = rec.items().get(slot);
+                            if (requiredItem != null && requiredItem.getType() == pickedUpItem.getType()) {
+                                hasAtLeastOne = true;
+                                break outer;
+                            }
+                        }
+                        case EXACT_CHOICE -> {
+                            ItemStack requiredItem = rec.items().get(slot);
+                            if (requiredItem != null && requiredItem.isSimilar(pickedUpItem)) {
+                                hasAtLeastOne = true;
+                                break outer;
+                            }
+                        }
+                        case MATERIAL_CHOICE -> {
+                            for (Material requiredMat : rec.materialChoiceExtra().get(slot)) {
+                                if (requiredMat == pickedUpItem.getType()) {
+                                    hasAtLeastOne = true;
+                                    break outer;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (hasAtLeastOne) {
                     player.discoverRecipe(rec.key());
                     plugin.languager.notifyAutoUnlockOne(player);
                 }
