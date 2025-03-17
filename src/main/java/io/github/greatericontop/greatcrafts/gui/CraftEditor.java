@@ -212,7 +212,6 @@ public class CraftEditor implements Listener {
     }
 
     void fillCraftingSlots(Inventory gui, SavedRecipe recipe, IngredientType[] ingredientTypes, List<List<Material>> materialChoiceExtra) {
-        // recipe.getIngredientMap() -> {a: _, b: _, c: _, ..., h: _, i: _} of the grid
         for (int i = 0; i < 9; i++) {
             fillCraftingSlot(i, gui, recipe, ingredientTypes, materialChoiceExtra);
         }
@@ -272,7 +271,7 @@ public class CraftEditor implements Listener {
                         "§f>> STACKED ITEMS",
                         "  §7The required items in the grid can be stacked, so rather than",
                         "  §7requiring 9 items, you can require 9 stacks of items.",
-                        "  §7The recipe is shaped and only normal and exact choice are supported.",
+                        "  §7(Material choice doesn't work with stacked items.)",
                         "§7>> STACKED ITEMS (SHAPELESS)",
                         "§eCLICK §7to toggle"
                 );
@@ -283,9 +282,7 @@ public class CraftEditor implements Listener {
                         "§7>> SHAPELESS",
                         "§7>> STACKED ITEMS",
                         "§f>> STACKED ITEMS (SHAPELESS)",
-                        "  §7Shapeless version of stacked items.",
-                        "  §7Different quantities of the same item are allowed, but players will",
-                        "  §7need the exact amounts in those stacks (not just the total amount).",
+                        "  §7Shapeless version of stacked items. No specific shape is needed.",
                         "§eCLICK §7to toggle"
                 );
             }
