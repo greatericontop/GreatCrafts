@@ -47,13 +47,13 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 
 **Video tutorials:**
 
-https://www.youtube.com/watch?v=riXyoCYp7mk
+<iframe width="640" height="360" src="https://www.youtube.com/embed/riXyoCYp7mk" title="GreatCrafts Basic Shaped Recipe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-https://www.youtube.com/watch?v=sTITKBdnsFc
+<iframe width="640" height="360" src="https://www.youtube.com/embed/sTITKBdnsFc" title="GreatCrafts Basic Shapeless Recipe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-https://www.youtube.com/watch?v=NvZ6JDqBGJE
+<iframe width="640" height="360" src="https://www.youtube.com/embed/NvZ6JDqBGJE" title="GreatCrafts Exact Choice" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-https://www.youtube.com/watch?v=PPUmap5R9HU
+<iframe width="640" height="360" src="https://www.youtube.com/embed/PPUmap5R9HU" title="GreatCrafts Material Choice" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Run `/addrecipe <craft>` or `/editrecipe <craft>`.
 For the `<craft>` argument, include both the namespace and name, for example `myspecialnamespace:mycustomcraft`.
