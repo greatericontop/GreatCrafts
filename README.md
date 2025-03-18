@@ -46,10 +46,22 @@ GreatCrafts is a crafting recipe plugin that allows you to create and customize 
 ## Creating/editing recipes
 
 **Video tutorials:**
-- [Shaped recipe demo](https://www.youtube.com/watch?v=riXyoCYp7mk)
-- [Shapeless recipe demo](https://www.youtube.com/watch?v=sTITKBdnsFc)
-- [Exact choice demo](https://www.youtube.com/watch?v=NvZ6JDqBGJE)
-- [Material choice demo](https://www.youtube.com/watch?v=PPUmap5R9HU)
+
+**Shaped recipe demo**
+
+[![Shaped recipe demo](https://img.youtube.com/vi/riXyoCYp7mk/default.jpg)](https://www.youtube.com/watch?v=riXyoCYp7mk)
+
+**Shapeless recipe demo**
+
+[![Shapeless recipe demo](https://img.youtube.com/vi/sTITKBdnsFc/default.jpg)](https://www.youtube.com/watch?v=sTITKBdnsFc)
+
+**Exact choice demo**
+
+[![Exact choice demo](https://img.youtube.com/vi/NvZ6JDqBGJE/default.jpg)](https://www.youtube.com/watch?v=NvZ6JDqBGJE)
+
+**Material choice demo**
+
+[![Material choice demo](https://img.youtube.com/vi/PPUmap5R9HU/default.jpg)](https://www.youtube.com/watch?v=PPUmap5R9HU)
 
 Run `/addrecipe <craft>` or `/editrecipe <craft>`.
 For the `<craft>` argument, include both the namespace and name, for example `myspecialnamespace:mycustomcraft`.
@@ -84,7 +96,9 @@ Activating your changes makes the craft available to players immediately, althou
 
 ![Stacked items example](https://raw.githubusercontent.com/greatericontop/GreatCrafts/main/assets/stacked-items-example.png)
 
-**Video tutorial: [stacked items demo](https://www.youtube.com/watch?v=PpBor3UOzmA)**
+**Video tutorial:**
+
+[![Stacked items demo](https://img.youtube.com/vi/PpBor3UOzmA/default.jpg)](https://www.youtube.com/watch?v=PpBor3UOzmA)
 
 Stacked items are a special type of recipe that require stacks of each ingredient instead of just 1 of each.
 In the example shown, it would take 160 diamond blocks to make 1 enchanted diamond.
