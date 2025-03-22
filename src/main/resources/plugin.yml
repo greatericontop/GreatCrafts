@@ -8,6 +8,7 @@ commands:
   greatcrafts:
     description: Main command
     usage: "§c/greatcrafts"
+    permission: greatcrafts.greatcraftscommand
   recipes:
     description: View all recipes
     usage: "§c/recipes <optional search query>"
@@ -47,4 +48,7 @@ permissions:
     default: op
   greatcrafts.greatcraftsutil:
     description: Allows using /greatcraftsutil
+    default: op
+  greatcrafts.greatcraftscommand:
+    description: Allows using /greatcrafts (and /greatcrafts reload)
     default: op
