@@ -17,9 +17,9 @@ package io.github.greatericontop.greatcrafts.gui;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
 import io.github.greatericontop.greatcrafts.internal.Util;
 import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
-import io.github.greatericontop.greatcrafts.internal.RecipeLoader;
 import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.Bukkit;
@@ -53,7 +53,9 @@ public class CraftEditor implements Listener {
     private static final int SLOT_RESULT = 23;
     private static final int SLOT_ICON = 16;
     private static final int SLOT_CHANGE_TYPE = 26;
+    private static final int SLOT_HOWTO = 45;
     private static final int SLOT_DELETER = 46;
+    private static final int SLOT_EXTRA_INFO = 48;
     private static final int SLOT_DISCARD = 51;
     private static final int SLOT_SAVE = 52;
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
@@ -86,12 +88,22 @@ public class CraftEditor implements Listener {
         fillCraftingSlots(gui, savedRecipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, savedRecipe.result());
         gui.setItem(SLOT_ICON, savedRecipe.iconItem());
-        gui.setItem(45, Util.createItemStack(
-                Material.ENCHANTED_BOOK, 1, "§bInfo",
+        gui.setItem(SLOT_HOWTO, Util.createItemStack(
+                Material.ENCHANTED_BOOK, 1, "§bHow To",
                 "§7Place items in the grid, result, and icon slots.",
                 "§eSHIFT LEFT CLICK §7to toggle §fexact choice §7(exact NBT)",
                 "§eSHIFT RIGHT CLICK §7to toggle §fmaterial choice §7(multiple items)",
+                "§7Click on the crafting table icon to change the recipe type.",
                 "§7Discard, save, or save and activate your changes."
+        ));
+        String autoUnlockSetting;
+        if (guiManager.getPlugin().autoUnlockExceptions.containsKey(craftKey)) {
+            autoUnlockSetting = String.format("§e%s §7(set)", guiManager.getPlugin().autoUnlockExceptions.get(craftKey));
+        } else {
+            autoUnlockSetting = String.format("§e%s §7(default)", guiManager.getPlugin().autoUnlockSetting);
+        }
+        gui.setItem(SLOT_EXTRA_INFO, Util.createItemStack(Material.MAP, 1, "§bExtra Settings",
+                "§6auto-unlock-setting§7: " + autoUnlockSetting
         ));
         gui.setItem(SLOT_DELETER, Util.createItemStack(Material.REDSTONE, 1, "§cItem Deleter",
                 "§7Place items here to delete them without dropping them on the ground."));
