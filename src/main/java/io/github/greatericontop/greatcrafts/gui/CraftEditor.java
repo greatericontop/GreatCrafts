@@ -103,7 +103,9 @@ public class CraftEditor implements Listener {
             autoUnlockSetting = String.format("§e%s §7(default)", guiManager.getPlugin().autoUnlockSetting);
         }
         gui.setItem(SLOT_EXTRA_INFO, Util.createItemStack(Material.MAP, 1, "§bExtra Settings",
-                "§6auto-unlock-setting§7: " + autoUnlockSetting
+                "§6auto-unlock-setting§7: " + autoUnlockSetting,
+                "",
+                String.format("§7Edit these with §f/editrecipe %s <setting> <new value>", craftKey)
         ));
         gui.setItem(SLOT_DELETER, Util.createItemStack(Material.REDSTONE, 1, "§cItem Deleter",
                 "§7Place items here to delete them without dropping them on the ground."));

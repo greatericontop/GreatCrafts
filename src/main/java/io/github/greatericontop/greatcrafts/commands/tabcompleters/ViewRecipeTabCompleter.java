@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ViewEditRecipeTabCompleter implements TabCompleter {
+public class ViewRecipeTabCompleter implements TabCompleter {
 
     private final GreatCrafts plugin;
-    public ViewEditRecipeTabCompleter(GreatCrafts plugin) {
+    public ViewRecipeTabCompleter(GreatCrafts plugin) {
         this.plugin = plugin;
     }
 
