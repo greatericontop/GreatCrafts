@@ -33,11 +33,10 @@ public class EditRecipeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             plugin.languager.commandErrorPlayerRequired(sender);
             return true;
         }
-        Player player = (Player) sender;
         if (player.getGameMode() != GameMode.CREATIVE) {
             plugin.languager.commandErrorCreativeRequired(player);
             return true;
@@ -45,9 +44,25 @@ public class EditRecipeCommand implements CommandExecutor {
         if (args.length == 0) {
             return false;
         }
+        String recipeName = args[0];
+        if (args.length == 1) {
+            plugin.guiCraftEditor.openNew(player, recipeName);
+            return true;
+        }
 
-        String recipeName = args[0]; // TODO: maybe have distinct tagline vs namespace in the future
-        plugin.guiCraftEditor.openNew(player, recipeName);
+        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting"});
+        if (setting == null) {
+            player.sendMessage("The setting must be one of the choices"); // TODO: language
+            return true;
+        }
+        if (setting.equals("auto-unlock-setting")) {
+            String value = GreatCommands.argumentStringFromChoices(2, args, new String[]{"never", "have-each", "have-one", "always"});
+            if (value == null) {
+                player.sendMessage("The value for auto-unlock-setting must be one of the choices ..."); // TODO: language
+                return true;
+            }
+            // TODO
+        }
 
         return true;
     }

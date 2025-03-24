@@ -37,6 +37,18 @@ public class GreatCommands {
         return args[i];
     }
 
+    public static @Nullable String argumentStringFromChoices(int i, String[] args, String[] choices) {
+        if (args.length <= i) {
+            return null;
+        }
+        for (String choice : choices) {
+            if (args[i].equals(choice)) {
+                return choice;
+            }
+        }
+        return null;
+    }
+
     public static @Nullable String argumentStringConsumeRest(int iStart, String[] args) {
         if (args.length <= iStart) {
             return null;
