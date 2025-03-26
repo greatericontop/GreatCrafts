@@ -156,9 +156,9 @@ The enchantment argument uses Minecraft IDs without the `minecraft:` prefix.
 Duplicates a recipe.
 The source and target recipe arguments are both in the `namespace:name` format.
 
-## Bug Reports
+## Support
 
-Please report bugs or make feature requests on the [issues page](https://github.com/greatericontop/GreatCrafts/issues)
+To get support, report bugs, or make feature requests, please go to the [issues page](https://github.com/greatericontop/GreatCrafts/issues).
 
 ## Compiling
 
