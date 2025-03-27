@@ -69,9 +69,9 @@ public class EditRecipeCommand implements CommandExecutor {
                 return true;
             }
             if (value.equals("default")) {
-                plugin.getConfig().set(String.format("automatically-unlock-recipes.%s", recipeName), null);
+                plugin.getConfig().set(String.format("automatically-unlock-recipes-exceptions.%s", recipeName), null);
             } else {
-                plugin.getConfig().set(String.format("automatically-unlock-recipes.%s", recipeName), value);
+                plugin.getConfig().set(String.format("automatically-unlock-recipes-exceptions.%s", recipeName), value);
             }
             plugin.saveConfig();
             plugin.updateConfigVars();
