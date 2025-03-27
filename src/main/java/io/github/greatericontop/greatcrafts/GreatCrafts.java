@@ -150,7 +150,7 @@ public class GreatCrafts extends JavaPlugin {
             autoUnlockSetting = AutoUnlockSetting.NEVER;
         }
         this.getLogger().info(String.format("  autoUnlockSetting = %s", autoUnlockSetting.name()));
-        Map<String, Object> autoUnlockExceptionsRaw = this.getConfig().getConfigurationSection("automatically-unlock-recipes-exceptions").getValues(false); // TODO: use the MemorySection properly
+        Map<String, Object> autoUnlockExceptionsRaw = this.getConfig().getConfigurationSection("automatically-unlock-recipes-exceptions").getValues(false);
         autoUnlockExceptions = new HashMap<>();
         for (Map.Entry<String, Object> entry : autoUnlockExceptionsRaw.entrySet()) {
             String value = entry.getValue().toString();
