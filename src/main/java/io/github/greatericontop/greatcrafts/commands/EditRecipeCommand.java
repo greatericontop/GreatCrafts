@@ -63,12 +63,16 @@ public class EditRecipeCommand implements CommandExecutor {
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {
-            String value = GreatCommands.argumentStringFromChoices(2, args, new String[]{"never", "have-each", "have-one", "always"});
+            String value = GreatCommands.argumentStringFromChoices(2, args, new String[]{"never", "have-each", "have-one", "always", "default"});
             if (value == null) {
                 sender.sendMessage("The value for auto-unlock-setting must be one of the choices ..."); // TODO: language
                 return true;
             }
-            plugin.getConfig().set(String.format("automatically-unlock-recipes-exceptions.%s", recipeName), value);
+            if (value.equals("default")) {
+                plugin.getConfig().set(String.format("automatically-unlock-recipes.%s", recipeName), null);
+            } else {
+                plugin.getConfig().set(String.format("automatically-unlock-recipes.%s", recipeName), value);
+            }
             plugin.saveConfig();
             plugin.updateConfigVars();
             sender.sendMessage("§3Setting updated and config reloaded."); // TODO: language
