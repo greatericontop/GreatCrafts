@@ -70,6 +70,8 @@ public class EditRecipeCommand implements CommandExecutor {
             }
             plugin.getConfig().set(String.format("automatically-unlock-recipes-exceptions.%s", recipeName), value);
             plugin.saveConfig();
+            plugin.updateConfigVars();
+            sender.sendMessage("§3Setting updated and config reloaded."); // TODO: language
         }
 
         return true;
