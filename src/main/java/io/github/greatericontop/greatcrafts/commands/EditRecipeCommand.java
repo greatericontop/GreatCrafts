@@ -33,7 +33,7 @@ public class EditRecipeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player player)) { // TODO: only for editing
             plugin.languager.commandErrorPlayerRequired(sender);
             return true;
         }
@@ -45,6 +45,7 @@ public class EditRecipeCommand implements CommandExecutor {
             return false;
         }
         String recipeName = args[0];
+        // TODO: check recipe existence
         if (args.length == 1) {
             plugin.guiCraftEditor.openNew(player, recipeName);
             return true;
@@ -61,7 +62,8 @@ public class EditRecipeCommand implements CommandExecutor {
                 player.sendMessage("The value for auto-unlock-setting must be one of the choices ..."); // TODO: language
                 return true;
             }
-            // TODO
+            plugin.getConfig().set(String.format("automatically-unlock-recipes-exceptions.%s", recipeName), value);
+            plugin.saveConfig();
         }
 
         return true;
