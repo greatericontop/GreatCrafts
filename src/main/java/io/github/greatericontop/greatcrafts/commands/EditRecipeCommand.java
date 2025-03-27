@@ -18,6 +18,7 @@ package io.github.greatericontop.greatcrafts.commands;
  */
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
+import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -45,7 +46,11 @@ public class EditRecipeCommand implements CommandExecutor {
             return false;
         }
         String recipeName = args[0];
-        // TODO: check recipe existence
+        SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeName);
+        if (savedRecipe == null) {
+            plugin.languager.commandErrorRecipeNotExist(player, recipeName);
+            return true;
+        }
         if (args.length == 1) {
             plugin.guiCraftEditor.openNew(player, recipeName);
             return true;
