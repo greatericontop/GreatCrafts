@@ -46,7 +46,7 @@ public class EditRecipeTabCompleter implements TabCompleter {
         }
         if (args.length == 3) {
             if (args[1].equals("auto-unlock-setting")) {
-                return StringUtil.copyPartialMatches(args[2], List.of("never", "have-each", "have-one", "always"), new ArrayList<String>(4));
+                return StringUtil.copyPartialMatches(args[2], List.of("never", "have-each", "have-one", "always", "default"), new ArrayList<String>(5));
             }
         }
         return null;
