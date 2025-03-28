@@ -77,7 +77,7 @@ language-settings:
   # When the recipe doesn't exist.
   # Placeholders: %recipekey% = the recipe key
   commandErrorRecipeNotExist:
-  - "§cRecipe §f%s §cdoes not exist."
+  - "§cRecipe §f%recipekey% §cdoes not exist."
 
   # When inventory is closed before discarding or saving.
   inventoryCloseTooEarly:
