@@ -22,7 +22,7 @@ automatically-unlock-recipes-exceptions:
 # - These recipes will be hidden from players in /viewrecipe and /recipes. However, players can still find out what
 #   they are. Basically, don't that the recipe will become completely secret.
 # This can also be set in-game with /editrecipe
-permission-requirements:
+recipe-permission-requirements:
   # Format: "namespace:name": any.permission.node
   "greatcrafts:restricted_recipe_1": greatcrafts.craft_restricted_recipes
   "greatcrafts:restricted_recipe_2": greatcrafts.craft_restricted_recipes

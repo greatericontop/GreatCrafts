@@ -56,6 +56,7 @@ public class GreatCrafts extends JavaPlugin {
 
     public AutoUnlockSetting autoUnlockSetting;
     public Map<String, AutoUnlockSetting> autoUnlockExceptions;
+    public Map<String, String> recipePermissionRequirements;
     public Languager languager;
 
     public YamlConfiguration recipes;
@@ -161,6 +162,13 @@ public class GreatCrafts extends JavaPlugin {
                 this.getLogger().info(String.format("  automatically-unlock-recipes-exceptions: %s = %s", entry.getKey(), setting.name()));
                 autoUnlockExceptions.put(entry.getKey(), setting);
             }
+        }
+        Map<String, Object> recipePermissionRequirementsRaw = this.getConfig().getConfigurationSection("recipe-permission-requirements").getValues(false);
+        recipePermissionRequirements = new HashMap<>();
+        for (Map.Entry<String, Object> entry : recipePermissionRequirementsRaw.entrySet()) {
+            String value = entry.getValue().toString();
+            this.getLogger().info(String.format("  recipe-permission-requirements: %s = %s", entry.getKey(), value));
+            recipePermissionRequirements.put(entry.getKey(), value);
         }
         languager = new Languager(this);
         this.getLogger().info("  Languager ready!");
