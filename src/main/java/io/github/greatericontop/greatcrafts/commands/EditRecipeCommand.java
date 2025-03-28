@@ -57,9 +57,9 @@ public class EditRecipeCommand implements CommandExecutor {
             return true;
         }
 
-        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting"});
+        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting", "permission-requirement"});
         if (setting == null) {
-            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting");
+            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting", "permission-requirement");
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {
@@ -76,6 +76,23 @@ public class EditRecipeCommand implements CommandExecutor {
             plugin.saveConfig();
             plugin.updateConfigVars();
             plugin.languager.commandExtraSettingSuccess(sender, recipeName, "auto-unlock-setting", value);
+            return true;
+        }
+        if (setting.equals("permission-requirement")) {
+            String value = GreatCommands.argumentString(2, args);
+            if (value == null) {
+                // TODO: which error here? Also format check
+                return true;
+            }
+            // TODO: everything below here
+            if (value.equals("default")) {
+                plugin.getConfig().set(String.format("permission-requirements.%s", recipeName), null);
+            } else {
+                plugin.getConfig().set(String.format("permission-requirements.%s", recipeName), value);
+            }
+            plugin.saveConfig();
+            plugin.updateConfigVars();
+            plugin.languager.commandExtraSettingSuccess(sender, recipeName, "permission-requirement", value);
             return true;
         }
 
