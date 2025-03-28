@@ -9,7 +9,9 @@
 #   have-one - Automatically unlocks custom recipes if the player has at least one of the required ingredients
 #   always - Automatically unlocks all custom recipes immediately
 automatically-unlock-recipes: never
+
 # Exceptions to the general rule you set above. You can give each recipe a specific unlock condition.
+# This can also be set in-game with /editrecipe
 automatically-unlock-recipes-exceptions:
   # Format: "namespace:name": never/have-each/have-one/always
   "greatcrafts:_always_unlock_me": always
