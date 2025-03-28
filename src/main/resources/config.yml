@@ -153,3 +153,9 @@ language-settings:
   commandErrorMustBeOneOfChoices:
   - "§cThe %what% must be one of the following choices: §f%choices%"
 
+  # When successfully set an extra setting in /editrecipe.
+  # Placeholders: %rec% = the recipe key
+  #               %setting% = the setting
+  #               %value% = the value
+  commandExtraSettingSuccess:
+  - "§3Setting updated and config reloaded."

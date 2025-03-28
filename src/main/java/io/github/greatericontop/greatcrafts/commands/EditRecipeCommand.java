@@ -75,10 +75,11 @@ public class EditRecipeCommand implements CommandExecutor {
             }
             plugin.saveConfig();
             plugin.updateConfigVars();
-            sender.sendMessage("§3Setting updated and config reloaded."); // TODO: language
+            plugin.languager.commandExtraSettingSuccess(sender, recipeName, "auto-unlock-setting", value);
+            return true;
         }
 
-        return true;
+        return false; // this should never happen
     }
 
 }

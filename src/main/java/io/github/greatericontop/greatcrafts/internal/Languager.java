@@ -213,5 +213,14 @@ public class Languager {
         }
     }
 
+    public void commandExtraSettingSuccess(CommandSender sender, String rec, String setting, String value) {
+        for (String s : getText("commandExtraSettingSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%rec%", rec)
+                    .replaceAll("%setting%", setting)
+                    .replaceAll("%value%", value));
+        }
+    }
+
 
 }
