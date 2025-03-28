@@ -81,15 +81,10 @@ public class EditRecipeCommand implements CommandExecutor {
         if (setting.equals("permission-requirement")) {
             String value = GreatCommands.argumentString(2, args);
             if (value == null) {
-                // TODO: which error here? Also format check
+                sender.sendMessage(String.format("§c/editrecipe %s permission-requirement <permission>", recipeName));
                 return true;
             }
-            // TODO: everything below here
-            if (value.equals("default")) {
-                plugin.getConfig().set(String.format("permission-requirements.%s", recipeName), null);
-            } else {
-                plugin.getConfig().set(String.format("permission-requirements.%s", recipeName), value);
-            }
+            plugin.getConfig().set(String.format("recipe-permission-requirements.%s", recipeName), value);
             plugin.saveConfig();
             plugin.updateConfigVars();
             plugin.languager.commandExtraSettingSuccess(sender, recipeName, "permission-requirement", value);
