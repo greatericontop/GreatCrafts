@@ -205,6 +205,13 @@ public class Languager {
         }
     }
 
+    public void commandErrorMustBeOneOfChoices(CommandSender sender, String what, String... choices) {
+        for (String s : getText("commandErrorMustBeOneOfChoices")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%what%", what)
+                    .replaceAll("%choices%", String.join(", ", choices)));
+        }
+    }
 
 
 }

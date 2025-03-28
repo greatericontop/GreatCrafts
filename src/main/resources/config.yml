@@ -147,3 +147,9 @@ language-settings:
   commandDuplicationSuccess:
   - "§3Copied §f%source% §3to §f%target%§3."
 
+  # When a command's argument is invalid and it must be one of the choices.
+  # Placeholders: %what% = what argument it is
+  #               %choices% = the choices
+  commandErrorMustBeOneOfChoices:
+  - "§cThe %what% must be one of the following choices: §f%choices%"
+

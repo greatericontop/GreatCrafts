@@ -59,13 +59,13 @@ public class EditRecipeCommand implements CommandExecutor {
 
         String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting"});
         if (setting == null) {
-            sender.sendMessage("The setting must be one of the choices"); // TODO: language
+            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting");
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {
             String value = GreatCommands.argumentStringFromChoices(2, args, new String[]{"never", "have-each", "have-one", "always", "default"});
             if (value == null) {
-                sender.sendMessage("The value for auto-unlock-setting must be one of the choices ..."); // TODO: language
+                plugin.languager.commandErrorMustBeOneOfChoices(sender, "auto-unlock-setting setting", "never", "have-each", "have-one", "always", "default");
                 return true;
             }
             if (value.equals("default")) {
