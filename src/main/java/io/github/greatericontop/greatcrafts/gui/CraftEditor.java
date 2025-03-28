@@ -97,8 +97,15 @@ public class CraftEditor implements Listener {
         } else {
             autoUnlockSetting = String.format("§e%s §7(default)", guiManager.getPlugin().autoUnlockSetting);
         }
+        String permissionReq;
+        if (guiManager.getPlugin().recipePermissionRequirements.containsKey(craftKey)) {
+            permissionReq = String.format("§e%s", guiManager.getPlugin().recipePermissionRequirements.getOrDefault(craftKey, null));
+        } else {
+            permissionReq = "§7(none)";
+        }
         gui.setItem(SLOT_EXTRA_INFO, Util.createItemStack(Material.MAP, 1, "§bExtra Settings",
                 "§6auto-unlock-setting§7: " + autoUnlockSetting,
+                "§6permission-requirement§7: " + permissionReq,
                 "",
                 String.format("§7Edit these with §f/editrecipe %s <setting> <new value>", craftKey)
         ));
