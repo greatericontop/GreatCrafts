@@ -24,8 +24,8 @@ automatically-unlock-recipes-exceptions:
 # This can also be set in-game with /editrecipe
 recipe-permission-requirements:
   # Format: "namespace:name": any.permission.node
-  "greatcrafts:restricted_recipe_1": greatcrafts.craft_restricted_recipes
-  "greatcrafts:restricted_recipe_2": greatcrafts.craft_restricted_recipes
+  "greatcrafts:_restricted_recipe_1": greatcrafts.craft_restricted_recipes
+  "greatcrafts:_restricted_recipe_2": myserver.other_custom_permission.permission
 
 
 # You can change the messages used by the plugin here.
