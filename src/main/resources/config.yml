@@ -19,8 +19,8 @@ automatically-unlock-recipes-exceptions:
 
 # Require a permission to craft these recipes
 # - Setting a permission here also prevents crafters from crafting the recipe.
-# - These recipes will be hidden from players in /viewrecipe and /recipes. However, players can still find out what
-#   they are. Basically, don't that the recipe will become completely secret.
+# - These recipes will be hidden from players in /recipes. However, players can still find out what
+#   they are. Basically, don't think that the recipe will become completely secret.
 # This can also be set in-game with /editrecipe
 recipe-permission-requirements:
   # Format: "namespace:name": any.permission.node
