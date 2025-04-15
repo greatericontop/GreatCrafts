@@ -25,6 +25,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
+
 public class EditRecipeCommand implements CommandExecutor {
 
     private final GreatCrafts plugin;
@@ -79,15 +81,15 @@ public class EditRecipeCommand implements CommandExecutor {
             return true;
         }
         if (setting.equals("permission-requirement")) {
-            String value = GreatCommands.argumentString(2, args);
-            if (value == null) {
-                sender.sendMessage(String.format("§c/editrecipe %s permission-requirement <permission>", recipeName));
-                return true;
-            }
+            @Nullable String value = GreatCommands.argumentString(2, args);
             plugin.getConfig().set(String.format("recipe-permission-requirements.%s", recipeName), value);
             plugin.saveConfig();
             plugin.updateConfigVars();
-            plugin.languager.commandExtraSettingSuccess(sender, recipeName, "permission-requirement", value);
+            if (value == null) {
+                // TODO: lang
+            } else {
+                plugin.languager.commandExtraSettingSuccess(sender, recipeName, "permission-requirement", value);
+            }
             return true;
         }
 
