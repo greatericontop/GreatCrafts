@@ -42,11 +42,14 @@ public class EditRecipeTabCompleter implements TabCompleter {
             return StringUtil.copyPartialMatches(args[0], keys, new ArrayList<String>(keys.size()));
         }
         if (args.length == 2) {
-            return StringUtil.copyPartialMatches(args[1], List.of("auto-unlock-setting"), new ArrayList<String>(1));
+            return StringUtil.copyPartialMatches(args[1], List.of("auto-unlock-setting", "permission-requirement"), new ArrayList<String>(2));
         }
         if (args.length == 3) {
             if (args[1].equals("auto-unlock-setting")) {
                 return StringUtil.copyPartialMatches(args[2], List.of("never", "have-each", "have-one", "always", "default"), new ArrayList<String>(5));
+            }
+            if (args[1].equals("permission-requirement")) {
+                return List.of("[<permission (optional)>]");
             }
         }
         return null;
