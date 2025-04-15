@@ -222,11 +222,25 @@ public class Languager {
         }
     }
 
-    public void commandPermissionReqRemoveSuccess
+    public void commandPermissionReqRemoveSuccess(CommandSender sender) {
+        for (String s : getText("commandPermissionReqRemoveSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
 
-    public void crafterCraftNoPermissionError
+    public void crafterCraftNoPermissionError(CommandSender sender) {
+        for (String s : getText("crafterCraftNoPermissionError")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
 
-    public void playerCraftNoPermissionError
+    public void playerCraftNoPermissionError(CommandSender sender, String recipeKey, String permission) {
+        for (String s : getText("playerCraftNoPermissionError")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%recipekey%", recipeKey)
+                    .replaceAll("%permission%", permission));
+        }
+    }
 
 
 }
