@@ -35,6 +35,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class RecipeListMenu implements Listener {
     private static final String INV_NAME = "§3Recipes";
@@ -54,7 +55,7 @@ public class RecipeListMenu implements Listener {
         this.searchQueryPDC = new NamespacedKey(plugin, "searchQuery");
     }
 
-    private void updateInventory(List<SavedRecipe> allRecipes, Inventory gui, int visualPageNumber, boolean shouldLookupSearchQuery, @Nullable String searchQuery) {
+    private void updateInventory(Player player, List<SavedRecipe> allRecipes, Inventory gui, int visualPageNumber, boolean shouldLookupSearchQuery, @Nullable String searchQuery) {
         if (shouldLookupSearchQuery) {
             // read it from slot INDICATOR_SLOT
             searchQuery = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(searchQueryPDC, PersistentDataType.STRING);
@@ -65,11 +66,14 @@ public class RecipeListMenu implements Listener {
         }
         // Take sub-list that contains our search query
         String finalSearchQuery = searchQuery;
+        Stream<SavedRecipe> allViewableRecipes = allRecipes.stream().filter(
+                r -> plugin.recipePermissionRequirements.get(r.key().toString()) == null
+                        || player.hasPermission(plugin.recipePermissionRequirements.get(r.key().toString())));
         List<SavedRecipe> searchResults;
         if (searchQuery == null) {
-            searchResults = allRecipes;
+            searchResults = allViewableRecipes.toList();
         } else {
-            searchResults = allRecipes.stream()
+            searchResults = allViewableRecipes
                     .filter(savedRecipe -> savedRecipe.key().toString().contains(finalSearchQuery))
                     .toList();
         }
@@ -130,7 +134,7 @@ public class RecipeListMenu implements Listener {
             }
         }
         Inventory gui = Bukkit.createInventory(null, 54, INV_NAME);
-        updateInventory(allRecipes, gui, 1, false, searchQuery);
+        updateInventory(player, allRecipes, gui, 1, false, searchQuery);
         // (Does not get added to :playerMainInventories:)
         player.openInventory(gui);
     }
@@ -152,14 +156,14 @@ public class RecipeListMenu implements Listener {
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
             List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
-            updateInventory(allRecipes, gui, pageNum-1, true, null);
+            updateInventory(player, allRecipes, gui, pageNum-1, true, null);
         } else if (slot == NEXT_PAGE_SLOT) {
             if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) {
                 return;
             }
             int pageNum = gui.getItem(INDICATOR_SLOT).getItemMeta().getPersistentDataContainer().get(pageNumberIndicatorPDC, PersistentDataType.INTEGER);
             List<SavedRecipe> allRecipes = plugin.recipeManager.getAllSavedRecipes();
-            updateInventory(allRecipes, gui, pageNum+1, true, null);
+            updateInventory(player, allRecipes, gui, pageNum+1, true, null);
         } else if (slot < CRAFTS_PER_PAGE) {
             ItemStack itemClicked = event.getCurrentItem();
             if (itemClicked == null || itemClicked.getType() == Material.AIR) return;
