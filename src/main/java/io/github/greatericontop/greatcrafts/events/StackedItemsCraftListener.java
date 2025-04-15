@@ -1,4 +1,4 @@
-package io.github.greatericontop.greatcrafts.events.stackeditems;
+package io.github.greatericontop.greatcrafts.events;
 
 /*
  * Copyright (C) 2023-present greateric.

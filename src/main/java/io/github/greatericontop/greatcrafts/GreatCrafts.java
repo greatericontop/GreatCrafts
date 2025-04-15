@@ -33,8 +33,8 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewRecipeTab
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.PermissionRestrictionListener;
-import io.github.greatericontop.greatcrafts.events.stackeditems.CrafterEvents;
-import io.github.greatericontop.greatcrafts.events.stackeditems.StackedItemsCraftListener;
+import io.github.greatericontop.greatcrafts.events.CrafterEvents;
+import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.CraftReadOnlyViewer;
 import io.github.greatericontop.greatcrafts.gui.ExactChoiceToggler;
