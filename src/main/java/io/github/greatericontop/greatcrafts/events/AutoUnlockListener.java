@@ -39,6 +39,14 @@ public class AutoUnlockListener implements Listener {
         this.plugin = plugin;
     }
 
+    private boolean playerHasPermission(Player player, SavedRecipe rec) {
+        String permission = plugin.recipePermissionRequirements.get(rec.key().toString());
+        if (permission == null) {
+            return true;
+        }
+        return player.hasPermission(permission);
+    }
+
     // (setting = ALWAYS) Unlock on player join
     @EventHandler()
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -46,7 +54,7 @@ public class AutoUnlockListener implements Listener {
         int counter = 0;
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
             AutoUnlockSetting setting = plugin.autoUnlockExceptions.getOrDefault(rec.key().toString(), plugin.autoUnlockSetting);
-            if (setting == AutoUnlockSetting.ALWAYS) {
+            if (setting == AutoUnlockSetting.ALWAYS && playerHasPermission(player, rec)) {
                 if (player.discoverRecipe(rec.key())) {
                     counter++;
                 }
@@ -64,6 +72,7 @@ public class AutoUnlockListener implements Listener {
         ItemStack pickedUpItem = event.getItem().getItemStack();
         for (SavedRecipe rec : plugin.recipeManager.getAllSavedRecipes()) {
             if (player.hasDiscoveredRecipe(rec.key()))  continue;
+            if (!playerHasPermission(player, rec))  continue;
             AutoUnlockSetting setting = plugin.autoUnlockExceptions.getOrDefault(rec.key().toString(), plugin.autoUnlockSetting);
 
             if (plugin.autoUnlockSetting == AutoUnlockSetting.EACH) {
