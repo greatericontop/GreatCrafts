@@ -222,5 +222,11 @@ public class Languager {
         }
     }
 
+    public void commandPermissionReqRemoveSuccess
+
+    public void crafterCraftNoPermissionError
+
+    public void playerCraftNoPermissionError
+
 
 }
