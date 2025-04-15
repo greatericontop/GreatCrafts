@@ -38,7 +38,7 @@ public class PermissionRestrictionListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (!player.hasPermission(permissionReq)) {
             event.setCancelled(true);
-            player.sendMessage("§cNo permission"); // TODO: LANG
+            plugin.languager.playerCraftNoPermissionError(player, stringKey, permissionReq);
         }
 
     }

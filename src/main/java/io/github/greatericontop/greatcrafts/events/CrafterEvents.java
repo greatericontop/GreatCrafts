@@ -53,7 +53,7 @@ public class CrafterEvents implements Listener {
             NamespacedKey recipeKey = _shapedRecipe.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
             if (savedRecipe != null && plugin.recipePermissionRequirements.get(recipeKey.toString()) != null) { // use !=null, not .contains
-                //TODO: MESSAGING
+                messageNearbyPlayersPermission(event);
                 event.setCancelled(true);
                 return;
             }
@@ -65,7 +65,7 @@ public class CrafterEvents implements Listener {
             NamespacedKey recipeKey = _shapelessRec.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
             if (savedRecipe != null && plugin.recipePermissionRequirements.get(recipeKey.toString()) != null) {
-                //TODO: MESSAGING
+                messageNearbyPlayersPermission(event);
                 event.setCancelled(true);
                 return;
             }
@@ -177,6 +177,12 @@ public class CrafterEvents implements Listener {
     private void messageNearbyPlayers(CrafterCraftEvent event, String recipeKey) {
         for (Entity e : event.getBlock().getWorld().getNearbyEntities(event.getBlock().getLocation(), 20.0, 20.0, 20.0, entity -> entity instanceof Player)) {
             plugin.languager.stackedItemsErrorMissedExactMatch(e, recipeKey);
+        }
+    }
+
+    private void messageNearbyPlayersPermission(CrafterCraftEvent event) {
+        for (Entity e : event.getBlock().getWorld().getNearbyEntities(event.getBlock().getLocation(), 20.0, 20.0, 20.0, entity -> entity instanceof Player)) {
+            plugin.languager.crafterCraftNoPermissionError(e);
         }
     }
 

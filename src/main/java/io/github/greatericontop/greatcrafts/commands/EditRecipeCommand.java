@@ -86,7 +86,7 @@ public class EditRecipeCommand implements CommandExecutor {
             plugin.saveConfig();
             plugin.updateConfigVars();
             if (value == null) {
-                // TODO: lang
+                plugin.languager.commandPermissionReqRemoveSuccess(sender);
             } else {
                 plugin.languager.commandExtraSettingSuccess(sender, recipeName, "permission-requirement", value);
             }
