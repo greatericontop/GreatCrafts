@@ -171,3 +171,17 @@ language-settings:
   #               %value% = the value
   commandExtraSettingSuccess:
   - "§3Setting updated and config reloaded."
+
+  # When permission requirement was successfully removed
+  commandPermissionReqRemoveSuccess:
+  - "§3Permission requirement was successfully removed. Setting updated and config reloaded."
+
+  # This is given to nearby players when a crafter tries to craft a permission-restricted recipe.
+  crafterCraftNoPermissionError:
+  - "§cThis recipe requires a permission to craft and is not available to crafters!"
+
+  # When a player tries to craft a restricted recipe but can't
+  # Placeholders: %recipekey% = the recipe key
+  #               %permission% = the permission required
+  playerCraftNoPermissionError:
+  - "§cYou don't have permission to craft this recipe!"
