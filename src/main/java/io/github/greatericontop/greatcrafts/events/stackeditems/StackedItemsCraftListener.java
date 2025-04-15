@@ -45,7 +45,7 @@ public class StackedItemsCraftListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true) // Doesn't run if cancelled by PermissionRestrictionListener
     public void onCraft(CraftItemEvent event) {
         // Our stacked items recipe is registered as a recipe (in its basic form), so we know that this event
         // will always fire

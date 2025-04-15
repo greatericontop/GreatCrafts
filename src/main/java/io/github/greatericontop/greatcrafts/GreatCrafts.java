@@ -32,6 +32,7 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.RecipeListTab
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
+import io.github.greatericontop.greatcrafts.events.PermissionRestrictionListener;
 import io.github.greatericontop.greatcrafts.events.stackeditems.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.stackeditems.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
@@ -116,6 +117,7 @@ public class GreatCrafts extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new AutoUnlockListener(this), this);
         this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(guiManager), this);
+        this.getServer().getPluginManager().registerEvents(new PermissionRestrictionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
         // Paper & Spigot: getBukkitVersion() -> "1.21-R0.1-SNAPSHOT"

@@ -47,6 +47,10 @@ public class RecipeManager {
         return allRecipes;
     }
 
+    public boolean isRecipeCustom(String key) {
+        return plugin.recipes.contains(key);
+    }
+
     public SavedRecipe getRecipe(String key) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         String string = plugin.recipes.getString(key);
