@@ -95,7 +95,7 @@ public class CraftEditor implements Listener {
         if (guiManager.getPlugin().autoUnlockExceptions.containsKey(craftKey)) {
             autoUnlockSetting = String.format("§e%s §7(set)", guiManager.getPlugin().autoUnlockExceptions.get(craftKey));
         } else {
-            autoUnlockSetting = String.format("§e%s §7(default)", guiManager.getPlugin().autoUnlockSetting);
+            autoUnlockSetting = String.format("§e%s §7(plugin-wide default setting)", guiManager.getPlugin().autoUnlockSetting);
         }
         String permissionReq;
         if (guiManager.getPlugin().recipePermissionRequirements.containsKey(craftKey)) {
