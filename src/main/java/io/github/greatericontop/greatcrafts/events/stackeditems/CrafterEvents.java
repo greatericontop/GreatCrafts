@@ -27,6 +27,7 @@ import org.bukkit.block.Crafter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.CrafterCraftEvent;
 import org.bukkit.inventory.Inventory;
@@ -45,12 +46,17 @@ public class CrafterEvents implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler()
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrafterCraft(CrafterCraftEvent event) {
         Recipe _rawRecipe = event.getRecipe();
         if (_rawRecipe instanceof ShapedRecipe _shapedRecipe) {
             NamespacedKey recipeKey = _shapedRecipe.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe != null && plugin.recipePermissionRequirements.get(recipeKey.toString()) != null) { // use !=null, not .contains
+                //TODO: MESSAGING
+                event.setCancelled(true);
+                return;
+            }
             if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS) {
                 return;
             }
@@ -58,6 +64,11 @@ public class CrafterEvents implements Listener {
         } else if (_rawRecipe instanceof ShapelessRecipe _shapelessRec) {
             NamespacedKey recipeKey = _shapelessRec.getKey();
             SavedRecipe savedRecipe = plugin.recipeManager.getRecipe(recipeKey.toString());
+            if (savedRecipe != null && plugin.recipePermissionRequirements.get(recipeKey.toString()) != null) {
+                //TODO: MESSAGING
+                event.setCancelled(true);
+                return;
+            }
             if (savedRecipe == null || savedRecipe.type() != RecipeType.STACKED_ITEMS_SHAPELESS) {
                 return;
             }
