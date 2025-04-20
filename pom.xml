@@ -6,7 +6,7 @@
 
     <groupId>io.github.greatericontop</groupId>
     <artifactId>greatcrafts</artifactId>
-    <version>1.6.1</version>
+    <version>1.6.1-nightly</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -32,6 +32,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.20-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
