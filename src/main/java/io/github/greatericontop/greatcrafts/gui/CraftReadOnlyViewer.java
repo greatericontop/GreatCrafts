@@ -68,7 +68,9 @@ public class CraftReadOnlyViewer implements Listener {
         }
         fillViewCraftingSlots(gui, savedRecipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, savedRecipe.result());
-        gui.setItem(SLOT_EDIT, Util.createItemStackWithPDC(Material.WRITABLE_BOOK, 1, recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString(), "§aEdit §eCLICK HERE"));
+        if (player.hasPermission("greatcrafts.modifyrecipes")) {
+            gui.setItem(SLOT_EDIT, Util.createItemStackWithPDC(Material.WRITABLE_BOOK, 1, recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString(), "§aEdit §eCLICK HERE"));
+        }
         player.openInventory(gui);
     }
 
