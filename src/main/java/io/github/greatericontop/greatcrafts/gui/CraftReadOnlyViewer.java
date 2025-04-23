@@ -80,7 +80,7 @@ public class CraftReadOnlyViewer implements Listener {
         if (gui == null)  return;
         if (!event.getView().getTitle().equals(INV_NAME))  return;
         event.setCancelled(true);
-        if (event.getSlot() == SLOT_EDIT) {
+        if (event.getSlot() == SLOT_EDIT && event.getCurrentItem().getType() != Material.BLACK_STAINED_GLASS_PANE) {
             Player player = (Player) event.getWhoClicked();
             String recipeKey = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(recipeKeyPDC, PersistentDataType.STRING);
             player.closeInventory();
