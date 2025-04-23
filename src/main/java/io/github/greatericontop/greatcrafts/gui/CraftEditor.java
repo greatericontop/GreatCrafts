@@ -113,7 +113,8 @@ public class CraftEditor implements Listener {
                 "§7Place items here to delete them without dropping them on the ground."));
         gui.setItem(SLOT_CHANGE_TYPE, getDisplayItemStackForRecipeType(savedRecipe.type()));
         gui.setItem(SLOT_DISCARD, Util.createItemStack(Material.BARRIER, 1, "§cDiscard Changes"));
-        gui.setItem(SLOT_SAVE, Util.createItemStack(Material.LIME_STAINED_GLASS, 1, "§aSave Changes"));
+        gui.setItem(SLOT_SAVE, Util.createItemStack(Material.LIME_STAINED_GLASS, 1, "§aSave Changes",
+                "§7Your changes will not take effect until you /reloadrecipes."));
         gui.setItem(SLOT_SAVE_AND_ACTIVATE, Util.createItemStack(Material.LIME_CONCRETE, 1, "§aSave & Activate Changes",
                 "§fThis reloads the current recipe and applies the changes immediately.",
                 "§eNote: §fPlayers still need to reconnect to see the recipe client-side, but it will work on the server.",
