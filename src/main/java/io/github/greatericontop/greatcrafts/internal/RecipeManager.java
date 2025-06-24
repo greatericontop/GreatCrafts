@@ -21,6 +21,7 @@ import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.IngredientType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.RecipeType;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -78,6 +79,7 @@ public class RecipeManager {
     public boolean tryDeleteRecipe(String key) {
         if (plugin.recipes.contains(key)) {
             plugin.recipes.set(key, null);
+            Bukkit.removeRecipe(NamespacedKey.fromString(key));
             return true;
         }
         return false;
