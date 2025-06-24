@@ -37,9 +37,16 @@ public class GreatCraftsCommand implements CommandExecutor, TabCompleter {
         String arg = GreatCommands.argumentString(0, args);
 
         if (arg == null) {
+            String ver = plugin.getDescription().getVersion();
             sender.sendMessage("§9--------------------------------------------------");
             sender.sendMessage("");
-            sender.sendMessage(String.format("§aGreat§bCrafts §7v%s", plugin.getDescription().getVersion()));
+            sender.sendMessage(String.format("§aGreat§bCrafts §7v%s", ver));
+            if (ver.contains("---")) {
+                sender.sendMessage("");
+                sender.sendMessage("§6This build of GreatCrafts was made for earlier versions of Minecraft.");
+                sender.sendMessage(String.format("§6Intended version(s): §e%s", ver.split("---")[1]));
+                sender.sendMessage("§6If this looks wrong to you, please go back and download the correct build.");
+            }
             sender.sendMessage("");
             sender.sendMessage(String.format("§b%d §3recipes", plugin.recipeManager.getAllSavedRecipes().size()));
             sender.sendMessage("");
