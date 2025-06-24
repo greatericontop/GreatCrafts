@@ -8,6 +8,9 @@
 
 GreatCrafts is a crafting recipe plugin that allows you to create and customize your own crafting table recipes.
 
+**⚠ Make sure you download the correct file!
+There are two different files for Minecraft 1.19-1.20 and 1.21+.**
+
 ## Features
 
 - Supports shaped and shapeless recipes
