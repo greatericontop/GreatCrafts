@@ -6,7 +6,7 @@
 
     <groupId>io.github.greatericontop</groupId>
     <artifactId>greatcrafts</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.1-test</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -37,6 +37,11 @@
             <artifactId>spigot-api</artifactId>
             <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
     </dependencies>
 

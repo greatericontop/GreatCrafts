@@ -31,9 +31,9 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabComp
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.RecipeListTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
+import io.github.greatericontop.greatcrafts.events.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.PermissionRestrictionListener;
-import io.github.greatericontop.greatcrafts.events.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
 import io.github.greatericontop.greatcrafts.gui.CraftEditor;
 import io.github.greatericontop.greatcrafts.gui.CraftReadOnlyViewer;
@@ -45,6 +45,8 @@ import io.github.greatericontop.greatcrafts.gui.RecipeListMenu;
 import io.github.greatericontop.greatcrafts.internal.Languager;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
+import io.github.greatericontop.greatcrafts.updatechecker.UpdateChecker;
+import io.github.greatericontop.greatcrafts.updatechecker.UpdateCheckerPlayerJoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +72,8 @@ public class GreatCrafts extends JavaPlugin {
     public MaterialChoiceToggler guiMaterialChoiceToggler;
     public MaterialChoiceEditor guiMaterialChoiceEditor;
     public RecipeListMenu guiRecipeListMenu;
+
+    public String latestVersion = null;
 
     @Override
     public void onEnable() {
@@ -120,6 +124,8 @@ public class GreatCrafts extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PermissionRestrictionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
+        this.getServer().getPluginManager().registerEvents(new UpdateCheckerPlayerJoinListener(this), this);
+
         // Paper & Spigot: getBukkitVersion() -> "1.21-R0.1-SNAPSHOT"
         String rawVersion = Bukkit.getServer().getBukkitVersion();
         String minecraftVersion = rawVersion.split("-")[0];
@@ -132,10 +138,9 @@ public class GreatCrafts extends JavaPlugin {
         }
 
 
-
-
         Bukkit.getScheduler().runTaskTimer(this, this::saveAll, 1200L, 1200L);
-
+        // Run update checker API request async (and again every day if the server isn't restarted)
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> latestVersion = UpdateChecker.getLatestVersion(this), 10L, 1728000L);
         // Recipes are not loaded in by default, so do this (later)
         Bukkit.getScheduler().runTaskLater(this, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "greatcrafts:reloadrecipes"), 20L);
 
