@@ -60,6 +60,7 @@ public class GreatCrafts extends JavaPlugin {
     public AutoUnlockSetting autoUnlockSetting;
     public Map<String, AutoUnlockSetting> autoUnlockExceptions;
     public Map<String, String> recipePermissionRequirements;
+    public boolean doUpdateCheck;
     public Languager languager;
 
     public YamlConfiguration recipes;
@@ -140,7 +141,9 @@ public class GreatCrafts extends JavaPlugin {
 
         Bukkit.getScheduler().runTaskTimer(this, this::saveAll, 1200L, 1200L);
         // Run update checker API request async (and again every day if the server isn't restarted)
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> latestVersion = UpdateChecker.getLatestVersion(this), 10L, 1728000L);
+        if (doUpdateCheck) {
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> latestVersion = UpdateChecker.getLatestVersion(this), 10L, 1728000L);
+        }
         // Recipes are not loaded in by default, so do this (later)
         Bukkit.getScheduler().runTaskLater(this, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "greatcrafts:reloadrecipes"), 20L);
 
@@ -177,6 +180,8 @@ public class GreatCrafts extends JavaPlugin {
             this.getLogger().info(String.format("  recipe-permission-requirements: %s = %s", entry.getKey(), value));
             recipePermissionRequirements.put(entry.getKey(), value);
         }
+        doUpdateCheck = this.getConfig().getBoolean("do-update-check", true);
+        this.getLogger().info(String.format("  doUpdateCheck = %s", doUpdateCheck));
         languager = new Languager(this);
         this.getLogger().info("  Languager ready!");
     }

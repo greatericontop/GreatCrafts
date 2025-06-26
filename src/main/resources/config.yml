@@ -28,6 +28,10 @@ recipe-permission-requirements:
   "greatcrafts:_restricted_recipe_2": myserver.other_custom_permission.permission
 
 
+# Whether or not to check for updates
+do-update-check: true
+
+
 # You can change the messages used by the plugin here.
 # The general format is
 #   message-thing:

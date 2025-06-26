@@ -36,13 +36,15 @@ public class UpdateCheckerPlayerJoinListener implements Listener {
     @EventHandler()
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("greatcrafts.greatcraftscommand")
+        if (plugin.doUpdateCheck
+                && player.hasPermission("greatcrafts.greatcraftscommand")
                 && plugin.latestVersion != null
                 && !plugin.latestVersion.equals(plugin.getDescription().getVersion().split("---")[0])
         ) {
-            player.sendMessage(String.format("§3An update for GreatCrafts is available! You have §6%s§3, §6%s§3 is available.",
+            player.sendMessage(String.format("§3An update for GreatCrafts is available! You have §b%s§3, §b%s§3 is available.",
                     plugin.getDescription().getVersion(), plugin.latestVersion));
-            player.spigot().sendMessage(new ComponentBuilder("Click here to download").color(ChatColor.AQUA)
+            player.spigot().sendMessage(new ComponentBuilder("Click here to download!")
+                    .color(ChatColor.GREEN).underlined(true)
                     .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://modrinth.com/plugin/greatcrafts"))
                     .build());
         }
