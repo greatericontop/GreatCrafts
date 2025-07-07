@@ -36,7 +36,9 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StackedItemsCraftListener implements Listener {
 
@@ -188,9 +190,29 @@ public class StackedItemsCraftListener implements Listener {
     }
 
     private int processCraft(SavedRecipe savedRecipe, Player player, CraftItemEvent event, int maxCraftsAvailable) {
+        // First, apply the limit to maxCraftsAvailable
+        String recKey = savedRecipe.key().toString();
+        if (plugin.recipeCraftingLimits.containsKey(recKey)) {
+            if (!plugin.recipeCraftingLimitsPlayers.containsKey(player.getUniqueId())) {
+                plugin.recipeCraftingLimitsPlayers.put(player.getUniqueId(), new HashMap<>());
+            }
+            Map<String, Integer> playerCraftsMap = plugin.recipeCraftingLimitsPlayers.get(player.getUniqueId());
+            int craftsMadePreviously = playerCraftsMap.getOrDefault(recKey, 0);
+            int limit = plugin.recipeCraftingLimits.get(recKey);
+            // Apply limit
+            if (craftsMadePreviously >= limit) { // zero crafts left, exit now
+                plugin.languager.craftingLimitFailure(player, limit);
+                return 0;
+            } else if (craftsMadePreviously + maxCraftsAvailable > limit) {
+                maxCraftsAvailable = limit - craftsMadePreviously;
+                // Notification sent & limit applied later
+            }
+        }
+
         ItemStack result = savedRecipe.result().clone();
         int actualAmountCrafted;
         if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
+            // Crafting limits handled in Util
             actualAmountCrafted = Util.performShiftClickCraft(player, result, maxCraftsAvailable);
         } else {
             if (player.getItemOnCursor() == null || player.getItemOnCursor().getType() == Material.AIR) {
@@ -205,6 +227,16 @@ public class StackedItemsCraftListener implements Listener {
                 return 0;
             }
         }
+
+        // Notification & limit application
+        if (plugin.recipeCraftingLimits.containsKey(recKey)) {
+            Map<String, Integer> playerCraftsMap = plugin.recipeCraftingLimitsPlayers.get(player.getUniqueId());
+            int craftsMadePreviously = playerCraftsMap.getOrDefault(recKey, 0);
+            int limit = plugin.recipeCraftingLimits.get(recKey);
+            playerCraftsMap.put(recKey, craftsMadePreviously + actualAmountCrafted);
+            plugin.languager.craftingLimitNotification(player, craftsMadePreviously + actualAmountCrafted, limit);
+        }
+
         return actualAmountCrafted;
     }
 
