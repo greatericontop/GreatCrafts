@@ -59,9 +59,9 @@ public class EditRecipeCommand implements CommandExecutor {
             return true;
         }
 
-        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting", "permission-requirement"});
+        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting", "permission-requirement", "crafting-limit"});
         if (setting == null) {
-            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting", "permission-requirement");
+            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting", "permission-requirement", "crafting-limit");
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {
