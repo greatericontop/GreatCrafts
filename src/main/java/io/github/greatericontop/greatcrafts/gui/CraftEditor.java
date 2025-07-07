@@ -103,9 +103,16 @@ public class CraftEditor implements Listener {
         } else {
             permissionReq = "§7(none)";
         }
+        String craftingLimit;
+        if (guiManager.getPlugin().recipeCraftingLimits.containsKey(craftKey)) {
+            craftingLimit = String.format("§e%d §7(per player, stacked items only)", guiManager.getPlugin().recipeCraftingLimits.get(craftKey));
+        } else {
+            craftingLimit = "§7(unlimited)";
+        }
         gui.setItem(SLOT_EXTRA_INFO, Util.createItemStack(Material.MAP, 1, "§bExtra Settings",
-                "§6auto-unlock-setting§7: " + autoUnlockSetting,
-                "§6permission-requirement§7: " + permissionReq,
+                "§6auto unlock setting§7: " + autoUnlockSetting,
+                "§6permission requirement§7: " + permissionReq,
+                "§6crafting limit§7: " + craftingLimit,
                 "",
                 String.format("§7Edit these with §f/editrecipe %s <setting> <new value>", craftKey)
         ));
