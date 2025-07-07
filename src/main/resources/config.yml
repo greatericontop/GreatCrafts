@@ -11,7 +11,7 @@
 automatically-unlock-recipes: never
 
 # Exceptions to the general rule you set above. You can give each recipe a specific unlock condition.
-# This can also be set in-game with /editrecipe
+# This can also be set in-game with /editrecipe (this method is recommended)
 automatically-unlock-recipes-exceptions:
   # Format: "namespace:name": never/have-each/have-one/always
   "greatcrafts:_always_unlock_me": always
@@ -21,11 +21,19 @@ automatically-unlock-recipes-exceptions:
 # - Setting a permission here also prevents crafters from crafting the recipe.
 # - These recipes will be hidden from players in /recipes. However, players can still find out what
 #   they are. Basically, don't think that the recipe will become completely secret.
-# This can also be set in-game with /editrecipe
+# This can also be set in-game with /editrecipe (this method is recommended)
 recipe-permission-requirements:
   # Format: "namespace:name": any.permission.node
   "greatcrafts:_restricted_recipe_1": greatcrafts.craft_restricted_recipes
   "greatcrafts:_restricted_recipe_2": myserver.other_custom_permission.permission
+
+
+# Limit the number of crafts each player can do.
+# The limit only applies to stacked items recipes and is reset when the server restarts.
+# This can also be set in-game with /editrecipe (this method is recommended)
+recipe-crafting-limits:
+  # Format: "namespace:name": max crafts allowed
+  "greatcrafts:_limited_recipe_1": 5
 
 
 # Whether or not to check for updates

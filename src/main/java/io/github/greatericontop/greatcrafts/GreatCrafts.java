@@ -54,18 +54,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class GreatCrafts extends JavaPlugin {
 
     public AutoUnlockSetting autoUnlockSetting;
     public Map<String, AutoUnlockSetting> autoUnlockExceptions;
     public Map<String, String> recipePermissionRequirements;
+    public Map<String, Integer> recipeCraftingLimits;
     public boolean doUpdateCheck;
     public Languager languager;
 
     public YamlConfiguration recipes;
-
     public RecipeManager recipeManager;
+
+    public Map<UUID, Map<String, Integer>> recipeCraftingLimitsPlayers;
 
     public CraftEditor guiCraftEditor;
     public CraftReadOnlyViewer guiCraftReadOnlyViewer;
@@ -86,8 +89,9 @@ public class GreatCrafts extends JavaPlugin {
 
         File recipeFile = new File(this.getDataFolder(), "recipes.yml");
         recipes = YamlConfiguration.loadConfiguration(recipeFile);
-
         recipeManager = new RecipeManager(this);
+
+        recipeCraftingLimitsPlayers = new HashMap<>();
 
         GreatCraftsCommand greatcraftscommand = new GreatCraftsCommand(this);
         this.getCommand("greatcrafts").setExecutor(greatcraftscommand);
@@ -179,6 +183,21 @@ public class GreatCrafts extends JavaPlugin {
             String value = entry.getValue().toString();
             this.getLogger().info(String.format("  recipe-permission-requirements: %s = %s", entry.getKey(), value));
             recipePermissionRequirements.put(entry.getKey(), value);
+        }
+        Map<String, Object> recipeCraftingLimitsRaw = this.getConfig().getConfigurationSection("recipe-crafting-limits").getValues(false);
+        recipeCraftingLimits = new HashMap<>();
+        for (Map.Entry<String, Object> entry : recipeCraftingLimitsRaw.entrySet()) {
+            String value = entry.getValue().toString();
+            try {
+                int limit = Integer.parseInt(value);
+                if (limit <= 0) {
+                    throw new NumberFormatException(); // go into catch block
+                }
+                this.getLogger().info(String.format("  recipe-crafting-limits: %s = %d", entry.getKey(), limit));
+                recipeCraftingLimits.put(entry.getKey(), limit);
+            } catch (NumberFormatException e) {
+                this.getLogger().warning(String.format("recipe-crafting-limits: invalid value for %s ('%s')", entry.getKey(), value));
+            }
         }
         doUpdateCheck = this.getConfig().getBoolean("do-update-check", true);
         this.getLogger().info(String.format("  doUpdateCheck = %s", doUpdateCheck));
