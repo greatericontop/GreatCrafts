@@ -254,5 +254,20 @@ public class Languager {
         }
     }
 
+    public void craftingLimitNotification(CommandSender sender, int playerAmount, int limitAmount) {
+        for (String s : getText("craftingLimitNotification")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%playeramount%", String.valueOf(playerAmount))
+                    .replaceAll("%limitamount%", String.valueOf(limitAmount)));
+        }
+    }
+
+    public void craftingLimitFailure(CommandSender sender, int limitAmount) {
+        for (String s : getText("craftingLimitFailure")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%limitamount%", String.valueOf(limitAmount)));
+        }
+    }
+
 
 }

@@ -205,3 +205,14 @@ language-settings:
   # When removing the crafting limit was successful
   commandCraftingLimitRemoveSuccess:
   - "§3Crafting limit was successfully removed. Setting updated and config reloaded."
+
+  # Shown when crafting a recipe with a limit. Intended to inform the player how much they can still craft.
+  # Placeholders: %playeramount% = the amount the player has crafted
+  #               %limitamount% = the limit amount
+  craftingLimitNotification:
+  - "§7You have crafted §e%playeramount%§7/§e%limitamount% §7of this item."
+
+  # Shown when crafting is unsuccessful because the player is at the limit and no more items can be made.
+  # Placeholders: %limitamount% = the limit amount
+  craftingLimitFailure:
+  - "§cYou have reached the limit of §e%limitamount% §ccrafts for this item!"
