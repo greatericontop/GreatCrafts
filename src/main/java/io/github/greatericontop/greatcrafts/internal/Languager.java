@@ -242,5 +242,17 @@ public class Languager {
         }
     }
 
+    public void commandErrorIntegerRequired(CommandSender sender) {
+        for (String s : getText("commandErrorIntegerRequired")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void commandCraftingLimitRemoveSuccess(CommandSender sender) {
+        for (String s : getText("commandCraftingLimitRemoveSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
 
 }

@@ -197,3 +197,11 @@ language-settings:
   #               %permission% = the permission required
   playerCraftNoPermissionError:
   - "§cYou don't have permission to craft this recipe!"
+
+  # When an integer is required
+  commandErrorIntegerRequired:
+  - "§cAn integer is required!"
+
+  # When removing the crafting limit was successful
+  commandCraftingLimitRemoveSuccess:
+  - "§3Crafting limit was successfully removed. Setting updated and config reloaded."

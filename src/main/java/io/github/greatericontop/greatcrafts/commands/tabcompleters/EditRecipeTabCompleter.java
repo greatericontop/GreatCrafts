@@ -42,7 +42,7 @@ public class EditRecipeTabCompleter implements TabCompleter {
             return StringUtil.copyPartialMatches(args[0], keys, new ArrayList<String>(keys.size()));
         }
         if (args.length == 2) {
-            return StringUtil.copyPartialMatches(args[1], List.of("auto-unlock-setting", "permission-requirement"), new ArrayList<String>(2));
+            return StringUtil.copyPartialMatches(args[1], List.of("auto-unlock-setting", "permission-requirement", "crafting-limit"), new ArrayList<String>(3));
         }
         if (args.length == 3) {
             if (args[1].equals("auto-unlock-setting")) {
@@ -50,6 +50,9 @@ public class EditRecipeTabCompleter implements TabCompleter {
             }
             if (args[1].equals("permission-requirement")) {
                 return List.of("[<permission (optional)>]");
+            }
+            if (args[1].equals("crafting-limit")) {
+                return List.of("<number, or 0 for no limit>");
             }
         }
         return null;

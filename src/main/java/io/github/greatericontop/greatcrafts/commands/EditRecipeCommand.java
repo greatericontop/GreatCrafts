@@ -92,6 +92,22 @@ public class EditRecipeCommand implements CommandExecutor {
             }
             return true;
         }
+        if (setting.equals("crafting-limit")) {
+            @Nullable Integer value = GreatCommands.argumentInteger(2, args);
+            if (value == null) {
+                plugin.languager.commandErrorIntegerRequired(sender);
+                return true;
+            }
+            plugin.getConfig().set(String.format("recipe-crafting-limits.%s", recipeName), value);
+            plugin.saveConfig();
+            plugin.updateConfigVars();
+            if (value == 0) {
+                plugin.languager.commandCraftingLimitRemoveSuccess(sender);
+            } else {
+                plugin.languager.commandExtraSettingSuccess(sender, recipeName, "crafting-limit", String.valueOf(value));
+            }
+            return true;
+        }
 
         return false; // this should never happen
     }
