@@ -20,6 +20,7 @@ package io.github.greatericontop.greatcrafts.commands;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -192,19 +194,32 @@ public class GCUtilCommand implements CommandExecutor {
 
     private void enchant(Player player, Enchantment enchant, int level) {
         ItemStack handItem = player.getInventory().getItemInMainHand();
-        ItemMeta im = handItem.getItemMeta();
-        if (im == null) {
-            plugin.languager.commandErrorNoItemMeta(player);
-            return;
-        }
-        if (level <= 0) {
-            im.removeEnchant(enchant);
-            handItem.setItemMeta(im);
-            plugin.languager.commandRemoveEnchantSuccess(player);
+        if (handItem.getType() == Material.ENCHANTED_BOOK) {
+            EnchantmentStorageMeta im = (EnchantmentStorageMeta) handItem.getItemMeta();
+            if (level <= 0) {
+                im.removeStoredEnchant(enchant);
+                handItem.setItemMeta(im);
+                plugin.languager.commandRemoveEnchantSuccess(player);
+            } else {
+                im.addStoredEnchant(enchant, level, true);
+                handItem.setItemMeta(im);
+                plugin.languager.commandAddEnchantSuccess(player);
+            }
         } else {
-            im.addEnchant(enchant, level, true);
-            handItem.setItemMeta(im);
-            plugin.languager.commandAddEnchantSuccess(player);
+            ItemMeta im = handItem.getItemMeta();
+            if (im == null) {
+                plugin.languager.commandErrorNoItemMeta(player);
+                return;
+            }
+            if (level <= 0) {
+                im.removeEnchant(enchant);
+                handItem.setItemMeta(im);
+                plugin.languager.commandRemoveEnchantSuccess(player);
+            } else {
+                im.addEnchant(enchant, level, true);
+                handItem.setItemMeta(im);
+                plugin.languager.commandAddEnchantSuccess(player);
+            }
         }
     }
 
