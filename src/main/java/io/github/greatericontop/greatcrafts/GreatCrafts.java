@@ -31,7 +31,6 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabComp
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.RecipeListTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
-import io.github.greatericontop.greatcrafts.events.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.PermissionRestrictionListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
@@ -138,16 +137,12 @@ public class GreatCrafts extends JavaPlugin {
         this.getLogger().info("Minecraft (major) version: "+majorVersion);
 
         if (majorVersion >= 21) {
-            this.getLogger().info("(1.21+) Enabling support for crafter block");
-            this.getServer().getPluginManager().registerEvents(new CrafterEvents(this), this);
+            this.getLogger().warning("This build of the plugin does not support 1.21+! Please download the other build!");
         }
 
 
         Bukkit.getScheduler().runTaskTimer(this, this::saveAll, 1200L, 1200L);
-        // Run update checker API request async (and again every day if the server isn't restarted)
-        if (doUpdateCheck) {
-            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> latestVersion = UpdateChecker.getLatestVersion(this), 10L, 1728000L);
-        }
+
         // Recipes are not loaded in by default, so do this (later)
         Bukkit.getScheduler().runTaskLater(this, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "greatcrafts:reloadrecipes"), 20L);
 
