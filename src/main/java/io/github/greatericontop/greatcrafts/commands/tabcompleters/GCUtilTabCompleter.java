@@ -42,7 +42,7 @@ public class GCUtilTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) {
-            List<String> completions = List.of("setcustomname", "setloreline", "deletelorelines", "enchant", "duplicaterecipe");
+            List<String> completions = List.of("setcustomname", "setloreline", "deletelorelines", "enchant", "duplicaterecipe", "resetlimits");
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>(completions.size()));
         }
 
@@ -81,6 +81,12 @@ public class GCUtilTabCompleter implements TabCompleter {
                 return StringUtil.copyPartialMatches(args[1], keys, new ArrayList<String>(keys.size()));
             } else if (args.length == 3) {
                 return List.of("<target namespace:name>");
+            }
+        }
+
+        if (args[0].equalsIgnoreCase("resetlimits")) {
+            if (args.length == 2) {
+                return List.of("[<player name>]");
             }
         }
 

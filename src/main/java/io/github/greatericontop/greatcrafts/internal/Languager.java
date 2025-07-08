@@ -269,5 +269,24 @@ public class Languager {
         }
     }
 
+    public void craftingLimitResetSuccess(CommandSender sender) {
+        for (String s : getText("craftingLimitResetSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s));
+        }
+    }
+
+    public void craftingLimitResetPlayerSuccess(CommandSender sender, String playerName) {
+        for (String s : getText("craftingLimitResetPlayerSuccess")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%player%", playerName));
+        }
+    }
+
+    public void commandErrorPlayerNotFound(CommandSender sender, String playerName) {
+        for (String s : getText("commandErrorPlayerNotFound")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s)
+                    .replaceAll("%player%", playerName));
+        }
+    }
 
 }

@@ -32,6 +32,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class GCUtilCommand implements CommandExecutor {
 
@@ -114,6 +115,12 @@ public class GCUtilCommand implements CommandExecutor {
                 return true;
             }
             duplicateRecipe(sender, sourceRecKey, targetRecKey);
+            return true;
+        }
+
+        if (subcommand.equalsIgnoreCase("resetlimits")) {
+            String targetPlayerName = GreatCommands.argumentString(1, args);
+            resetLimits(sender, targetPlayerName);
             return true;
         }
 
@@ -232,6 +239,24 @@ public class GCUtilCommand implements CommandExecutor {
         );
         plugin.recipeManager.setRecipe(targetRecKey, newSavedRec);
         plugin.languager.commandDuplicationSuccess(sender, sourceRecKey, targetRecKey);
+    }
+
+    private void resetLimits(CommandSender sender, String targetPlayerName) {
+        if (targetPlayerName == null || targetPlayerName.isEmpty()) {
+            plugin.recipeCraftingLimitsPlayers.clear();
+            plugin.languager.craftingLimitResetSuccess(sender);
+        } else {
+            Player targetPlayer = plugin.getServer().getPlayer(targetPlayerName);
+            if (targetPlayer == null) {
+                plugin.languager.commandErrorPlayerNotFound(sender, targetPlayerName);
+                return;
+            }
+            Map<String, Integer> targetPlayerMap = plugin.recipeCraftingLimitsPlayers.get(targetPlayer.getUniqueId());
+            if (targetPlayerMap != null) {
+                targetPlayerMap.clear();
+            }
+            plugin.languager.craftingLimitResetPlayerSuccess(sender, targetPlayer.getName());
+        }
     }
 
 }

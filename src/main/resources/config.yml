@@ -30,6 +30,7 @@ recipe-permission-requirements:
 
 # Limit the number of crafts each player can do.
 # The limit only applies to stacked items recipes and is reset when the server restarts.
+#   It can also be reset with /greatcraftsutil resetlimits
 # This can also be set in-game with /editrecipe (this method is recommended)
 recipe-crafting-limits:
   # Format: "namespace:name": max crafts allowed
@@ -216,3 +217,17 @@ language-settings:
   # Placeholders: %limitamount% = the limit amount
   craftingLimitFailure:
   - "§cYou have reached the limit of §e%limitamount% §ccrafts for this item!"
+
+  # Shown when crafting limit reset (for all players)
+  craftingLimitResetSuccess:
+  - "§3Crafting limits reset for all players!"
+
+  # Shown when crafting limit reset (for a specific player)
+  # Placeholders: %player% = the player name
+  craftingLimitResetPlayerSuccess:
+  - "§3Crafting limits reset for §f%player%§3!"
+
+  # Shown when a command is unsuccessful because a player specified does not exist.
+  # Placeholders: %player% = the player name
+  commandErrorPlayerNotFound:
+  - "§cPlayer §f%player% §cnot found!"
