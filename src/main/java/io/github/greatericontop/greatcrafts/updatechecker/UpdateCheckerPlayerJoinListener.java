@@ -20,7 +20,7 @@ package io.github.greatericontop.greatcrafts.updatechecker;
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,10 +43,15 @@ public class UpdateCheckerPlayerJoinListener implements Listener {
         ) {
             player.sendMessage(String.format("§3An update for GreatCrafts is available! You have §b%s§3, §b%s§3 is available.",
                     plugin.getDescription().getVersion(), plugin.latestVersion));
-            player.spigot().sendMessage(new ComponentBuilder("Click here to download!")
-                    .color(ChatColor.GREEN).underlined(true)
-                    .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://modrinth.com/plugin/greatcrafts"))
-                    .build());
+            // Note: can't use component builder for 1.19-1.20 compatibility
+            TextComponent comp = new TextComponent("Click here to download!");
+            comp.setColor(ChatColor.GREEN);
+            comp.setUnderlined(true);
+            comp.setClickEvent(new ClickEvent(
+                    ClickEvent.Action.OPEN_URL,
+                    "https://modrinth.com/plugin/greatcrafts"
+            ));
+            player.spigot().sendMessage(comp);
         }
     }
 
