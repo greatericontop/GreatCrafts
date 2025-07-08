@@ -232,6 +232,10 @@ public class CraftEditor implements Listener {
         if (slotIconItem == null || slotIconItem.getType() == Material.AIR) {
             slotIconItem = new ItemStack(Material.GRASS_BLOCK, 1);
         }
+        // Check if all ingredients & material choices completely empty as a failsafe
+        if (items.stream().allMatch(item -> item == null || item.getType() == Material.AIR)) {
+            items.set(0, new ItemStack(Material.GRASS_BLOCK, 1));
+        }
         return new SavedRecipe(key, type, items, resultItem, ingredientTypes, materialChoiceExtra, slotIconItem);
     }
 
