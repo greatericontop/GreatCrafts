@@ -26,6 +26,10 @@ There are two different files for Minecraft 1.19-1.20 and 1.21+.**
 - Supports 1.21+ crafters for all recipes, including stacked items
 - Has a simple to use GUI for both players and admins
 
+## Installation
+
+Download the jar file, place it in the plugins folder, and restart the server!
+
 ## Commands
 
 `/recipes` - Opens a menu of all custom recipes (can be used by all players)
