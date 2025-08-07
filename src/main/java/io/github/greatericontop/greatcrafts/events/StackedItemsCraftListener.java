@@ -193,10 +193,10 @@ public class StackedItemsCraftListener implements Listener {
         // First, apply the limit to maxCraftsAvailable
         String recKey = savedRecipe.key().toString();
         if (plugin.recipeCraftingLimits.containsKey(recKey)) {
-            if (!plugin.recipeCraftingLimitsPlayers.containsKey(player.getUniqueId())) {
-                plugin.recipeCraftingLimitsPlayers.put(player.getUniqueId(), new HashMap<>());
+            if (!plugin.playerCraftCounts.containsKey(player.getUniqueId())) {
+                plugin.playerCraftCounts.put(player.getUniqueId(), new HashMap<>());
             }
-            Map<String, Integer> playerCraftsMap = plugin.recipeCraftingLimitsPlayers.get(player.getUniqueId());
+            Map<String, Integer> playerCraftsMap = plugin.playerCraftCounts.get(player.getUniqueId());
             int craftsMadePreviously = playerCraftsMap.getOrDefault(recKey, 0);
             int limit = plugin.recipeCraftingLimits.get(recKey);
             // Apply limit
@@ -230,7 +230,7 @@ public class StackedItemsCraftListener implements Listener {
 
         // Notification & limit application
         if (plugin.recipeCraftingLimits.containsKey(recKey)) {
-            Map<String, Integer> playerCraftsMap = plugin.recipeCraftingLimitsPlayers.get(player.getUniqueId());
+            Map<String, Integer> playerCraftsMap = plugin.playerCraftCounts.get(player.getUniqueId());
             int craftsMadePreviously = playerCraftsMap.getOrDefault(recKey, 0);
             int limit = plugin.recipeCraftingLimits.get(recKey);
             playerCraftsMap.put(recKey, craftsMadePreviously + actualAmountCrafted);

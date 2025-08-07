@@ -258,7 +258,7 @@ public class GCUtilCommand implements CommandExecutor {
 
     private void resetLimits(CommandSender sender, String targetPlayerName) {
         if (targetPlayerName == null || targetPlayerName.isEmpty()) {
-            plugin.recipeCraftingLimitsPlayers.clear();
+            plugin.playerCraftCounts.clear();
             plugin.languager.craftingLimitResetSuccess(sender);
         } else {
             Player targetPlayer = plugin.getServer().getPlayer(targetPlayerName);
@@ -266,7 +266,7 @@ public class GCUtilCommand implements CommandExecutor {
                 plugin.languager.commandErrorPlayerNotFound(sender, targetPlayerName);
                 return;
             }
-            Map<String, Integer> targetPlayerMap = plugin.recipeCraftingLimitsPlayers.get(targetPlayer.getUniqueId());
+            Map<String, Integer> targetPlayerMap = plugin.playerCraftCounts.get(targetPlayer.getUniqueId());
             if (targetPlayerMap != null) {
                 targetPlayerMap.clear();
             }

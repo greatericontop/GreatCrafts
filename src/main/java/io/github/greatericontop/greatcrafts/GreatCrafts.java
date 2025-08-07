@@ -68,7 +68,7 @@ public class GreatCrafts extends JavaPlugin {
     public YamlConfiguration recipes;
     public RecipeManager recipeManager;
 
-    public Map<UUID, Map<String, Integer>> recipeCraftingLimitsPlayers;
+    public Map<UUID, Map<String, Integer>> playerCraftCounts;
 
     public CraftEditor guiCraftEditor;
     public CraftReadOnlyViewer guiCraftReadOnlyViewer;
@@ -91,7 +91,7 @@ public class GreatCrafts extends JavaPlugin {
         recipes = YamlConfiguration.loadConfiguration(recipeFile);
         recipeManager = new RecipeManager(this);
 
-        recipeCraftingLimitsPlayers = new HashMap<>();
+        playerCraftCounts = new HashMap<>();
 
         GreatCraftsCommand greatcraftscommand = new GreatCraftsCommand(this);
         this.getCommand("greatcrafts").setExecutor(greatcraftscommand);
