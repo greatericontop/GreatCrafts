@@ -39,6 +39,8 @@ recipe-crafting-limits:
 
 # Whether crafting limits are persistent across server restarts.
 # If set to false, they are reset when the server restarts.
+# These are stored in `craft_counts_save.yml`. Don't edit that file manually unless you know exactly what you are
+# doing and have the server fully stopped.
 persistent-crafting-limits: false
 
 

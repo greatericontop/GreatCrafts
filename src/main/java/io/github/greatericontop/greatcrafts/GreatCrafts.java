@@ -96,6 +96,7 @@ public class GreatCrafts extends JavaPlugin {
 
         if (persistentCraftingLimits) { // updateConfigVars must be called first
             playerCraftCounts = CraftLimitDataManager.fromYamlConfiguration(this);
+            this.getLogger().info("Persistent craft limits is on; successfully loaded craft counts from file!");
         } else {
             playerCraftCounts = new HashMap<>();
         }
