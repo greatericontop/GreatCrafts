@@ -29,12 +29,17 @@ recipe-permission-requirements:
 
 
 # Limit the number of crafts each player can do.
-# The limit only applies to stacked items recipes and is reset when the server restarts.
-#   It can also be reset with /greatcraftsutil resetlimits
+# The limit only applies to stacked items recipes.
+# It can be reset manually with /greatcraftsutil resetlimits
 # This can also be set in-game with /editrecipe (this method is recommended)
 recipe-crafting-limits:
   # Format: "namespace:name": max crafts allowed
   "greatcrafts:_limited_recipe_1": 5
+
+
+# Whether crafting limits are persistent across server restarts.
+# If set to false, they are reset when the server restarts.
+persistent-crafting-limits: false
 
 
 # Whether or not to check for updates

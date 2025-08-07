@@ -42,6 +42,7 @@ import io.github.greatericontop.greatcrafts.gui.GUIManager;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceEditor;
 import io.github.greatericontop.greatcrafts.gui.MaterialChoiceToggler;
 import io.github.greatericontop.greatcrafts.gui.RecipeListMenu;
+import io.github.greatericontop.greatcrafts.internal.CraftLimitDataManager;
 import io.github.greatericontop.greatcrafts.internal.Languager;
 import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
@@ -52,6 +53,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -62,6 +64,7 @@ public class GreatCrafts extends JavaPlugin {
     public Map<String, AutoUnlockSetting> autoUnlockExceptions;
     public Map<String, String> recipePermissionRequirements;
     public Map<String, Integer> recipeCraftingLimits;
+    public boolean persistentCraftingLimits;
     public boolean doUpdateCheck;
     public Languager languager;
 
@@ -91,7 +94,11 @@ public class GreatCrafts extends JavaPlugin {
         recipes = YamlConfiguration.loadConfiguration(recipeFile);
         recipeManager = new RecipeManager(this);
 
-        playerCraftCounts = new HashMap<>();
+        if (persistentCraftingLimits) { // updateConfigVars must be called first
+            playerCraftCounts = CraftLimitDataManager.fromYamlConfiguration(this);
+        } else {
+            playerCraftCounts = new HashMap<>();
+        }
 
         GreatCraftsCommand greatcraftscommand = new GreatCraftsCommand(this);
         this.getCommand("greatcrafts").setExecutor(greatcraftscommand);
@@ -199,6 +206,8 @@ public class GreatCrafts extends JavaPlugin {
                 this.getLogger().warning(String.format("recipe-crafting-limits: invalid value for %s ('%s')", entry.getKey(), value));
             }
         }
+        persistentCraftingLimits = this.getConfig().getBoolean("persistent-crafting-limits", false);
+        this.getLogger().info(String.format("  persistentCraftingLimits = %s", persistentCraftingLimits));
         doUpdateCheck = this.getConfig().getBoolean("do-update-check", true);
         this.getLogger().info(String.format("  doUpdateCheck = %s", doUpdateCheck));
         languager = new Languager(this);
@@ -208,8 +217,12 @@ public class GreatCrafts extends JavaPlugin {
     public void saveAll() {
         try {
             recipes.save(new File(this.getDataFolder(), "recipes.yml"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            this.getLogger().severe("Failed to save recipes.yml due to IOException");
+            e.printStackTrace();
+        }
+        if (persistentCraftingLimits) {
+            CraftLimitDataManager.saveToYamlConfiguration(this, playerCraftCounts);
         }
     }
 
