@@ -61,7 +61,8 @@ public class RecipeManager {
         try {
             yamlConfiguration.loadFromString(string);
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
+            throw new RuntimeException("failed to load yaml configuration from string, see stack trace above");
         }
         SavedRecipe savedRec = deserializeSavedRecipe((List<Object>) yamlConfiguration.get("shapedrecipe"));
         if (!savedRec.key().toString().equals(key)) {
