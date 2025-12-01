@@ -127,16 +127,32 @@ Multiple stacks of the same item type are supported, and they must be matched ex
 For example, if a stack of 16 and a stack of 32 diamonds are required, players must use exactly 16 and 32 diamonds in the recipe.
 Other ways, like 48 diamonds in 1 slot, or 16 diamonds in 3 slots, will not work.
 
-## Automatically unlocking recipes
+## Extra Settings
+
+### Automatically unlocking recipes
 
 Recipes can be automatically unlocked for players under certain conditions.
 This can be configured under `automatically-unlock-recipes` in the config file.
-That setting applies to all recipes by default, but you can get specific behavior for each recipe under the `automatically-unlock-recipes-exceptions` section.
 
 - `never` - Never automatically unlocks custom recipes
 - `have-each` - Automatically unlocks custom recipes if the player has each of the required ingredients
 - `have-one` - Automatically unlocks custom recipes if the player has at least one of the required ingredients
 - `always` - Automatically unlocks all custom recipes immediately
+
+For more fine-grained control, you can also use `/editrecipe <recipe> auto-unlock-setting <enter a setting>` to adjust it for each recipe specifically.
+
+### Permission requirements
+
+You can require a permission to make a specific recipe with `/editrecipe <recipe> permission-requirement <enter a permission>`.
+Note that this will prevent crafters from using the recipe as well.
+
+### Craft limits
+
+You can limit the number of times a recipe can be made with `/editrecipe <recipe> craft-limit <number>`.
+This limit is per-player and only applies to stacked item recipes.
+(If you have a non-stacked item recipe, just change it to stacked items with stack sizes of 1 for the same effect.)
+
+You can also customize whether craft limits reset on server restart (e.g. minigames) or are permanent via the `persistent-crafting-limits` option in `config.yml`.
 
 ## Utility commands
 
