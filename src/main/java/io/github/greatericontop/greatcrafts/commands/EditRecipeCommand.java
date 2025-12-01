@@ -19,6 +19,8 @@ package io.github.greatericontop.greatcrafts.commands;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -59,9 +61,42 @@ public class EditRecipeCommand implements CommandExecutor {
             return true;
         }
 
-        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"auto-unlock-setting", "permission-requirement", "crafting-limit"});
+        String setting = GreatCommands.argumentStringFromChoices(1, args, new String[]{"show-settings", "auto-unlock-setting", "permission-requirement", "crafting-limit"});
         if (setting == null) {
-            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "auto-unlock-setting", "permission-requirement", "crafting-limit");
+            plugin.languager.commandErrorMustBeOneOfChoices(sender, "setting to change", "show-settings", "auto-unlock-setting", "permission-requirement", "crafting-limit");
+            return true;
+        }
+        if (setting.equals("show-settings")) {
+            String autoUnlockSetting;
+            if (plugin.autoUnlockExceptions.containsKey(recipeName)) {
+                autoUnlockSetting = String.format("§e%s §7(set)", plugin.autoUnlockExceptions.get(recipeName));
+            } else {
+                autoUnlockSetting = String.format("§e%s §7(plugin-wide default setting)", plugin.autoUnlockSetting);
+            }
+            String permissionReq;
+            if (plugin.recipePermissionRequirements.containsKey(recipeName)) {
+                permissionReq = String.format("§e%s", plugin.recipePermissionRequirements.getOrDefault(recipeName, null));
+            } else {
+                permissionReq = "§7(none)";
+            }
+            String craftingLimit;
+            if (plugin.recipeCraftingLimits.containsKey(recipeName)) {
+                craftingLimit = String.format("§e%d §7(per player, stacked items only)", plugin.recipeCraftingLimits.get(recipeName));
+            } else {
+                craftingLimit = "§7(unlimited)";
+            }
+            Component compAuto = Component.text("§6auto unlock setting§7: " + autoUnlockSetting + " ")
+                    .append(Component.text("§7[click to edit]")
+                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s auto-unlock-setting ", recipeName))));
+            Component compPermission = Component.text("§6permission requirement§7: " + permissionReq + " ")
+                    .append(Component.text("§7[click to edit]")
+                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s permission-requirement ", recipeName))));
+            Component compLimit = Component.text("§6crafting limit§7: " + craftingLimit + " ")
+                    .append(Component.text("§7[click to edit]")
+                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s crafting-limit ", recipeName))));
+            plugin.adventure.sender(sender).sendMessage(compAuto);
+            plugin.adventure.sender(sender).sendMessage(compPermission);
+            plugin.adventure.sender(sender).sendMessage(compLimit);
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {
