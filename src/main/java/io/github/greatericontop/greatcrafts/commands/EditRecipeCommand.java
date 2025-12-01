@@ -19,8 +19,8 @@ package io.github.greatericontop.greatcrafts.commands;
 
 import io.github.greatericontop.greatcrafts.GreatCrafts;
 import io.github.greatericontop.greatcrafts.internal.datastructures.SavedRecipe;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,18 +85,21 @@ public class EditRecipeCommand implements CommandExecutor {
             } else {
                 craftingLimit = "§7(unlimited)";
             }
-            Component compAuto = Component.text("§6auto unlock setting§7: " + autoUnlockSetting + " ")
-                    .append(Component.text("§7[click to edit]")
-                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s auto-unlock-setting ", recipeName))));
-            Component compPermission = Component.text("§6permission requirement§7: " + permissionReq + " ")
-                    .append(Component.text("§7[click to edit]")
-                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s permission-requirement ", recipeName))));
-            Component compLimit = Component.text("§6crafting limit§7: " + craftingLimit + " ")
-                    .append(Component.text("§7[click to edit]")
-                            .clickEvent(ClickEvent.suggestCommand(String.format("/editrecipe %s crafting-limit ", recipeName))));
-            plugin.adventure.sender(sender).sendMessage(compAuto);
-            plugin.adventure.sender(sender).sendMessage(compPermission);
-            plugin.adventure.sender(sender).sendMessage(compLimit);
+            TextComponent auto1 = new TextComponent("§6auto unlock setting§7: " + autoUnlockSetting + " ");
+            TextComponent auto2 = new TextComponent("§9[click to edit]");
+            auto2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/editrecipe %s auto-unlock-setting", recipeName)));
+            auto1.addExtra(auto2);
+            sender.spigot().sendMessage(auto1);
+            TextComponent permission1 = new TextComponent("§6permission requirement§7: " + permissionReq + " ");
+            TextComponent permission2 = new TextComponent("§9[click to edit]");
+            permission2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/editrecipe %s permission-requirement", recipeName)));
+            permission1.addExtra(permission2);
+            sender.spigot().sendMessage(permission1);
+            TextComponent limit1 = new TextComponent("§6crafting limit§7: " + craftingLimit + " ");
+            TextComponent limit2 = new TextComponent("§9[click to edit]");
+            limit2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, String.format("/editrecipe %s crafting-limit", recipeName)));
+            limit1.addExtra(limit2);
+            sender.spigot().sendMessage(limit1);
             return true;
         }
         if (setting.equals("auto-unlock-setting")) {

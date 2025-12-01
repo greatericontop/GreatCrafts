@@ -48,7 +48,6 @@ import io.github.greatericontop.greatcrafts.internal.RecipeManager;
 import io.github.greatericontop.greatcrafts.internal.datastructures.AutoUnlockSetting;
 import io.github.greatericontop.greatcrafts.updatechecker.UpdateChecker;
 import io.github.greatericontop.greatcrafts.updatechecker.UpdateCheckerPlayerJoinListener;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,7 +80,6 @@ public class GreatCrafts extends JavaPlugin {
     public MaterialChoiceEditor guiMaterialChoiceEditor;
     public RecipeListMenu guiRecipeListMenu;
 
-    public BukkitAudiences adventure;
     public String latestVersion = null;
 
     @Override
@@ -140,8 +138,6 @@ public class GreatCrafts extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new StackedItemsCraftListener(this), this);
 
         this.getServer().getPluginManager().registerEvents(new UpdateCheckerPlayerJoinListener(this), this);
-
-        adventure = BukkitAudiences.create(this);
 
         // Paper & Spigot: getBukkitVersion() -> "1.21-R0.1-SNAPSHOT"
         String rawVersion = Bukkit.getServer().getBukkitVersion();
