@@ -46,6 +46,7 @@ public class CraftReadOnlyViewer implements Listener {
     private static final int SLOT8 = 29;
     private static final int SLOT9 = 30;
     private static final int SLOT_RESULT = 23;
+    private static final int SLOT_RECIPE_LIST = 45;
     private static final int SLOT_EDIT = 53;
 
     private final GUIManager guiManager;
@@ -68,6 +69,7 @@ public class CraftReadOnlyViewer implements Listener {
         }
         fillViewCraftingSlots(gui, savedRecipe, savedRecipe.ingredientTypes(), savedRecipe.materialChoiceExtra());
         gui.setItem(SLOT_RESULT, savedRecipe.result());
+        gui.setItem(SLOT_RECIPE_LIST, Util.createItemStack(Material.ENCHANTED_BOOK, 1, "§aRecipe List §eCLICK HERE"));
         if (player.hasPermission("greatcrafts.modifyrecipes")) {
             gui.setItem(SLOT_EDIT, Util.createItemStackWithPDC(Material.WRITABLE_BOOK, 1, recipeKeyPDC, PersistentDataType.STRING, savedRecipe.key().toString(), "§aEdit §eCLICK HERE"));
         }
@@ -80,6 +82,11 @@ public class CraftReadOnlyViewer implements Listener {
         if (gui == null)  return;
         if (!event.getView().getTitle().equals(INV_NAME))  return;
         event.setCancelled(true);
+        if (event.getSlot() == SLOT_RECIPE_LIST) {
+            Player player = (Player) event.getWhoClicked();
+            player.closeInventory();
+            player.chat("/recipes");
+        }
         if (event.getSlot() == SLOT_EDIT && event.getCurrentItem().getType() != Material.BLACK_STAINED_GLASS_PANE) {
             Player player = (Player) event.getWhoClicked();
             String recipeKey = event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(recipeKeyPDC, PersistentDataType.STRING);
