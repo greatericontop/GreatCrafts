@@ -129,6 +129,9 @@ Other ways, like 48 diamonds in 1 slot, or 16 diamonds in 3 slots, will not work
 
 ## Extra Settings
 
+These are some extra settings that you can add to recipes.
+You can edit them with `/editrecipe <recipe> <setting name> <new value>`, or by clicking the paper icon in the editor GUI.
+
 ### Automatically unlocking recipes
 
 Recipes can be automatically unlocked for players under certain conditions.
