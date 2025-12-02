@@ -61,7 +61,7 @@ public class CraftEditor implements Listener {
     private static final int SLOT_SAVE_AND_ACTIVATE = 53;
     private static final Set<Integer> VALID_CLICK_SLOTS = Set.of(
             SLOT1, SLOT2, SLOT3, SLOT4, SLOT5, SLOT6, SLOT7, SLOT8, SLOT9,
-            SLOT_RESULT, SLOT_ICON, SLOT_CHANGE_TYPE, SLOT_DELETER, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
+            SLOT_RESULT, SLOT_ICON, SLOT_CHANGE_TYPE, SLOT_DELETER, SLOT_EXTRA_INFO, SLOT_DISCARD, SLOT_SAVE, SLOT_SAVE_AND_ACTIVATE
     );
     private static final Map<Integer, Integer> SLOT_INDEXER = Map.of(
             SLOT1, 0, SLOT2, 1, SLOT3, 2,
@@ -114,7 +114,8 @@ public class CraftEditor implements Listener {
                 "§6permission requirement§7: " + permissionReq,
                 "§6crafting limit§7: " + craftingLimit,
                 "",
-                String.format("§7Edit these with §f/editrecipe %s <setting> <new value>", craftKey)
+                "§aClick to edit",
+                String.format("§aOr use §7/editrecipe %s show-settings", craftKey)
         ));
         gui.setItem(SLOT_DELETER, Util.createItemStack(Material.REDSTONE, 1, "§cItem Deleter",
                 "§7Place items here to delete them without dropping them on the ground."));
@@ -171,6 +172,11 @@ public class CraftEditor implements Listener {
 
         if (slot == SLOT_DELETER) {
             player.setItemOnCursor(null);
+            event.setCancelled(true);
+        }
+
+        if (slot == SLOT_EXTRA_INFO) {
+            player.performCommand(String.format("editrecipe %s show-settings", ((SavedRecipe) data.get("recipe")).key()));
             event.setCancelled(true);
         }
 
