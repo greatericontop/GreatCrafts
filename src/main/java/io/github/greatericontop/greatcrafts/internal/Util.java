@@ -33,10 +33,13 @@ import java.util.Map;
 public class Util {
 
     public static ItemStack createItemStack(Material mat, int amount, String name, String... lore) {
+        return createItemStack(mat, amount, name, Arrays.asList(lore));
+    }
+    public static ItemStack createItemStack(Material mat, int amount, String name, List<String> lore) {
         ItemStack stack = new ItemStack(mat, amount);
         ItemMeta im = stack.getItemMeta();
         im.setDisplayName(name);
-        im.setLore(java.util.Arrays.asList(lore));
+        im.setLore(lore);
         stack.setItemMeta(im);
         return stack;
     }
@@ -70,6 +73,29 @@ public class Util {
             list.add(new ArrayList<>());
         }
         return list;
+    }
+
+    private static final int LINES = 4;
+    private static final int PER_LINE = 6;
+
+    public ItemStack renderMaterialChoiceIcon(List<Material> items, boolean showEditTooltip) {
+        List<String> lore = new ArrayList<>();
+        lore.add("§bMaterial Choice");
+        if (showEditTooltip) {
+            lore.add("§eSHIFT RIGHT CLICK §fto edit!");
+            lore.add("§dThis is a placeholder item. It is not actually in the recipe. Removing");
+            lore.add("§dthis item from this menu does not have any effect.");
+        }
+        lore.add("§7Items:");
+        for (int line = 0; line < Math.min(LINES, (int) Math.ceil(items.size() / (double)PER_LINE)); line++) {
+            // TODO
+            String[] names = new String[Math.min(5, )];
+            for (int j = 0; j < names.length; j++) {
+                names[j] = items.get(j).name().toLowerCase().replace('_', ' ');
+            }
+            String itemsDisplay = "§f" + String.join("§7,§f ", names) + (items.size() > 5 ? "§7,§f ..." : "");
+        }
+        return createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice", lore);
     }
 
     public static int performShiftClickCraft(Player player, ItemStack result, int maxCraftsAvailable) {
