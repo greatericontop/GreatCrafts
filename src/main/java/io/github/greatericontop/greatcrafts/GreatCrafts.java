@@ -31,7 +31,6 @@ import io.github.greatericontop.greatcrafts.commands.tabcompleters.GCUtilTabComp
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.RecipeListTabCompleter;
 import io.github.greatericontop.greatcrafts.commands.tabcompleters.ViewRecipeTabCompleter;
 import io.github.greatericontop.greatcrafts.events.AutoUnlockListener;
-import io.github.greatericontop.greatcrafts.events.CrafterEvents;
 import io.github.greatericontop.greatcrafts.events.InventoryCloseListener;
 import io.github.greatericontop.greatcrafts.events.PermissionRestrictionListener;
 import io.github.greatericontop.greatcrafts.events.StackedItemsCraftListener;
@@ -147,8 +146,7 @@ public class GreatCrafts extends JavaPlugin {
         this.getLogger().info("Minecraft (major) version: "+majorVersion);
 
         if (majorVersion >= 21) {
-            this.getLogger().info("(1.21+) Enabling support for crafter block");
-            this.getServer().getPluginManager().registerEvents(new CrafterEvents(this), this);
+            this.getLogger().warning("This build of the plugin does not support 1.21+! Please download the other build!");
         }
 
 
