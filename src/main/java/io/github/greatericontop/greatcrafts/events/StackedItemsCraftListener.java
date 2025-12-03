@@ -102,7 +102,7 @@ public class StackedItemsCraftListener implements Listener {
                 plugin.languager.stackedItemsErrorMissedExactMatch(player, recipeKey.toString());
                 return;
             }
-            int craftsAvailable = itemStackInGrid.getAmount() / requiredItemStack.getAmount();;
+            int craftsAvailable = itemStackInGrid.getAmount() / requiredItemStack.getAmount();
             maxCraftsAvailable = Math.min(maxCraftsAvailable, craftsAvailable);
         }
         if (maxCraftsAvailable == 0) {
