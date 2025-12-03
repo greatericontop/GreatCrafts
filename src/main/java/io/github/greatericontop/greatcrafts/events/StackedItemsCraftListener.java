@@ -228,8 +228,8 @@ public class StackedItemsCraftListener implements Listener {
             }
         }
 
-        // Notification & limit application
-        if (plugin.recipeCraftingLimits.containsKey(recKey)) {
+        // Notification & limit application (don't do anything extraneous if we made 0, e.g. shift click with full inv)
+        if (plugin.recipeCraftingLimits.containsKey(recKey) && actualAmountCrafted > 0) {
             Map<String, Integer> playerCraftsMap = plugin.playerCraftCounts.get(player.getUniqueId());
             int craftsMadePreviously = playerCraftsMap.getOrDefault(recKey, 0);
             int limit = plugin.recipeCraftingLimits.get(recKey);
