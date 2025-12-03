@@ -121,9 +121,9 @@ public class CraftReadOnlyViewer implements Listener {
                         List<Material> items = materialChoiceExtra.get(i);
                         String[] names = new String[Math.min(8, items.size())];
                         for (int j = 0; j < names.length; j++) {
-                            names[j] = items.get(j).name();
+                            names[j] = items.get(j).name().toLowerCase().replace('_', ' ');
                         }
-                        String itemsDisplay = "§7" + String.join(", ", names) + (items.size() > 8 ? ", ..." : "");
+                        String itemsDisplay = "§f" + String.join("§7,§f ", names) + (items.size() > 8 ? "§7,§f ..." : "");
                         gui.setItem(SLOTS[i], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
                                 "§8Items:",
                                 itemsDisplay
