@@ -75,25 +75,32 @@ public class Util {
         return list;
     }
 
-    private static final int LINES = 4;
-    private static final int PER_LINE = 6;
+    private static final int LINES = 5;
+    private static final int PER_LINE = 4;
 
-    public ItemStack renderMaterialChoiceIcon(List<Material> items, boolean showEditTooltip) {
+    public static ItemStack renderMaterialChoiceIcon(List<Material> items, boolean showEditTooltip) {
         List<String> lore = new ArrayList<>();
-        lore.add("§bMaterial Choice");
         if (showEditTooltip) {
             lore.add("§eSHIFT RIGHT CLICK §fto edit!");
             lore.add("§dThis is a placeholder item. It is not actually in the recipe. Removing");
             lore.add("§dthis item from this menu does not have any effect.");
         }
         lore.add("§7Items:");
-        for (int line = 0; line < Math.min(LINES, (int) Math.ceil(items.size() / (double)PER_LINE)); line++) {
-            // TODO
-            String[] names = new String[Math.min(5, )];
+        int numLines = Math.min(LINES, (int) Math.ceil(items.size() / (double)PER_LINE));
+        for (int line = 0; line < numLines; line++) {
+            int indexStart = line * PER_LINE;
+            String[] names = new String[Math.min(PER_LINE, items.size() - indexStart)];
             for (int j = 0; j < names.length; j++) {
-                names[j] = items.get(j).name().toLowerCase().replace('_', ' ');
+                names[j] = items.get(indexStart + j).name().toLowerCase().replace('_', ' ');
             }
-            String itemsDisplay = "§f" + String.join("§7,§f ", names) + (items.size() > 5 ? "§7,§f ..." : "");
+            String itemsDisplay = "§f" + String.join("§7;§f  ", names);
+            if (line == LINES-1 && items.size() > LINES*PER_LINE) {
+                    itemsDisplay = itemsDisplay + "§7;§f  ...";
+            }
+            if (line != numLines-1) {
+                itemsDisplay = itemsDisplay + "§7;";
+            }
+            lore.add(itemsDisplay);
         }
         return createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice", lore);
     }

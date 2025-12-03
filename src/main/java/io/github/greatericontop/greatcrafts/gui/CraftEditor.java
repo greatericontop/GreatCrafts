@@ -258,19 +258,7 @@ public class CraftEditor implements Listener {
                 gui.setItem(SLOTS[slot], recipe.items().get(slot));
             }
             case MATERIAL_CHOICE -> {
-                List<Material> items = materialChoiceExtra.get(slot);
-                String[] names = new String[Math.min(5, items.size())];
-                for (int j = 0; j < names.length; j++) {
-                    names[j] = items.get(j).name().toLowerCase().replace('_', ' ');
-                }
-                String itemsDisplay = "§f" + String.join("§7,§f ", names) + (items.size() > 5 ? "§7,§f ..." : "");
-                gui.setItem(SLOTS[slot], Util.createItemStack(Material.END_PORTAL_FRAME, 1, "§bMaterial Choice",
-                        "§eSHIFT RIGHT CLICK §fto edit!",
-                        "§dThis is a placeholder item. It is not actually in the recipe. Removing",
-                        "§dthis item from this menu does not have any effect.",
-                        "§7Items:",
-                        itemsDisplay
-                ));
+                gui.setItem(SLOTS[slot], Util.renderMaterialChoiceIcon(materialChoiceExtra.get(slot), true));
             }
         }
     }
