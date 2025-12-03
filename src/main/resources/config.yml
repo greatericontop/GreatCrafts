@@ -48,6 +48,12 @@ persistent-crafting-limits: false
 do-update-check: true
 
 
+# How often (in ticks) to save everything to disk.
+# I'd recommend keeping this value fairly small to avoid data loss in
+# case of a crash, and data saving shouldn't be TOO laggy.
+save-all-frequency: 1200
+
+
 # You can change the messages used by the plugin here.
 # The general format is
 #   message-thing:

@@ -67,6 +67,7 @@ public class GreatCrafts extends JavaPlugin {
     public boolean persistentCraftingLimits;
     public boolean doUpdateCheck;
     public Languager languager;
+    public long saveAllFrequency;
 
     public YamlConfiguration recipes;
     public RecipeManager recipeManager;
@@ -151,7 +152,7 @@ public class GreatCrafts extends JavaPlugin {
         }
 
 
-        Bukkit.getScheduler().runTaskTimer(this, this::saveAll, 1200L, 1200L);
+        Bukkit.getScheduler().runTaskTimer(this, this::saveAll, saveAllFrequency, saveAllFrequency);
         // Run update checker API request async (and again every day if the server isn't restarted)
         if (doUpdateCheck) {
             Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> latestVersion = UpdateChecker.getLatestVersion(this), 10L, 1728000L);
@@ -211,6 +212,8 @@ public class GreatCrafts extends JavaPlugin {
         this.getLogger().info(String.format("  persistentCraftingLimits = %s", persistentCraftingLimits));
         doUpdateCheck = this.getConfig().getBoolean("do-update-check", true);
         this.getLogger().info(String.format("  doUpdateCheck = %s", doUpdateCheck));
+        saveAllFrequency = this.getConfig().getLong("save-all-frequency-ticks", 1200L);
+        this.getLogger().info(String.format("  saveAllFrequency = %d ticks", saveAllFrequency));
         languager = new Languager(this);
         this.getLogger().info("  Languager ready!");
     }
