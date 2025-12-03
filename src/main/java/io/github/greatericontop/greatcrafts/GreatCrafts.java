@@ -180,7 +180,7 @@ public class GreatCrafts extends JavaPlugin {
             String value = entry.getValue().toString();
             AutoUnlockSetting setting = AutoUnlockSetting.fromConfig(value);
             if (setting == null) {
-                this.getLogger().warning(String.format("automatically-unlock-recipes-exceptions: invalid value for %s ('%s')", entry.getKey(), value));
+                this.getLogger().warning(String.format("automatically-unlock-recipes-exceptions: invalid value for %s ('%s'); skipping", entry.getKey(), value));
             } else {
                 this.getLogger().info(String.format("  automatically-unlock-recipes-exceptions: %s = %s", entry.getKey(), setting.name()));
                 autoUnlockExceptions.put(entry.getKey(), setting);
@@ -205,7 +205,7 @@ public class GreatCrafts extends JavaPlugin {
                 this.getLogger().info(String.format("  recipe-crafting-limits: %s = %d", entry.getKey(), limit));
                 recipeCraftingLimits.put(entry.getKey(), limit);
             } catch (NumberFormatException e) {
-                this.getLogger().warning(String.format("recipe-crafting-limits: invalid value for %s ('%s')", entry.getKey(), value));
+                this.getLogger().warning(String.format("recipe-crafting-limits: invalid value for %s ('%s'); skipping", entry.getKey(), value));
             }
         }
         persistentCraftingLimits = this.getConfig().getBoolean("persistent-crafting-limits", false);
@@ -213,6 +213,10 @@ public class GreatCrafts extends JavaPlugin {
         doUpdateCheck = this.getConfig().getBoolean("do-update-check", true);
         this.getLogger().info(String.format("  doUpdateCheck = %s", doUpdateCheck));
         saveAllFrequency = this.getConfig().getLong("save-all-frequency-ticks", 1200L);
+        if (saveAllFrequency < 1L) {
+            this.getLogger().warning(String.format("config option save-all-frequency-ticks (=%d) must be >=1; fall back to default", saveAllFrequency));
+            saveAllFrequency = 1200L;
+        }
         this.getLogger().info(String.format("  saveAllFrequency = %d ticks", saveAllFrequency));
         languager = new Languager(this);
         this.getLogger().info("  Languager ready!");

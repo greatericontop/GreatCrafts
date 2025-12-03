@@ -27,7 +27,10 @@ public enum AutoUnlockSetting {
 
     ;
 
-    public static @Nullable AutoUnlockSetting fromConfig(String s) {
+    public static @Nullable AutoUnlockSetting fromConfig(@Nullable String s) {
+        if (s == null) {
+            return null;
+        }
         return switch (s) {
             case "never" -> NEVER;
             case "have-each" -> EACH;

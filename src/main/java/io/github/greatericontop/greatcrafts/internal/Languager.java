@@ -31,7 +31,11 @@ public class Languager {
     }
 
     private List<String> getText(String languageKey) {
-        return plugin.getConfig().getStringList(String.format("language-settings.%s", languageKey));
+        List<String> ret = plugin.getConfig().getStringList(String.format("language-settings.%s", languageKey));
+        if (ret.isEmpty()) {
+            ret.add(String.format("§d[Empty entry in language file for %s!]", languageKey));
+        }
+        return ret;
     }
 
     public void stackedItemsErrorMissedExactMatch(CommandSender sender, String recipeKey) {
